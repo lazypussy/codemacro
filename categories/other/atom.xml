@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: other | loop in codes]]></title>
+  <link href="http://kevinlynx.github.com/codemacro/categories/other/atom.xml" rel="self"/>
+  <link href="http://kevinlynx.github.com/codemacro/"/>
+  <updated>2012-04-28T11:35:49+08:00</updated>
+  <id>http://kevinlynx.github.com/codemacro/</id>
+  <author>
+    <name><![CDATA[Kevin Lynx]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[使用Github Page来写博客]]></title>
+    <link href="http://kevinlynx.github.com/codemacro/2012/04/20/blog-on-github/"/>
+    <updated>2012-04-20T00:00:00+08:00</updated>
+    <id>http://kevinlynx.github.com/codemacro/2012/04/20/blog-on-github</id>
+    <content type="html"><![CDATA[<p>最开始知道<a href="http://pages.github.com/">Github Page</a>，是通过<a href="http://codertrace.com">codertrace</a>上的某些注册用户，他们的BLOG就建立在Github Page上，并且清一色的干净整洁（简陋），这看起来很酷。</p>
+
+<p>Github提供了很多很合coder口味的东西，例如Gist，也包括这里提到的Page。Page并不是特用于建立博客的产品，它仅提供静态页面的显示。它最酷的地方，是通过Git的方式来让你管理这些静态页面。通过建立一个repository，并使用markdown语法来编写文章，然后通过Git来管理这些文章，你就可以自动将其发布出去。</p>
+
+<p>当然，要搭建一个像样点的博客，使用Github Page还不太方便。这里可以使用<a href="https://github.com/mojombo/jekyll">Jekyll</a>。Jekyll是一个静态网页生成器，它可以将你的markdown文件自动输出为对应的网页。而Github Page也支持Jekyll。</p>
+
+<p>为了更方便地搭建博客，我还使用了<a href="http://jekyllbootstrap.com">Jekyll-bootstrap</a>。jekyll-bootstrap其实就是一些模板文件，提供了一些博客所需的特殊功能，例如评论，访问统计。</p>
+
+<p>基于以上，我就可以像在Github上做项目一样，编写markdown文章，然后git push即可。可以使用jekyll --server在本地开启一个WEB SERVER，然后编写文章时，可以在本地预览。</p>
+
+<p>Github Page还支持custom domain，如你所见，我将我的域名codemacro.com绑定到了Github Page所提供的IP，而不再是我的VPS。你可以通过kevinlynx.github.com或者codemacro.com访问这个博客。</p>
+
+<hr/>
+
+
+<p>当然实际情况并没有那么简单，例如并没有太多的theme可供选择，虽然jekyll-bootstrap提供了一些，但还是太少。虽然，你甚至可以fork别人的jekyll博客，使用别人定制的theme，但，这对于一个不想过于折腾的人说，门槛也过高了点。</p>
+
+<p>jekyll-bootstrap使用了twitter的bootstrap css引擎，但我并不懂这个，所以，我也只能定制些基本的页面样式。</p>
+
+<hr/>
+
+
+<p>1年前我编写了<a href="https://github.com/kevinlynx/ext-blog">ext-blog</a>，并且在我的VPS上开启了codemacro.com这个博客。本来，它是一个ext-blog很好的演示例子，但维护这个博客给我带来诸多不便。例如，每次发布文章我都需要使用更早前用lisp写的cl-writer，我为什么就不愿意去做更多的包装来让cl-writer更好用？这真是一个垃圾软件，虽然它是我写的。另一方面，codemacro.com使用的主题，虽然是我抄的，但依然太丑，并且恶心。</p>
+
+<p>更别说那个消耗我VPS所有内存的lisp解释器，以及那恶心的两位数字乘法的验证码---你能想象别人得有多强烈的留言欲望，才愿意开一个计算器？</p>
+
+<hr/>
+
+
+<p>说说codertrace.com。我其实写了篇关于codertrace.com的总结，但没有作为博客发布。做这个事情的结果，简单总结来说就是瞎JB折腾没有任何结果。我真的是个苦逼双子男，我每次做件事情都需要巨大的毅力才能让自己专注下去。</p>
+
+<p>整个过程中，收到了些网友的邮件，看到了些评论，虽然不多。邮件/评论中有建议的，也有单纯的交流的，也有单纯鼓励的。我想说的是，thanks guys。</p>
+
+<hr/>
+
+
+<p>Anyway, try Github Page, save your VPS money :D.</p>
+
+<hr/>
+
+
+<p><strong>update</strong></p>
+
+<p>具体的搭建步骤，其实Github Page以及Jekyll的帮助文档中其实已经有说明。而Jekyll-bootstrap给了更为详细的说明：</p>
+
+<ul>
+<li><a href="http://jekyllbootstrap.com/index.html#start-now">安装</a></li>
+<li><a href="http://jekyllbootstrap.com/usage/jekyll-quick-start.html">发布</a></li>
+</ul>
+
+
+<p>其大概步骤，差不多为：</p>
+
+<ul>
+<li>Github上创建一个repository</li>
+<li>安装jekyll（这是一个ruby gem），这是为了本地预览</li>
+<li>clone Jekyll-bootstrap到你刚创建的repository</li>
+<li>在_post目录下创建日志</li>
+<li>提交日志到Github</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[写了个简单的网站，codertrace.com]]></title>
+    <link href="http://kevinlynx.github.com/codemacro/2012/02/04/codertrace/"/>
+    <updated>2012-02-04T00:00:00+08:00</updated>
+    <id>http://kevinlynx.github.com/codemacro/2012/02/04/codertrace</id>
+    <content type="html"><![CDATA[<h2>简介</h2>
+
+<p>因为写 <a href="https://github.com/kevinlynx/ext-blog">ext-blog</a>
+的原因，慢慢喜欢上github_ 。然后突然有一天产生了一个想法：如果可以把自己的博客_ 和
+<a href="https://github.com/kevinlynx">github主页</a>
+集中到一块展示给别人，会不会是一种很方便的自我简介方式？然后我就动手写了
+<a href="http://codertrace.com">codertrace.com</a> 。</p>
+
+<p>所以， <a href="http://codertrace.com">codertrace.com</a>
+这个网站的作用就是用来集中让程序员炫耀的。它通过RSS抓取，将你的博客，github主页，或其他有RSS输出的信息集中到一块展示给别人。这些信息通常就可以代表一个程序员。</p>
+
+<p>如果你是程序员，也不妨试试。</p>
+
+<p><img src="http://kevinlynx.github.com/codemacro/assets/res/codertrace/codertrace.png" alt="image" width="100%"/></p>
+
+<h2>技术信息</h2>
+
+<p>不知道哪个王八蛋说的，程序员每一年得学一门新语言。我2010年末接触了Lisp，然后莫名其妙地写了
+<a href="https://github.com/kevinlynx/ext-blog">ext-blog</a>
+，又莫名其妙地在2011年末接触了Ruby。因为大学期间太痴迷C++，我勤奋努力，几乎通晓这门语言的各种细节；后来又稍微实践了下编译原理。在这若干年间，断断续续也接触过其他脚本类语言，我甚至在android上用java写过几个
+<a href="http://kevinlynx.iteye.com">小应用</a>
+。基于这些积累，我发现我可以很快上手Ruby，然后再上手Rails，然后就有了
+<a href="http://codertrace.com">codertrace.com</a> （当然还做过一些小的
+<a href="http://klquiz.heroku.com">APP</a> )</p>
+
+<p>所以， <a href="http://codertrace.com">codertrace.com</a> 就是一个Ruby on
+Rails的应用。当我用这货来做WEB的时候，我才发现曾经用Lisp写博客是多么geek。这种感觉就像你在用汇编写一个GUI程序一样。我的意思是，ruby/rails的世界里有太多现成的东西，但lisp的世界里没有。</p>
+
+<p>而且，ruby是一个很爽的语言。我太喜欢它的closure语法，简洁，不需要加其他关键字就可以构造（例如其他语言map(function
+(item) xxxx end)，或者map(lambda (item) xxx
+)）。但我不喜欢在使用的地方通过yield去调用---这就像一个hack。我更不喜欢ruby用proc去封装closure。好吧，这其实是我自我分裂，为什么我要把ruby看成一个函数式语言？</p>
+
+<p>脚本语言真是太酷了。</p>
+
+<h2>服务器信息</h2>
+
+<p>我很穷。不管你信不信，我真的舍不得花1000RMB买个VPS来架设
+<a href="http://codertrace.com">codertrace.com</a> 。目前，
+<a href="http://codertrace.com">codertrace.com</a> 架设在
+<a href="http://heroku.com">heroku.com</a> ，而且还使用的是免费服务。免费服务竟然只有5M数据库。
+<a href="http://codertrace.com">codertrace.com</a>
+后台为了异步抓取用户提供的RSS，还使用了一个单独的进程(delayed_job ruby gem)。这也不是免费的。</p>
+
+<p>但ruby的世界里有太多现成的东西了，甚至有很多现成的库解决这里的两个问题：heroku_external_db，这个gem可以让codertrace使用heroku以外的数据库，然后我就在我的VPS上搭了个mysql，这下流量和网站响应速度悲剧了啊，你想你请求个页面，这个页面直接涉及到若干条数据库查询。而这些查询的请求和回应竟然是通过internet网络传输的。</p>
+
+<p>workless，这个gem可以在有异步任务时，例如codertrace上读取RSS，就会自动开启这个worker进程，然后heroku开始计费，当没有任务时，它又自动关闭这个进程。虽然省了美元，但再一次让网站的响应速度打了折扣。</p>
+
+<p>为了实现自定义域名，我需要将 <a href="http://codertrace.com">codertrace.com</a> 指向
+<a href="http://heroku.com">heroku.com</a>
+提供的IP。但也许你会同我一样愤怒，因为它提供的几个IP都被GFW墙了！所以，目前的实现方案是，我将
+<a href="http://codertrace.com">codertrace.com</a>
+指向了我博客对应的VPS，然后在VPS上使用nginx反向代理到 <a href="http://heroku.com">heroku.com</a>
+提供的IP。即使如此，我最近甚至发现 <a href="http://codertrace.com">codertrace.com</a>
+竟然神奇般地会域名解析错误，难道godaddy的name server也要被GFW和谐？？</p>
+
+<h2>故事</h2>
+
+<p>作为一个宅男，在工作的若干年中，若干个假期我都用来打游戏，或者写程序。</p>
+
+<p>所以，当这个成为习惯的时候， <a href="http://codertrace.com">codertrace.com</a>
+，就顺理成章地消费了我今年的春节假期。我发现一个人窝在租的小房子里写代码是件很爽的事情。在当前这个社会环境下，你可以专注地去干件喜欢的事情，还不用处理各种生活琐事，真是太爽了。</p>
+
+<p>但为什么我平时得不到这种感觉？因为，我，是一个没钱的程序员。我和我老婆租在一个标间里。在这样狭小的空间里，多个人就是多几倍干扰。这太残酷了。</p>
+
+<h2>末了</h2>
+
+<p>曾经我以为我很牛逼，曾经我以为程序员很牛逼。后来我慢慢发现自己很垃圾。我没有写出来过牛逼的程序，大概也没能力写。还记得那个程序员的故事吗？就是有个傻逼也以为程序员很牛逼，但不幸在一家非IT公司的IT部门工作，他的程序员同事的工作就是每周填个excel表格。他后来很绝望，因为他没有为世界贡献过任何代码。后来，这货丢下一切，坐上去某地的飞机走了。</p>
+]]></content>
+  </entry>
+  
+</feed>
