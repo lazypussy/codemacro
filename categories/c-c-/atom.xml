@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: c/c++ | loop in codes]]></title>
-  <link href="http://kevinlynx.github.com/codemacro/categories/c-c-/atom.xml" rel="self"/>
-  <link href="http://kevinlynx.github.com/codemacro/"/>
-  <updated>2012-04-28T11:52:59+08:00</updated>
-  <id>http://kevinlynx.github.com/codemacro/</id>
+  <link href="http://codemacro.com/categories/c-c-/atom.xml" rel="self"/>
+  <link href="http://codemacro.com/"/>
+  <updated>2012-04-28T13:27:12+08:00</updated>
+  <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[多重继承和void*的糗事]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2011/04/30/multi-inherit-void/"/>
+    <link href="http://codemacro.com/2011/04/30/multi-inherit-void/"/>
     <updated>2011-04-30T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2011/04/30/multi-inherit-void</id>
+    <id>http://codemacro.com/2011/04/30/multi-inherit-void</id>
     <content type="html"><![CDATA[<p>C++为了兼容C，导致了不少语言阴暗面。Bjarne
 Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，强制转换也是C++的一大诟病。但是，因为我们的应用环境总是那么“不
 纯”，所以也就常常导致各种问题。</p>

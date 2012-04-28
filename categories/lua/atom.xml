@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: lua | loop in codes]]></title>
-  <link href="http://kevinlynx.github.com/codemacro/categories/lua/atom.xml" rel="self"/>
-  <link href="http://kevinlynx.github.com/codemacro/"/>
-  <updated>2012-04-28T11:52:59+08:00</updated>
-  <id>http://kevinlynx.github.com/codemacro/</id>
+  <link href="http://codemacro.com/categories/lua/atom.xml" rel="self"/>
+  <link href="http://codemacro.com/"/>
+  <updated>2012-04-28T13:27:12+08:00</updated>
+  <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[传递Lua函数到C/C++中]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2011/05/09/lua-function-arg/"/>
+    <link href="http://codemacro.com/2011/05/09/lua-function-arg/"/>
     <updated>2011-05-09T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2011/05/09/lua-function-arg</id>
+    <id>http://codemacro.com/2011/05/09/lua-function-arg</id>
     <content type="html"><![CDATA[<h2>问题</h2>
 
 <p>在Lua中，因为函数也是第一类值，所以会出现将函数作为另一个函数的参数，或者函数作

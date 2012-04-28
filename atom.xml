@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[loop in codes]]></title>
-  <link href="http://kevinlynx.github.com/codemacro/atom.xml" rel="self"/>
-  <link href="http://kevinlynx.github.com/codemacro/"/>
-  <updated>2012-04-28T11:52:59+08:00</updated>
-  <id>http://kevinlynx.github.com/codemacro/</id>
+  <link href="http://codemacro.com/atom.xml" rel="self"/>
+  <link href="http://codemacro.com/"/>
+  <updated>2012-04-28T13:27:12+08:00</updated>
+  <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[谈谈我们的游戏逻辑服务器实现（二）]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2012/04/25/game-server-info-2/"/>
+    <link href="http://codemacro.com/2012/04/25/game-server-info-2/"/>
     <updated>2012-04-25T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2012/04/25/game-server-info-2</id>
+    <id>http://codemacro.com/2012/04/25/game-server-info-2</id>
     <content type="html"><![CDATA[<p>上一篇谈了一些关键技术的实现方案。本篇描述一些遇到的问题。</p>
 
 <h2>一</h2>
@@ -65,9 +65,9 @@
   
   <entry>
     <title type="html"><![CDATA[谈谈我们的游戏逻辑服务器实现（一）]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2012/04/23/game-server-info-1/"/>
+    <link href="http://codemacro.com/2012/04/23/game-server-info-1/"/>
     <updated>2012-04-23T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2012/04/23/game-server-info-1</id>
+    <id>http://codemacro.com/2012/04/23/game-server-info-1</id>
     <content type="html"><![CDATA[<p>我们的逻辑服务器(Game Server，以下简称GS)主要逻辑大概是从去年夏天开始写的。因为很多基础模块，包括整体结构沿用了上个项目的代码，所以算不上从头开始做。转眼又快一年，我觉得回头总结下对于经验的积累太有必要。</p>
 
 <h2>整体架构</h2>
@@ -138,9 +138,9 @@
   
   <entry>
     <title type="html"><![CDATA[使用Github Page来写博客]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2012/04/20/blog-on-github/"/>
+    <link href="http://codemacro.com/2012/04/20/blog-on-github/"/>
     <updated>2012-04-20T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2012/04/20/blog-on-github</id>
+    <id>http://codemacro.com/2012/04/20/blog-on-github</id>
     <content type="html"><![CDATA[<p>最开始知道<a href="http://pages.github.com/">Github Page</a>，是通过<a href="http://codertrace.com">codertrace</a>上的某些注册用户，他们的BLOG就建立在Github Page上，并且清一色的干净整洁（简陋），这看起来很酷。</p>
 
 <p>Github提供了很多很合coder口味的东西，例如Gist，也包括这里提到的Page。Page并不是特用于建立博客的产品，它仅提供静态页面的显示。它最酷的地方，是通过Git的方式来让你管理这些静态页面。通过建立一个repository，并使用markdown语法来编写文章，然后通过Git来管理这些文章，你就可以自动将其发布出去。</p>
@@ -210,9 +210,9 @@
   
   <entry>
     <title type="html"><![CDATA[写了个简单的网站，codertrace.com]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2012/02/04/codertrace/"/>
+    <link href="http://codemacro.com/2012/02/04/codertrace/"/>
     <updated>2012-02-04T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2012/02/04/codertrace</id>
+    <id>http://codemacro.com/2012/02/04/codertrace</id>
     <content type="html"><![CDATA[<h2>简介</h2>
 
 <p>因为写 <a href="https://github.com/kevinlynx/ext-blog">ext-blog</a>
@@ -229,7 +229,7 @@
 
 <p>如果你是程序员，也不妨试试。</p>
 
-<p><img src="http://kevinlynx.github.com/codemacro/assets/res/codertrace/codertrace.png" alt="image" width="100%"/></p>
+<p><img src="http://codemacro.com/assets/res/codertrace/codertrace.png" alt="image" width="100%"/></p>
 
 <h2>技术信息</h2>
 
@@ -288,9 +288,9 @@ Rails的应用。当我用这货来做WEB的时候，我才发现曾经用Lisp�
   
   <entry>
     <title type="html"><![CDATA[使用Lisp搭建独立博客]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2011/09/29/build-blog-by-lisp/"/>
+    <link href="http://codemacro.com/2011/09/29/build-blog-by-lisp/"/>
     <updated>2011-09-29T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2011/09/29/build-blog-by-lisp</id>
+    <id>http://codemacro.com/2011/09/29/build-blog-by-lisp</id>
     <content type="html"><![CDATA[<p>本文描述如何使用Lisp工具集搭建一个完整的个人博客站点。一个搭建好的例子站点可以参看我的个人博客：http://codemacro.com。</p>
 
 <p>要搭建一个独立博客，需要两方面的支持。一是博客软件，二是根据选择的博客软件取得必须的“硬件“。例如我这里使用的是Lisp工具集，就需要一个可以完全控制的服务器，所以这里我需要一个VPS。当然，购买一个合适的域名也是必须的。以下将针对这些内容做描述。</p>
@@ -315,14 +315,14 @@ deb-src http://php53.dotdeb.org stable all
 
 <p>购买VPS最主要的，就是获取到一个独立IP，如图：</p>
 
-<p><img src="http://kevinlynx.github.com/codemacro/assets/res/build_blog/vps.png" alt="image" /></p>
+<p><img src="http://codemacro.com/assets/res/build_blog/vps.png" alt="image" /></p>
 
 <p>然后可以去购买域名。同样，也有很多域名服务商。这里我选择的是 <a href="http://www.godaddy.com/">godaddy</a>
 ，我选择的域名codemacro.com一年11美元。购买了域名后，就需要将域名和VPS
 IP关联起来。详细设置也可以另行搜索。这里简要提下：在成功登入godaddy后，选择My Account，进入自己的域名，选择DNS
 Manager，然后添加域名映射即可，如图：</p>
 
-<p><img src="http://kevinlynx.github.com/codemacro/assets/res/build_blog/domain.png" alt="image" /></p>
+<p><img src="http://codemacro.com/assets/res/build_blog/domain.png" alt="image" /></p>
 
 <p>通过以上设置后，你购买的域名就成功指向你购买的VPS地址了。可以通过ping来观察是否指向成功。</p>
 
@@ -440,7 +440,7 @@ screen。可以使用apt-get来安装:</p>
 
 <p>如果一切正常，此时通过浏览器访问你的站点时，会被重定向到一个博客初始化页面，如下：</p>
 
-<p><img src="http://kevinlynx.github.com/codemacro/assets/res/build_blog/initblog.png" alt="image" /></p>
+<p><img src="http://codemacro.com/assets/res/build_blog/initblog.png" alt="image" /></p>
 
 <p>上图中我是在本机测试的，所以域名是localhost，希望不至于产生误解。初始化仅需输入用户名和密码即可，以后可通过该用户名和密码进入博客后台管理页面。完成这一步后，就可以进入博客后台管理页面做更多的设置，例如博客标题等。</p>
 
@@ -455,9 +455,9 @@ API，因此可以使用一些博客客户端来发表文章（仅测过我自�
   
   <entry>
     <title type="html"><![CDATA[传递Lua函数到C/C++中]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2011/05/09/lua-function-arg/"/>
+    <link href="http://codemacro.com/2011/05/09/lua-function-arg/"/>
     <updated>2011-05-09T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2011/05/09/lua-function-arg</id>
+    <id>http://codemacro.com/2011/05/09/lua-function-arg</id>
     <content type="html"><![CDATA[<h2>问题</h2>
 
 <p>在Lua中，因为函数也是第一类值，所以会出现将函数作为另一个函数的参数，或者函数作
@@ -600,9 +600,9 @@ table在Lua里的代价，也就多了几次Lua函数调用。</p>
   
   <entry>
     <title type="html"><![CDATA[MMO游戏对象属性设计]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2011/05/02/entity-property/"/>
+    <link href="http://codemacro.com/2011/05/02/entity-property/"/>
     <updated>2011-05-02T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2011/05/02/entity-property</id>
+    <id>http://codemacro.com/2011/05/02/entity-property</id>
     <content type="html"><![CDATA[<p>一般的MMORPG中，游戏对象主要包括怪物和玩家。这两类对象在经过游戏性方面的不断“进化”后，其属性数量及与之相关的逻辑往往会变得很巨大。如何将这一块做得既不损失效率，又能保证结构的灵活、清晰、可维护？本文将提供一种简单的结构。</p>
 
 <!-- more -->
@@ -761,9 +761,9 @@ entity-&gt;AddComponent (componentFactory-&gt;Create ("PropertyAccessor"));
   
   <entry>
     <title type="html"><![CDATA[多重继承和void*的糗事]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2011/04/30/multi-inherit-void/"/>
+    <link href="http://codemacro.com/2011/04/30/multi-inherit-void/"/>
     <updated>2011-04-30T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2011/04/30/multi-inherit-void</id>
+    <id>http://codemacro.com/2011/04/30/multi-inherit-void</id>
     <content type="html"><![CDATA[<p>C++为了兼容C，导致了不少语言阴暗面。Bjarne
 Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，强制转换也是C++的一大诟病。但是，因为我们的应用环境总是那么“不
 纯”，所以也就常常导致各种问题。</p>
@@ -949,9 +949,9 @@ call eax
   
   <entry>
     <title type="html"><![CDATA[浅谈代码分层：构建模块化程序]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2011/04/04/module-level/"/>
+    <link href="http://codemacro.com/2011/04/04/module-level/"/>
     <updated>2011-04-04T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2011/04/04/module-level</id>
+    <id>http://codemacro.com/2011/04/04/module-level</id>
     <content type="html"><![CDATA[<p>模块化的程序是怎样的程序？我们可以说一个具有明显物理结构的软件是模块化的，例如带
 插件的软件，一个完整的软件由若干运行时库共同构建；也可以说一个高度面向对象的库是
 模块化的，例如图形引擎OGRE；也可以说一些具有明显层次结构的代码是模块化的。</p>
@@ -985,7 +985,7 @@ call eax
 
 <p>Android是Google推出的智能手机操作系统，在其官方文档中有Android的系统架构图：</p>
 
-<p><img src="http://kevinlynx.github.com/codemacro/assets/res/module_level/android-architecture.jpg" alt="image" /></p>
+<p><img src="http://codemacro.com/assets/res/module_level/android-architecture.jpg" alt="image" /></p>
 
 <p>这幅图中很好地反映了上文中提到的软件层次。整个系统从底层到高层分为Linux kernel，
 Libraries/Runtime，Application
@@ -1110,9 +1110,9 @@ private、protected。访问权限的加入旨在更精确地暴露模块接口�
   
   <entry>
     <title type="html"><![CDATA[Lisp实践：开发RSS阅读器]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2011/03/30/lisp-rss/"/>
+    <link href="http://codemacro.com/2011/03/30/lisp-rss/"/>
     <updated>2011-03-30T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2011/03/30/lisp-rss</id>
+    <id>http://codemacro.com/2011/03/30/lisp-rss</id>
     <content type="html"><![CDATA[<h1>一、RSS阅读器的实现</h1>
 
 <p>RSS Reader的实现并不像它看上去那么复杂。当初在决定写这个作为Lisp练习时，甚至觉得
@@ -1126,7 +1126,7 @@ private、protected。访问权限的加入旨在更精确地暴露模块接口�
 <p>RSS在实现上，可以说是XML的又一次扩张式的应用。因为RSS最重要的东西就是一个XML文件
 。RSS主要用于Web中的内容同步。例如我们写的博客，门户网站的新闻，都是内容。Web服
 务器将这些内容组织成XML，然后我们通过一个客户端来解析这些XML，就可以在不用直接访 问网站的情况下获取信息：
-<img src="http://kevinlynx.github.com/codemacro/assets/res/lisp_rss/rss-overview.png" alt="rss overview" /></p>
+<img src="http://codemacro.com/assets/res/lisp_rss/rss-overview.png" alt="rss overview" /></p>
 
 <p>RSS阅读器就是这样一个从Web服务器通过RSS（表现形式为XML）来获取信息内容的工具。它
 可以被实现为一个独立的客户端程序，也可以实现为像Google Reader这种网页形式。后者
@@ -1284,7 +1284,7 @@ generator正是这种东西大放异彩的地方。这种感觉有点像在C++�
 
 <p>然后在浏览器里查看，如图:</p>
 
-<p><img src="http://kevinlynx.github.com/codemacro/assets/res/lisp_rss/screenshot.png" alt="sample" /></p>
+<p><img src="http://codemacro.com/assets/res/lisp_rss/screenshot.png" alt="sample" /></p>
 
 <h2>其他</h2>
 
@@ -1313,9 +1313,9 @@ Reader里订阅的一些RSS。最大的问题，就是关于HTTP重定向的问�
   
   <entry>
     <title type="html"><![CDATA[Lisp一瞥：增强型变量Symbol]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2011/03/21/lisp-symbol/"/>
+    <link href="http://codemacro.com/2011/03/21/lisp-symbol/"/>
     <updated>2011-03-21T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2011/03/21/lisp-symbol</id>
+    <id>http://codemacro.com/2011/03/21/lisp-symbol</id>
     <content type="html"><![CDATA[<p>变量，是所有编程语言里都有的语法概念。在C/C++中，变量用于标示一个内存地址，而变
 量名则在语法层面上代表这个地址。当链接器最终链接我们的程序时，就将这些名字替换
 为实际的地址。在其他语言中，变量虽然或多或少有其他不同的含义，但也大致如此。</p>
@@ -1468,7 +1468,7 @@ symbol-name来获取一个Symbol的名字，例如:</p>
 。是的，Symbols是对象，这个对象就像我们理解的C++中的对象一样，它是一个
 复合的数据结构。该数据结构里包含若干域，或者通俗而言：数据成员。借用<ANSI Common Lisp\>中的一图：</p>
 
-<blockquote><p><img src="http://kevinlynx.github.com/codemacro/assets/res/lisp_symbol/symbol-obj.png" alt="image" /></p></blockquote>
+<blockquote><p><img src="http://codemacro.com/assets/res/lisp_symbol/symbol-obj.png" alt="image" /></p></blockquote>
 
 <p>通过这幅图，可以揭开所有谜底。一个Symbol包含至少图中的几个域，例如Name、Value、
 Function等。在Lisp中有很多函数来访问这些域，例如上文中使用到的symbol-name，这个
@@ -1630,13 +1630,13 @@ Function来使用。如何解决这个问题？想想，symbol-function可以取
   
   <entry>
     <title type="html"><![CDATA[用lisp开发博客客户端]]></title>
-    <link href="http://kevinlynx.github.com/codemacro/2011/03/13/lisp-writer/"/>
+    <link href="http://codemacro.com/2011/03/13/lisp-writer/"/>
     <updated>2011-03-13T00:00:00+08:00</updated>
-    <id>http://kevinlynx.github.com/codemacro/2011/03/13/lisp-writer</id>
+    <id>http://codemacro.com/2011/03/13/lisp-writer</id>
     <content type="html"><![CDATA[<p>最近一直在学习Lisp这门语言。回头一看，基本上接近1个月了。刚开始接触Lisp是因为看
 了&lt;Lisp本质&gt;，然后我发现有很多人宗教般地忠诚这门语言，于是就来了兴趣。</p>
 
-<p><img src="http://kevinlynx.github.com/codemacro/assets/res/lisp_writer/lisp_believer.png" alt="lisp_believer" /></p>
+<p><img src="http://codemacro.com/assets/res/lisp_writer/lisp_believer.png" alt="lisp_believer" /></p>
 
 <p>当然并不是每次因为某篇写得很geek技术文章就去学习某个新的技术点。一个月时间对我来
 说还是很珍贵了。但是Lisp绝对是大部分程序员都值得一学的语言（就像Haskell一样）。
@@ -1709,7 +1709,7 @@ geek了</li>
 神不变的语言变种，本文说的Lisp均指Lisp的方言Common Lisp。另一个比较有名的方言是
 Scheme，关于各个方言的特点，&lt;Land Of Lisp&gt;里也给了一个图片：</p>
 
-<p><img src="http://kevinlynx.github.com/codemacro/assets/res/lisp_writer/dialect.png" alt="dialect" /></p>
+<p><img src="http://codemacro.com/assets/res/lisp_writer/dialect.png" alt="dialect" /></p>
 
 <p>其中，最左边那只wolf就是Common Lisp，右边那只sheep就是Scheme。</p>
 
@@ -1843,7 +1843,7 @@ metaweblog API里恰有API提供:</p>
 来练手。rst格式非常简单，同wiki命令很相似。在vim里编辑该文件非常合适，因为默认支
 持。见图:</p>
 
-<p><img src="http://kevinlynx.github.com/codemacro/assets/res/lisp_writer/rst.png" alt="rst_sample" /></p>
+<p><img src="http://codemacro.com/assets/res/lisp_writer/rst.png" alt="rst_sample" /></p>
 
 <p>由图即可看出，rst是一种半所见即所得的格式。即：它遵循你在编辑器里的排版，同时也
 通过一些tag（例如image）来控制更丰富的输出。</p>
