@@ -93,6 +93,9 @@
 
 <div class="entry-content"><p>一般的MMORPG中，游戏对象主要包括怪物和玩家。这两类对象在经过游戏性方面的不断“进化”后，其属性数量及与之相关的逻辑往往会变得很巨大。如何将这一块做得既不损失效率，又能保证结构的灵活、清晰、可维护？本文将提供一种简单的结构。</p>
 
+<!-- more -->
+
+
 <h2>原始结构</h2>
 
 <p>最原始的结构，极有可能为这样:</p>
@@ -293,6 +296,12 @@ entity-&gt;AddComponent (componentFactory-&gt;Create ("PropertyAccessor"));
   </footer>
 </article>
 
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
 </div>
 
 <aside class="sidebar">
@@ -372,7 +381,10 @@ entity-&gt;AddComponent (componentFactory-&gt;Create ("PropertyAccessor"));
       var disqus_shortname = 'loopincodes';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://kevinlynx.github.com/codemacro/2011/05/02/entity-property/';
+        var disqus_url = 'http://kevinlynx.github.com/codemacro/2011/05/02/entity-property/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

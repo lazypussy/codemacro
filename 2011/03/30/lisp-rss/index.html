@@ -97,6 +97,9 @@
 <p>RSS Reader的实现并不像它看上去那么复杂。当初在决定写这个作为Lisp练习时，甚至觉得
 没有多少内容可做。其简单程度甚至用不了你启动一个慢速IDE的时间:D。对Lisp无兴趣的 TX只需要读完这一节即可，</p>
 
+<!-- more -->
+
+
 <h2>什么是RSS阅读器?</h2>
 
 <p>RSS在实现上，可以说是XML的又一次扩张式的应用。因为RSS最重要的东西就是一个XML文件
@@ -336,6 +339,12 @@ Reader里订阅的一些RSS。最大的问题，就是关于HTTP重定向的问�
   </footer>
 </article>
 
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
 </div>
 
 <aside class="sidebar">
@@ -415,7 +424,10 @@ Reader里订阅的一些RSS。最大的问题，就是关于HTTP重定向的问�
       var disqus_shortname = 'loopincodes';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://kevinlynx.github.com/codemacro/2011/03/30/lisp-rss/';
+        var disqus_url = 'http://kevinlynx.github.com/codemacro/2011/03/30/lisp-rss/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

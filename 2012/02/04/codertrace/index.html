@@ -103,6 +103,9 @@ codertrace.com 。 所以， codertrace.com &hellip;">
 集中到一块展示给别人，会不会是一种很方便的自我简介方式？然后我就动手写了
 <a href="http://codertrace.com">codertrace.com</a> 。</p>
 
+<!-- more -->
+
+
 <p>所以， <a href="http://codertrace.com">codertrace.com</a>
 这个网站的作用就是用来集中让程序员炫耀的。它通过RSS抓取，将你的博客，github主页，或其他有RSS输出的信息集中到一块展示给别人。这些信息通常就可以代表一个程序员。</p>
 
@@ -214,6 +217,12 @@ Rails的应用。当我用这货来做WEB的时候，我才发现曾经用Lisp�
   </footer>
 </article>
 
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
 </div>
 
 <aside class="sidebar">
@@ -293,7 +302,10 @@ Rails的应用。当我用这货来做WEB的时候，我才发现曾经用Lisp�
       var disqus_shortname = 'loopincodes';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://kevinlynx.github.com/codemacro/2012/02/04/codertrace/';
+        var disqus_url = 'http://kevinlynx.github.com/codemacro/2012/02/04/codertrace/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

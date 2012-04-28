@@ -4,7 +4,7 @@
   <title><![CDATA[Category: game develop | loop in codes]]></title>
   <link href="http://kevinlynx.github.com/codemacro/categories/game-develop/atom.xml" rel="self"/>
   <link href="http://kevinlynx.github.com/codemacro/"/>
-  <updated>2012-04-28T11:44:33+08:00</updated>
+  <updated>2012-04-28T11:52:59+08:00</updated>
   <id>http://kevinlynx.github.com/codemacro/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -142,6 +142,9 @@
     <updated>2011-05-02T00:00:00+08:00</updated>
     <id>http://kevinlynx.github.com/codemacro/2011/05/02/entity-property</id>
     <content type="html"><![CDATA[<p>一般的MMORPG中，游戏对象主要包括怪物和玩家。这两类对象在经过游戏性方面的不断“进化”后，其属性数量及与之相关的逻辑往往会变得很巨大。如何将这一块做得既不损失效率，又能保证结构的灵活、清晰、可维护？本文将提供一种简单的结构。</p>
+
+<!-- more -->
+
 
 <h2>原始结构</h2>
 

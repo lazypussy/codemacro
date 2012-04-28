@@ -99,6 +99,9 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
 
 <p>本文即描述了一个关于强制转换带来的问题。这个问题几年前我曾遇到过(&lt;<a href="http://www.cppblog.com/kevinlynx/archive/2008/04/24/48001.html">多线程下vc2003,vc2005对虚函数表处理的BUG？</a>>)，当时没来得及深究。深究C++的某些语法，实在是件辛苦事。所以，这里也不提过于诡异的用法。</p>
 
+<!-- more -->
+
+
 <h2>问题</h2>
 
 <p>考虑下面非常普通的多重继承代码:</p>
@@ -322,6 +325,12 @@ call eax
   </footer>
 </article>
 
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
 </div>
 
 <aside class="sidebar">
@@ -401,7 +410,10 @@ call eax
       var disqus_shortname = 'loopincodes';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://kevinlynx.github.com/codemacro/2011/04/30/multi-inherit-void/';
+        var disqus_url = 'http://kevinlynx.github.com/codemacro/2011/04/30/multi-inherit-void/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

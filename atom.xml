@@ -4,7 +4,7 @@
   <title><![CDATA[loop in codes]]></title>
   <link href="http://kevinlynx.github.com/codemacro/atom.xml" rel="self"/>
   <link href="http://kevinlynx.github.com/codemacro/"/>
-  <updated>2012-04-28T11:44:33+08:00</updated>
+  <updated>2012-04-28T11:52:59+08:00</updated>
   <id>http://kevinlynx.github.com/codemacro/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -221,6 +221,9 @@
 集中到一块展示给别人，会不会是一种很方便的自我简介方式？然后我就动手写了
 <a href="http://codertrace.com">codertrace.com</a> 。</p>
 
+<!-- more -->
+
+
 <p>所以， <a href="http://codertrace.com">codertrace.com</a>
 这个网站的作用就是用来集中让程序员炫耀的。它通过RSS抓取，将你的博客，github主页，或其他有RSS输出的信息集中到一块展示给别人。这些信息通常就可以代表一个程序员。</p>
 
@@ -291,6 +294,9 @@ Rails的应用。当我用这货来做WEB的时候，我才发现曾经用Lisp�
     <content type="html"><![CDATA[<p>本文描述如何使用Lisp工具集搭建一个完整的个人博客站点。一个搭建好的例子站点可以参看我的个人博客：http://codemacro.com。</p>
 
 <p>要搭建一个独立博客，需要两方面的支持。一是博客软件，二是根据选择的博客软件取得必须的“硬件“。例如我这里使用的是Lisp工具集，就需要一个可以完全控制的服务器，所以这里我需要一个VPS。当然，购买一个合适的域名也是必须的。以下将针对这些内容做描述。</p>
+
+<!-- more -->
+
 
 <h2>获取VPS及域名</h2>
 
@@ -599,6 +605,9 @@ table在Lua里的代价，也就多了几次Lua函数调用。</p>
     <id>http://kevinlynx.github.com/codemacro/2011/05/02/entity-property</id>
     <content type="html"><![CDATA[<p>一般的MMORPG中，游戏对象主要包括怪物和玩家。这两类对象在经过游戏性方面的不断“进化”后，其属性数量及与之相关的逻辑往往会变得很巨大。如何将这一块做得既不损失效率，又能保证结构的灵活、清晰、可维护？本文将提供一种简单的结构。</p>
 
+<!-- more -->
+
+
 <h2>原始结构</h2>
 
 <p>最原始的结构，极有可能为这样:</p>
@@ -760,6 +769,9 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
 纯”，所以也就常常导致各种问题。</p>
 
 <p>本文即描述了一个关于强制转换带来的问题。这个问题几年前我曾遇到过(&lt;<a href="http://www.cppblog.com/kevinlynx/archive/2008/04/24/48001.html">多线程下vc2003,vc2005对虚函数表处理的BUG？</a>>)，当时没来得及深究。深究C++的某些语法，实在是件辛苦事。所以，这里也不提过于诡异的用法。</p>
+
+<!-- more -->
+
 
 <h2>问题</h2>
 
@@ -947,6 +959,9 @@ call eax
 <p>模块化的软件具有很多显而易见的好处。在开发期，一个模块化的设计有利于程序员实现，
 使其在实现过程中一直保持清晰的思路，减少潜伏的BUG；而在维护期，则有利于其他程序 员的理解。</p>
 
+<!-- more -->
+
+
 <p>在我看来，具有良好模块设计的代码，至少分为两种形式：</p>
 
 <ul>
@@ -1102,6 +1117,9 @@ private、protected。访问权限的加入旨在更精确地暴露模块接口�
 
 <p>RSS Reader的实现并不像它看上去那么复杂。当初在决定写这个作为Lisp练习时，甚至觉得
 没有多少内容可做。其简单程度甚至用不了你启动一个慢速IDE的时间:D。对Lisp无兴趣的 TX只需要读完这一节即可，</p>
+
+<!-- more -->
+
 
 <h2>什么是RSS阅读器?</h2>
 
@@ -1303,6 +1321,9 @@ Reader里订阅的一些RSS。最大的问题，就是关于HTTP重定向的问�
 为实际的地址。在其他语言中，变量虽然或多或少有其他不同的含义，但也大致如此。</p>
 
 <p>Lisp中的变量也差不多这样，但若将variable和Lisp中的 <strong>symbol</strong> 放在一起，则多少会 带来些困惑。</p>
+
+<!-- more -->
+
 
 <h2>Lisp中的“变量&#8221;</h2>
 
@@ -1620,6 +1641,9 @@ Function来使用。如何解决这个问题？想想，symbol-function可以取
 <p>当然并不是每次因为某篇写得很geek技术文章就去学习某个新的技术点。一个月时间对我来
 说还是很珍贵了。但是Lisp绝对是大部分程序员都值得一学的语言（就像Haskell一样）。
 我能给出的简单理由包括：</p>
+
+<!-- more -->
+
 
 <ul>
 <li>大部分程序员只会命令式语言（C/C++/C Like etc)，缺乏函数式语言解决编程问题的思

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: other | loop in codes]]></title>
   <link href="http://kevinlynx.github.com/codemacro/categories/other/atom.xml" rel="self"/>
   <link href="http://kevinlynx.github.com/codemacro/"/>
-  <updated>2012-04-28T11:44:33+08:00</updated>
+  <updated>2012-04-28T11:52:59+08:00</updated>
   <id>http://kevinlynx.github.com/codemacro/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -97,6 +97,9 @@
 <a href="https://github.com/kevinlynx">github主页</a>
 集中到一块展示给别人，会不会是一种很方便的自我简介方式？然后我就动手写了
 <a href="http://codertrace.com">codertrace.com</a> 。</p>
+
+<!-- more -->
+
 
 <p>所以， <a href="http://codertrace.com">codertrace.com</a>
 这个网站的作用就是用来集中让程序员炫耀的。它通过RSS抓取，将你的博客，github主页，或其他有RSS输出的信息集中到一块展示给别人。这些信息通常就可以代表一个程序员。</p>

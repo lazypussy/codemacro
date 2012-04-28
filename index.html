@@ -237,67 +237,12 @@
 集中到一块展示给别人，会不会是一种很方便的自我简介方式？然后我就动手写了
 <a href="http://codertrace.com">codertrace.com</a> 。</p>
 
-<p>所以， <a href="http://codertrace.com">codertrace.com</a>
-这个网站的作用就是用来集中让程序员炫耀的。它通过RSS抓取，将你的博客，github主页，或其他有RSS输出的信息集中到一块展示给别人。这些信息通常就可以代表一个程序员。</p>
-
-<p>如果你是程序员，也不妨试试。</p>
-
-<p><img src="/assets/res/codertrace/codertrace.png" alt="image" width="100%"/></p>
-
-<h2>技术信息</h2>
-
-<p>不知道哪个王八蛋说的，程序员每一年得学一门新语言。我2010年末接触了Lisp，然后莫名其妙地写了
-<a href="https://github.com/kevinlynx/ext-blog">ext-blog</a>
-，又莫名其妙地在2011年末接触了Ruby。因为大学期间太痴迷C++，我勤奋努力，几乎通晓这门语言的各种细节；后来又稍微实践了下编译原理。在这若干年间，断断续续也接触过其他脚本类语言，我甚至在android上用java写过几个
-<a href="http://kevinlynx.iteye.com">小应用</a>
-。基于这些积累，我发现我可以很快上手Ruby，然后再上手Rails，然后就有了
-<a href="http://codertrace.com">codertrace.com</a> （当然还做过一些小的
-<a href="http://klquiz.heroku.com">APP</a> )</p>
-
-<p>所以， <a href="http://codertrace.com">codertrace.com</a> 就是一个Ruby on
-Rails的应用。当我用这货来做WEB的时候，我才发现曾经用Lisp写博客是多么geek。这种感觉就像你在用汇编写一个GUI程序一样。我的意思是，ruby/rails的世界里有太多现成的东西，但lisp的世界里没有。</p>
-
-<p>而且，ruby是一个很爽的语言。我太喜欢它的closure语法，简洁，不需要加其他关键字就可以构造（例如其他语言map(function
-(item) xxxx end)，或者map(lambda (item) xxx
-)）。但我不喜欢在使用的地方通过yield去调用&#8212;这就像一个hack。我更不喜欢ruby用proc去封装closure。好吧，这其实是我自我分裂，为什么我要把ruby看成一个函数式语言？</p>
-
-<p>脚本语言真是太酷了。</p>
-
-<h2>服务器信息</h2>
-
-<p>我很穷。不管你信不信，我真的舍不得花1000RMB买个VPS来架设
-<a href="http://codertrace.com">codertrace.com</a> 。目前，
-<a href="http://codertrace.com">codertrace.com</a> 架设在
-<a href="http://heroku.com">heroku.com</a> ，而且还使用的是免费服务。免费服务竟然只有5M数据库。
-<a href="http://codertrace.com">codertrace.com</a>
-后台为了异步抓取用户提供的RSS，还使用了一个单独的进程(delayed_job ruby gem)。这也不是免费的。</p>
-
-<p>但ruby的世界里有太多现成的东西了，甚至有很多现成的库解决这里的两个问题：heroku_external_db，这个gem可以让codertrace使用heroku以外的数据库，然后我就在我的VPS上搭了个mysql，这下流量和网站响应速度悲剧了啊，你想你请求个页面，这个页面直接涉及到若干条数据库查询。而这些查询的请求和回应竟然是通过internet网络传输的。</p>
-
-<p>workless，这个gem可以在有异步任务时，例如codertrace上读取RSS，就会自动开启这个worker进程，然后heroku开始计费，当没有任务时，它又自动关闭这个进程。虽然省了美元，但再一次让网站的响应速度打了折扣。</p>
-
-<p>为了实现自定义域名，我需要将 <a href="http://codertrace.com">codertrace.com</a> 指向
-<a href="http://heroku.com">heroku.com</a>
-提供的IP。但也许你会同我一样愤怒，因为它提供的几个IP都被GFW墙了！所以，目前的实现方案是，我将
-<a href="http://codertrace.com">codertrace.com</a>
-指向了我博客对应的VPS，然后在VPS上使用nginx反向代理到 <a href="http://heroku.com">heroku.com</a>
-提供的IP。即使如此，我最近甚至发现 <a href="http://codertrace.com">codertrace.com</a>
-竟然神奇般地会域名解析错误，难道godaddy的name server也要被GFW和谐？？</p>
-
-<h2>故事</h2>
-
-<p>作为一个宅男，在工作的若干年中，若干个假期我都用来打游戏，或者写程序。</p>
-
-<p>所以，当这个成为习惯的时候， <a href="http://codertrace.com">codertrace.com</a>
-，就顺理成章地消费了我今年的春节假期。我发现一个人窝在租的小房子里写代码是件很爽的事情。在当前这个社会环境下，你可以专注地去干件喜欢的事情，还不用处理各种生活琐事，真是太爽了。</p>
-
-<p>但为什么我平时得不到这种感觉？因为，我，是一个没钱的程序员。我和我老婆租在一个标间里。在这样狭小的空间里，多个人就是多几倍干扰。这太残酷了。</p>
-
-<h2>末了</h2>
-
-<p>曾经我以为我很牛逼，曾经我以为程序员很牛逼。后来我慢慢发现自己很垃圾。我没有写出来过牛逼的程序，大概也没能力写。还记得那个程序员的故事吗？就是有个傻逼也以为程序员很牛逼，但不幸在一家非IT公司的IT部门工作，他的程序员同事的工作就是每周填个excel表格。他后来很绝望，因为他没有为世界贡献过任何代码。后来，这货丢下一切，坐上去某地的飞机走了。</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2012/02/04/codertrace/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -335,160 +280,12 @@ Rails的应用。当我用这货来做WEB的时候，我才发现曾经用Lisp�
 
 <p>要搭建一个独立博客，需要两方面的支持。一是博客软件，二是根据选择的博客软件取得必须的“硬件“。例如我这里使用的是Lisp工具集，就需要一个可以完全控制的服务器，所以这里我需要一个VPS。当然，购买一个合适的域名也是必须的。以下将针对这些内容做描述。</p>
 
-<h2>获取VPS及域名</h2>
-
-<p>VPS提供商国内国外都有很多。我选择的是 <a href="http://www.rapidxen.net/">rapidxen</a>
-，128M内存，1年70来美元，算是国外比较便宜的，速度上还过得去。</p>
-
-<p>购买了VPS后，可以进入后台管理页面安装VPS操作系统。同样，因为我使用的是Lisp，我选择安装了Debian 6.0 squeeze
-(minimal)64位。实际上我更倾向于32位，因为我的PC系统就是32位，方便测试。安装系统非常简单，基本随意设置下即可。值得注意的是，除了修改root密码外，最好修改下ssh端口，具体设置方法可以另行搜索。此外，因为后面我会使用nginx作为HTTP前端服务器，为了方便安装nginx，最好更新下软件源列表，编辑etc/apt/source.list:</p>
-
-<pre><code>deb http://ftp.us.debian.org/debian squeeze main
-deb http://packages.dotdeb.org stable all
-deb-src http://packages.dotdeb.org stable all
-deb http://php53.dotdeb.org stable all
-deb-src http://php53.dotdeb.org stable all
-</code></pre>
-
-<p>购买VPS最主要的，就是获取到一个独立IP，如图：</p>
-
-<p><img src="/assets/res/build_blog/vps.png" alt="image" /></p>
-
-<p>然后可以去购买域名。同样，也有很多域名服务商。这里我选择的是 <a href="http://www.godaddy.com/">godaddy</a>
-，我选择的域名codemacro.com一年11美元。购买了域名后，就需要将域名和VPS
-IP关联起来。详细设置也可以另行搜索。这里简要提下：在成功登入godaddy后，选择My Account，进入自己的域名，选择DNS
-Manager，然后添加域名映射即可，如图：</p>
-
-<p><img src="/assets/res/build_blog/domain.png" alt="image" /></p>
-
-<p>通过以上设置后，你购买的域名就成功指向你购买的VPS地址了。可以通过ping来观察是否指向成功。</p>
-
-<h2>使用Lisp构建博客系统</h2>
-
-<p>要在VPS上安装软件，首先需要SSH上你的VPS，例如：ssh -p 1234
-<a href="mailto:root@codemacro.com">root@codemacro.com</a>。</p>
-
-<p>这里使用的软件集包括：</p>
-
-<ul>
-<li>nginx，Web服务器</li>
-<li><a href="http://www.sbcl.org">SBCL</a> ，Lisp编译器实现</li>
-<li><a href="http://www.quicklisp.org/">quicklisp</a> ，可以方便自动下载、安装Lisp库的工具</li>
-<li><a href="http://weitz.de/hunchentoot/">hunchentoot</a>
-，Lisp实现的Web服务器（不用特意安装）</li>
-<li><a href="http://codemacro.com/view/8">ext-blog</a> ，Lisp实现的博客系统</li>
-</ul>
-
-
-<p>实际上，可以完全使用Lisp作为Web服务器，但我担心效率问题（对个人博客而言完全没这回事），所以使用了nginx作为Web服务器前端，将hunchentoot放在后面。</p>
-
-<h3>安装nginx</h3>
-
-<p>在设置好debian软件源后，安装非常简单:</p>
-
-<pre><code>apt-get install nginx
-</code></pre>
-
-<p>安装完后，因为要将HTTP请求转发给Lisp服务器，所以需要修改下配置:</p>
-
-<pre><code>vi /etc/nginx/sites-avaiable/default
-</code></pre>
-
-<p>将/请求派发给Lisp服务器（假设监听于8000端口）:</p>
-
-<pre><code>location / {
-    proxy_pass http://127.0.0.1:8000;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-}
-</code></pre>
-
-<p>然后可以启动nginx了:</p>
-
-<pre><code>nginx
-</code></pre>
-
-<p>这个时候通过浏览器访问，会得到503 bad gateway的错误提示，因为hunchentoot还没开启。</p>
-
-<h3>安装Lisp相关软件</h3>
-
-<p><a href="http://www.sbcl.org">SBCL</a> 同样可以通过apt直接安装:</p>
-
-<pre><code>apt-get instal sbcl
-</code></pre>
-
-<p>装好SBCL后，就可以进一步安装 <a href="http://www.quicklisp.org/">quicklisp</a>
-。可以完全遵守quicklisp官方给的安装方法进行安装。大概就是先获取quicklisp.lisp文件，然后在SBCL中载入，根据提示即可。这里不再赘述。</p>
-
-<p>安装好quicklisp后，就可以使用它安装很多Lisp软件/库了。quicklisp在安装一个Lisp库时，会自动下载并安装依赖库，就像apt-get一样。因为ext-blog并未收入到quicklisp的软件列表里，所以ext-blog需要手动安装。首先，在本地（非VPS上）获取ext-blog源码:</p>
-
-<pre><code>git clone git://github.com/kevinlynx/ext-blog.git
-</code></pre>
-
-<p>进入到ext-blog目录。该目录下有几个方便的脚本可以用于博客管理。首先将ext-blog打包并上传到VPS上，例如:</p>
-
-<pre><code>./upload-dist.sh root@codemacro.com 1234 /home/test
-</code></pre>
-
-<p>该脚本会调用make-dist.sh将ext-blog全部源码打包，然后使用scp拷贝该文件及update-blog.sh到VPS指定的目录里（这里是/home/test），然后ssh上VPS。期间会两次输入VPS系统的密码。然后以下操作将在VPS上完成。</p>
-
-<p>首先进入到刚才拷贝文件的目录:</p>
-
-<pre><code>cd /home/test
-</code></pre>
-
-<p>解压ext-blog.tar.gz:</p>
-
-<pre><code>tar xvf ext-blog.tar.gz
-</code></pre>
-
-<p>然后ext-blog被解压到/home/test/dist目录。进入此目录运行SBCL:</p>
-
-<pre><code>cd dist
-sbcl
-</code></pre>
-
-<p>ext-blog目录下dep.lisp会使用quicklisp安装依赖库，进入SBCL后，载入该文件即可安装所有依赖库，这可能需要一点时间:</p>
-
-<pre><code>(load "dep.lisp")
-</code></pre>
-
-<p>在没有其他问题下，可以暂时退出SBCL完成一些其他准备工作。</p>
-
-<p>ext-blog在最近的版本中加入了验证码生成功能，这需要一个pcf字体文件。因为字体文件一般较大，所以upload-dist.sh脚本并没有将该字体文件打包，所以这里需要手动复制，同样在本地的ext-blog目录下:</p>
-
-<pre><code>scp -P 1234 data/wenquanyi_12ptb.pcf root@codemacro.com:/home/test/dist/data/
-</code></pre>
-
-<p>另外，因为需要将Lisp解释器放置在系统后台执行，避免关掉SSH会话后终止SBCL进程，所以这里需要个工具gnu
-screen。可以使用apt-get来安装:</p>
-
-<pre><code>apt-get install screen
-</code></pre>
-
-<p>然后，一切就OK了。在VPS上可以使用ext-blog目录下的run-blog.sh来运行这个博客（首先确定VPS上的nginx开启）:</p>
-
-<pre><code>./run-blog.sh
-</code></pre>
-
-<p>该脚本会使用screen在后台开启一个SBCL进程，并自动载入ext-blog，然后在8000端口上开启HTTP服务。这个启动过程可能会使用几十秒的时间，直接ctrl+z退出screen，这并不终止SBCL。一段时间后便可在浏览器里测试。</p>
-
-<h3>设置博客</h3>
-
-<p>如果一切正常，此时通过浏览器访问你的站点时，会被重定向到一个博客初始化页面，如下：</p>
-
-<p><img src="/assets/res/build_blog/initblog.png" alt="image" /></p>
-
-<p>上图中我是在本机测试的，所以域名是localhost，希望不至于产生误解。初始化仅需输入用户名和密码即可，以后可通过该用户名和密码进入博客后台管理页面。完成这一步后，就可以进入博客后台管理页面做更多的设置，例如博客标题等。</p>
-
-<p>ext-blog的管理页面使用了emlog博客系统的CSS及其他资源，因此有同学觉得管理页面很面熟就不奇怪了。ext-blog提供在线编辑博客功能，同时也支持简单的metaweblog
-API，因此可以使用一些博客客户端来发表文章（仅测过我自己写的博客客户端cl-writer）。</p>
-
-<h2>最后</h2>
-
-<p>本文描述较为粗略，主要是很多细节我自己也记不清。如有问题可以发邮件给我。</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/2011/09/29/build-blog-by-lisp/">Read on &rarr;</a>
+    </footer>
   
 
 

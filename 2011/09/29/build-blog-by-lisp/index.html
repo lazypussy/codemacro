@@ -95,6 +95,9 @@
 
 <p>要搭建一个独立博客，需要两方面的支持。一是博客软件，二是根据选择的博客软件取得必须的“硬件“。例如我这里使用的是Lisp工具集，就需要一个可以完全控制的服务器，所以这里我需要一个VPS。当然，购买一个合适的域名也是必须的。以下将针对这些内容做描述。</p>
 
+<!-- more -->
+
+
 <h2>获取VPS及域名</h2>
 
 <p>VPS提供商国内国外都有很多。我选择的是 <a href="http://www.rapidxen.net/">rapidxen</a>
@@ -299,6 +302,12 @@ API，因此可以使用一些博客客户端来发表文章（仅测过我自�
   </footer>
 </article>
 
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
 </div>
 
 <aside class="sidebar">
@@ -378,7 +387,10 @@ API，因此可以使用一些博客客户端来发表文章（仅测过我自�
       var disqus_shortname = 'loopincodes';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://kevinlynx.github.com/codemacro/2011/09/29/build-blog-by-lisp/';
+        var disqus_url = 'http://kevinlynx.github.com/codemacro/2011/09/29/build-blog-by-lisp/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

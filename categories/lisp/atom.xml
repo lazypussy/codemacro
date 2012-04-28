@@ -4,7 +4,7 @@
   <title><![CDATA[Category: lisp | loop in codes]]></title>
   <link href="http://kevinlynx.github.com/codemacro/categories/lisp/atom.xml" rel="self"/>
   <link href="http://kevinlynx.github.com/codemacro/"/>
-  <updated>2012-04-28T11:44:33+08:00</updated>
+  <updated>2012-04-28T11:52:59+08:00</updated>
   <id>http://kevinlynx.github.com/codemacro/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<p>本文描述如何使用Lisp工具集搭建一个完整的个人博客站点。一个搭建好的例子站点可以参看我的个人博客：http://codemacro.com。</p>
 
 <p>要搭建一个独立博客，需要两方面的支持。一是博客软件，二是根据选择的博客软件取得必须的“硬件“。例如我这里使用的是Lisp工具集，就需要一个可以完全控制的服务器，所以这里我需要一个VPS。当然，购买一个合适的域名也是必须的。以下将针对这些内容做描述。</p>
+
+<!-- more -->
+
 
 <h2>获取VPS及域名</h2>
 
@@ -186,6 +189,9 @@ API，因此可以使用一些博客客户端来发表文章（仅测过我自�
 
 <p>RSS Reader的实现并不像它看上去那么复杂。当初在决定写这个作为Lisp练习时，甚至觉得
 没有多少内容可做。其简单程度甚至用不了你启动一个慢速IDE的时间:D。对Lisp无兴趣的 TX只需要读完这一节即可，</p>
+
+<!-- more -->
+
 
 <h2>什么是RSS阅读器?</h2>
 
@@ -402,6 +408,9 @@ Reader里订阅的一些RSS。最大的问题，就是关于HTTP重定向的问�
 为实际的地址。在其他语言中，变量虽然或多或少有其他不同的含义，但也大致如此。</p>
 
 <p>Lisp中的变量也差不多这样，但若将variable和Lisp中的 <strong>symbol</strong> 放在一起，则多少会 带来些困惑。</p>
+
+<!-- more -->
+
 
 <h2>Lisp中的“变量"</h2>
 
@@ -721,6 +730,9 @@ Function来使用。如何解决这个问题？想想，symbol-function可以取
 <p>当然并不是每次因为某篇写得很geek技术文章就去学习某个新的技术点。一个月时间对我来
 说还是很珍贵了。但是Lisp绝对是大部分程序员都值得一学的语言（就像Haskell一样）。
 我能给出的简单理由包括：</p>
+
+<!-- more -->
+
 
 <ul>
 <li>大部分程序员只会命令式语言（C/C++/C Like etc)，缺乏函数式语言解决编程问题的思
