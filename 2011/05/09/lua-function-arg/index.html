@@ -58,6 +58,7 @@
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/tips">Tips</a></li>
   <li><a href="/about.html">About</a></li>
 </ul>
 
@@ -292,8 +293,34 @@ table在Lua里的代价，也就多了几次Lua函数调用。</p>
 <aside class="sidebar">
   
     <section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/categories/c-c-/'>c/c++ (1)</a></li>
+<li class='category'><a href='/categories/game-develop/'>game develop (3)</a></li>
+<li class='category'><a href='/categories/lisp/'>lisp (4)</a></li>
+<li class='category'><a href='/categories/lua/'>lua (2)</a></li>
+<li class='category'><a href='/categories/module/'>module (1)</a></li>
+<li class='category'><a href='/categories/other/'>other (3)</a></li>
+<li class='category'><a href='/categories/tips/'>tips (3)</a></li>
+
+  </ul>
+</section>
+
+<section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/07/18/start-to-write-tips/">开始记录编程方面的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/18/add-tag-to-octopress/">为octopress添加tag cloud</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/18/add-category-list-to-octopress/">为octopress添加分类(category)列表</a>
+      </li>
     
       <li class="post">
         <a href="/2012/05/10/tolua-api/">tolua的tolua_toxxx系列API设计</a>
@@ -303,56 +330,30 @@ table在Lua里的代价，也就多了几次Lua函数调用。</p>
         <a href="/2012/04/25/game-server-info-2/">谈谈我们的游戏逻辑服务器实现（二）</a>
       </li>
     
-      <li class="post">
-        <a href="/2012/04/23/game-server-info-1/">谈谈我们的游戏逻辑服务器实现（一）</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/04/20/blog-on-github/">使用Github Page来写博客</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/02/04/codertrace/">写了个简单的网站，codertrace.com</a>
-      </li>
-    
   </ul>
 </section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating...</li>
-  </ul>
-  
-  <a href="https://github.com/kevinlynx">@kevinlynx</a> on GitHub
-  
-  <script type="text/javascript">
-    $.domReady(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'kevinlynx',
-            count: 6,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
 <section>
 <div id="recentcomments" class="dsq-widget">
 <h1 class="dsq-widget-title">Recent Comments</h1>
 <script type="text/javascript" src="http://loopincodes.disqus.com/recent_comments_widget.js?num_items=5&hide_avatars=0&avatar_size=32&excerpt_length=200"></script>
 </div>
 <a href="http://disqus.com/">Powered by Disqus</a>
+</section>
+<section>
+  <h1>Tags</h1>
+  <ul class="tag-cloud">
+<a style="font-size: 90%" href="/tags/blog/">blog</a>
+<a style="font-size: 90%" href="/tags/c-c-/">c/c++</a>
+<a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
+<a style="font-size: 185%" href="/tags/game-develop/">game develop</a>
+<a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
+<a style="font-size: 210%" href="/tags/lisp/">lisp</a>
+<a style="font-size: 150%" href="/tags/lua/">lua</a>
+<a style="font-size: 150%" href="/tags/octopress/">octopress</a>
+<a style="font-size: 150%" href="/tags/tips/">tips</a>
+<a style="font-size: 90%" href="/tags/tolua/">tolua</a>
+
+  </ul>
 </section>
 
   

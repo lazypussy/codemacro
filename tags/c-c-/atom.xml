@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: c/c++ | loop in codes]]></title>
+  <link href="http://codemacro.com/tags/c-c-/atom.xml" rel="self"/>
+  <link href="http://codemacro.com/"/>
+  <updated>2012-07-18T17:47:08+08:00</updated>
+  <id>http://codemacro.com/</id>
+  <author>
+    <name><![CDATA[Kevin Lynx]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[多重继承和void*的糗事]]></title>
+    <link href="http://codemacro.com/2011/04/30/multi-inherit-void/"/>
+    <updated>2011-04-30T00:00:00+08:00</updated>
+    <id>http://codemacro.com/2011/04/30/multi-inherit-void</id>
+    <content type="html"><![CDATA[<p>C++为了兼容C，导致了不少语言阴暗面。Bjarne
+Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，强制转换也是C++的一大诟病。但是，因为我们的应用环境总是那么“不
+纯”，所以也就常常导致各种问题。</p>
+
+<p>本文即描述了一个关于强制转换带来的问题。这个问题几年前我曾遇到过(&lt;<a href="http://www.cppblog.com/kevinlynx/archive/2008/04/24/48001.html">多线程下vc2003,vc2005对虚函数表处理的BUG？</a>>)，当时没来得及深究。深究C++的某些语法，实在是件辛苦事。所以，这里也不提过于诡异的用法。</p>
+
+<!-- more -->
+
+
+<h2>问题</h2>
+
+<p>考虑下面非常普通的多重继承代码:</p>
+
+<p><div class="highlight"><pre><code class="c"><span class="n">class</span> <span class="n">Left</span> <span class="p">{</span>
+<span class="nl">public:</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="kt">void</span> <span class="n">ldisplay</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Left::ldisplay</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">class</span> <span class="n">Right</span> <span class="p">{</span>
+<span class="nl">public:</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="kt">void</span> <span class="n">rdisplay</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Right::rdisplay</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">class</span> <span class="n">Bottom</span> <span class="o">:</span> <span class="n">public</span> <span class="n">Left</span><span class="p">,</span> <span class="n">public</span> <span class="n">Right</span> <span class="p">{</span>
+<span class="nl">public:</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">virtual</span> <span class="kt">void</span> <span class="n">ldisplay</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Bottom::ldisplay</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</code></pre>
+</div>
+
+这样子的代码在我们的项目中很容易就会出现，例如:</p>
+
+<p><div class="highlight"><pre><code class="c"><span class="n">class</span> <span class="n">BaseObject</span><span class="p">;</span>
+<span class="n">class</span> <span class="n">EventListener</span><span class="p">;</span>
+<span class="n">class</span> <span class="n">Player</span> <span class="o">:</span> <span class="n">public</span> <span class="n">BaseObject</span><span class="p">,</span> <span class="n">public</span> <span class="n">EventListener</span>
+</code></pre>
+</div>
+</p>
+
+<p>别紧张，我当然不会告诉你这样的代码是有安全隐患的。但它们确实在某些时候会出现隐患。在我们的C++项目中，也极有可能会与一些纯C模块打交道。在C语言里，极有肯能出现以
+下的代码:</p>
+
+<p><div class="highlight"><pre><code class="c"><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">allocator</span><span class="p">)</span> <span class="p">(</span><span class="kt">void</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">u</span><span class="p">);</span>
+<span class="kt">void</span> <span class="n">set_allocator</span> <span class="p">(</span><span class="n">allocator</span> <span class="n">alloc</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">u</span><span class="p">);</span>
+</code></pre>
+</div>
+</p>
+
+<p>之所以使用回调函数，是出于对模块的通用性的考虑。而在调用回调函数时，也通常会预留一个user
+data的指针，用于让应用层自由地传递数据。</p>
+
+<p>以上关于多重继承和void*的使用中，都属于很常规的用法。但是当它们遇到一起时，事情就悲剧了。考虑下面的代码:</p>
+
+<p><div class="highlight"><pre><code class="c"><span class="n">Bottom</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">bobj</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Bottom</span><span class="p">();</span> <span class="c1">// we HAVE a bottom object</span>
+<span class="n">Right</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">robj</span> <span class="o">=</span> <span class="n">bobj</span><span class="p">;</span> <span class="c1">// robj point to bobj?</span>
+<span class="n">robj</span><span class="o">-&gt;</span><span class="n">rdisplay</span><span class="p">();</span> <span class="c1">// display what ?</span>
+<span class="kt">void</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">vobj</span> <span class="o">=</span> <span class="n">bobj</span><span class="p">;</span> <span class="c1">// we have a VOID&lt;/em&gt; pointer</span>
+<span class="n">robj</span> <span class="o">=</span> <span class="p">(</span><span class="n">Right</span><span class="o">*</span><span class="p">)</span> <span class="n">vobj</span><span class="p">;</span> <span class="c1">// convert it back</span>
+<span class="n">robj</span><span class="o">-&gt;</span><span class="n">rdisplay</span><span class="p">();</span> <span class="c1">// display what?</span>
+</code></pre>
+</div>
+</p>
+
+<p>这里的输出结果是什么呢？:</p>
+
+<p><div class="highlight"><pre><code class="c"><span class="n">Right</span><span class="o">::</span><span class="n">rdisplay</span>
+<span class="n">Bottom</span><span class="o">::</span><span class="n">ldisplay</span> <span class="c1">// !!!!</span>
+</code></pre>
+</div>
+</p>
+
+<p>由void*转回来的robj调用rdisplay时，却调用了莫名其妙的Bottom::ldisplay！</p>
+
+<h2>多重继承类的内存布局</h2>
+
+<p>类对象的内存布局，并不属于C++标准。这里仅以vs2005为例。上面例子中，Bottom类的内存布局大概如下:</p>
+
+<pre><code>+-------------+
+| Left_vptr   |
++-------------+
+| Left data   |
++-------------+
+| Right_vptr  |
++-------------+
+| Right data  |
++-------------+
+| Bottom data |
++-------------+
+</code></pre>
+
+<p>与单继承不同的是，多重继承的类里，可能会包含多个vptr。当一个Bottom对象被构造好时，其内部的两个vptr也被正确初始化，其指向的vtable分别为:</p>
+
+<pre><code>Left_vptr ---&gt;  +---------------------+
+                | 0: Bottom::ldisplay |
+                +---------------------+
+
+Right_vptr ---&gt; +---------------------+
+                | 0: Right::rdisplay  |
+                +---------------------+
+</code></pre>
+
+<h2>转换的内幕</h2>
+
+<p><strong>类体系间的转换</strong></p>
+
+<p>隐式转换相比强制转换而言，一定算是优美的代码。考虑如下代码的输出:</p>
+
+<p><div class="highlight"><pre><code class="c"><span class="n">Bottom</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">bobj</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Bottom</span><span class="p">();</span>
+<span class="n">printf</span> <span class="p">(</span><span class="s">&quot;%p</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">bobj</span><span class="p">);</span>
+<span class="n">Right</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">robj</span> <span class="o">=</span> <span class="n">bobj</span><span class="p">;</span>
+<span class="n">printf</span> <span class="p">(</span><span class="s">&quot;%p</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">robj</span><span class="p">);</span>
+</code></pre>
+</div>
+</p>
+
+<p>其输出结果可能为:</p>
+
+<pre><code>003B5DA0
+003B5DA4
+</code></pre>
+
+<p><em><em>结论就是，Right</em>robj = bobj;时，编译器返回了bobj的一个偏移地址。</em>*
+从语言角度看，就是这个转换，返回了bobj中Right*的那一部分的起始地址。但编译器并不总是在bobj上加一个偏移，例如:</p>
+
+<pre><code>bobj = NULL;
+Right *robj = bobj;
+</code></pre>
+
+<p>编译器不会傻到给你一个0x00000004的地址，这简直比NULL更无理。</p>
+
+<p><em><em>void</em>转换</em>*</p>
+
+<p>编译器当然有理由做上面的偏移转换。那是因为在编译阶段，编译器就知道bobj和Right之间的关系。这个偏移量甚至不需要在运行期间动态计算，或是从某个地方取。如果你看过上面代码对应的汇编指令，直接就是:</p>
+
+<pre><code>add eax, 4 ; 直接加 sizeof(Left)，记住，Right在Left之后
+</code></pre>
+
+<p>void<em>就没那么幸运了。void</em>和Bottom没有任何关系，所以:</p>
+
+<pre><code>void *vobj = bobj; // vobj的地址和bobj完全相同
+</code></pre>
+
+<p>然后当你将vobj转换到一个Right*使用时:</p>
+
+<pre><code>robj = (Right*) vobj;  // 没有偏移转换，robj == vobj == bobj
+robj-&gt;rdisplay();
+</code></pre>
+
+<p>robj指向的是Bottom的起始地址，天啊，在我们学习C++时，我们可以说Bottom就是一个Left，也是一个Right，所谓的is
+kind of。但这里的悲剧在于，按照上面的逻辑，我们在使用Right时，其实应该使用Bottom里Right那一部分。
+<strong>但现在这个转换，却让robj指向了Bottom里Left那一部分。</strong></p>
+
+<p>当调用 <code>robj-&gt;rdisplay</code> 时，编译器当然按照Right的内存布局，生成一个虚函数的调用指令，大概就是:</p>
+
+<pre><code>mov vptr, robj-&gt;[0] ;; vptr在robj起始地址处
+mov eax, vptr[0] ;; rdisplay在vtable中位于第一个
+mov ecx, robj
+call eax
+</code></pre>
+
+<p>总而言之， <code>robj-&gt;rdisplay</code>
+就是使用偏移0处的值作为vptr，然后使用vptr指向的vtable中第一个函数作为调用。</p>
+
+<p>但，robj正指向bobj的起始地址，这个地址是放置Left_vptr的地方。这个过程，使用了Left_ptr，而Left_ptr指向的vtable中，第一个函数是什么呢？:</p>
+
+<pre><code>Left_vptr ---&gt;  +---------------------+
+                | 0: Bottom::ldisplay |
+                +---------------------+
+</code></pre>
+
+<p>正是Bottom::ldisplay！到这里，整个问题的原因就被梳理出来了。</p>
+
+<p>;;END;;</p>
+]]></content>
+  </entry>
+  
+</feed>

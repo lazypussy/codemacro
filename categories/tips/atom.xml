@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: tips | loop in codes]]></title>
+  <link href="http://codemacro.com/categories/tips/atom.xml" rel="self"/>
+  <link href="http://codemacro.com/"/>
+  <updated>2012-07-18T17:47:08+08:00</updated>
+  <id>http://codemacro.com/</id>
+  <author>
+    <name><![CDATA[Kevin Lynx]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[开始记录编程方面的技巧]]></title>
+    <link href="http://codemacro.com/2012/07/18/start-to-write-tips/"/>
+    <updated>2012-07-18T17:01:00+08:00</updated>
+    <id>http://codemacro.com/2012/07/18/start-to-write-tips</id>
+    <content type="html"><![CDATA[<p>回首上篇博客的发表时间，又2个月时间过去了。在我博客生涯的过去两三年里，总会有好几个月的时间没有编写任何文章。我觉得这真是一个不好的习惯。这个情况的产生，有很多原因。例如自己太懒、工作偶尔忙、自己偶尔处于混沌时期、自己偶尔怀疑人生，如是种种。但最大的原因还是，不敢写。</p>
+
+<p>在刚出来工作那会，作为一个懵懂的青年，接触个什么新技术都内心激动骄傲，然后就特别有动力将所学记录下来，注意下言辞还能折腾个像那么回事的教程出来。后来慢慢地，我就觉得，这些东西太肤浅。先别说教人用个什么IDE，配置个什么数据库，就算你是学个新语言，好好研究下TCP，甚至还能折腾个IOCP框架，这些都还是他妈的特肤浅。你说任何一个有那么点经验和学习能力的程序员，谁花点时间整不出来这些？谁他妈要你在这里装逼卖萌，甚至贻笑大方。除此之外，我个人也觉得无聊了。</p>
+
+<p>另一方面我觉得写博客还有个好处就是帮助自己记录技术，以便将来万一又需要曾经学习过的技术了，回头温习一下就好。但是后来慢慢地我又觉得，这也是没必要的事情。因为反正需要这个技术的时候，也花不了多少时间。</p>
+
+<p>基于这些乱七八糟的原因，我虽然经常打开自己的博客，看看有没人评论啊，留言啊，但发表博客的频率始终上不去。</p>
+
+<!-- more -->
+
+
+<p>后来呢，在google reader上断断续续也看了些别的程序员的故事。例如有傻逼坚持1年每天一篇博客，后来竟然写了本书；例如有傻逼坚持每天翻译一篇英文文章。我琢磨着这些人该有多么大的毅力啊，就算是翻译文章，这从找文章筛选文章到最好发表出来这尼玛又该睡觉了啊亲。心生佩服之余，我觉得自己应该向这些傻逼们学习。作为一个已经没有那么多青年时光的青年，试想以后每天下班回家带娃的日子，而曾经竟碌碌无为地磨过每一个工作日耍过每一个工作日晚上，这是件比带娃更悲剧的事情。</p>
+
+<p>所以，我也决定坚持干一件虽一日不用一次但也望每周那么几次的事情。我决定在博客上记录一些编程方面的技巧(tips)，集中于某个小问题的解决、某个小功能的实现。这些技巧相比前文说的，就更肤浅了，肤浅到你一google出来的结果你都吓一跳的程度。但是我依然觉得这是有用的，就像我用rails做网站，每一个小功能我都得google一遍，然后积累于心，然后一段时间后忘掉。为了不忘掉，为了查阅起来简单，我决定记录下来。但是仅靠我自己的经验，是肯定无法做到频繁地更新的，所以，我决定上stackoverflow上随机找些问题/答案翻译出来。stackoverflow非常适合满足这种需求，我发现我google某个rails技巧时，基本是从stackoverflow上获取下来的。</p>
+
+<p>这样，我的博客<a href="http://codemacro.com">http://codemacro.com</a>的rss输出可能会繁杂点，这对于某些人而言估计会起到恶心的效果。而我自己的博客可能也会变得不那么像个人博客。我也想过单独做个网站出来，但仔细想想还是制止自己少瞎折腾了。如有建议欢迎批评。</p>
+
+<p>好，就这样，没了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[为octopress添加tag cloud]]></title>
+    <link href="http://codemacro.com/2012/07/18/add-tag-to-octopress/"/>
+    <updated>2012-07-18T16:37:00+08:00</updated>
+    <id>http://codemacro.com/2012/07/18/add-tag-to-octopress</id>
+    <content type="html"><![CDATA[<p>同添加category list一样，网络上有很多方法，这里列举一种。首先到<a href="https://github.com/robbyedwards/octopress-tag-pages">https://github.com/robbyedwards/octopress-tag-pages</a>和<a href="https://github.com/robbyedwards/octopress-tag-cloud">https://github.com/robbyedwards/octopress-tag-cloud</a>clone这两个项目的代码。这两个项目分别用于产生tag page和tag cloud。 针对这两个插件，需要手工复制一些文件到你的octopress目录。</p>
+
+<p><strong>octopress-tag-pages</strong></p>
+
+<p>复制tag_generator.rb到/plugins目录；复制tag_index.html到/source/_layouts目录。<strong>需要注意的是，还需要复制tag_feed.xml到/source/_includes/custom/目录。</strong>这个官方文档里没提到，在我机器上rake generate时报错。其他文件就不需要复制了，都是些例子。</p>
+
+<p><strong>octopress-tag-cloud</strong></p>
+
+<p>仅复制tag_cloud.rb到/plugins目录即可。但这仅仅只是为liquid添加了一个tag（非本文所提tag）。如果要在侧边导航里添加一个tag cloud，我们还需要手动添加aside。</p>
+
+<p>复制以下代码到/source/_includes/custom/asides/tags.html。</p>
+
+<p><div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="n">section</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Tags</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+<span class="sr">  &lt;ul class=&quot;tag-cloud&quot;&gt;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{</span><span class="o">%</span> <span class="n">tag_cloud</span> <span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="p">:</span> <span class="mi">90</span><span class="o">-</span><span class="mi">210</span><span class="sx">%, limit: 10,</span> <span class="n">style</span><span class="p">:</span> <span class="n">para</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="o">&lt;</span><span class="sr">/ul&gt;</span>
+<span class="sr">&lt;/se</span><span class="n">ction</span><span class="o">&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<p>tag_cloud的参数中，style :para指定不使用li来分割，limit限定10个tag，font-size指定tag的大小范围，具体参数参看官方文档。</p>
+
+<p>最后，当然是在_config.xml的default_asides 中添加这个tag cloud到导航栏，例如：</p>
+
+<p><div class="highlight"><pre><code class="ruby"><span class="n">default_asides</span><span class="p">:</span> <span class="o">[</span><span class="n">asides</span><span class="o">/</span><span class="n">category_list</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="n">asides</span><span class="o">/</span><span class="n">recent_posts</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="n">custom</span><span class="o">/</span><span class="n">asides</span><span class="o">/</span><span class="n">tags</span><span class="o">.</span><span class="n">html</span><span class="o">]</span>
+</code></pre>
+</div>
+</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[为octopress添加分类(category)列表]]></title>
+    <link href="http://codemacro.com/2012/07/18/add-category-list-to-octopress/"/>
+    <updated>2012-07-18T16:10:00+08:00</updated>
+    <id>http://codemacro.com/2012/07/18/add-category-list-to-octopress</id>
+    <content type="html"><![CDATA[<p>参考<a href="http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/">http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/</a>。大致步骤为：</p>
+
+<p><strong>增加category_list插件</strong></p>
+
+<p>保存以下代码到plugins/category_list_tag.rb：</p>
+
+<p><div class="highlight"><pre><code class="ruby"><span class="k">module</span> <span class="nn">Jekyll</span>
+  <span class="k">class</span> <span class="nc">CategoryListTag</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Tag</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;pre&gt;&lt;code&gt;def render(context)</span>
+<span class="sr">  html = &quot;&quot;</span>
+<span class="sr">  categories = context.registers[:site].categories.keys</span>
+<span class="sr">  categories.sort.each do |category|</span>
+<span class="sr">    posts_in_category = context.registers[:site].categories[category].size</span>
+<span class="sr">    category_dir = context.registers[:site].config[&#39;category_dir&#39;]</span>
+<span class="sr">    category_url = File.join(category_dir, category.gsub(/</span><span class="n">_</span><span class="o">|</span><span class="p">\</span><span class="n">P</span><span class="p">{</span><span class="no">Word</span><span class="p">}</span><span class="o">/</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/-{2,}/</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">downcase</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s2">&quot;&amp;lt;li class=&#39;category&#39;&amp;gt;&amp;lt;a href=&#39;http://codemacro.com/</span><span class="si">#{</span><span class="n">category_url</span><span class="si">}</span><span class="s2">/&#39;&amp;gt;</span><span class="si">#{</span><span class="n">category</span><span class="si">}</span><span class="s2"> (</span><span class="si">#{</span><span class="n">posts_in_category</span><span class="si">}</span><span class="s2">)&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+  <span class="n">html</span>
+<span class="k">end</span>
+<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+<span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;p&gt;Liquid::Template.register_tag(&#39;category_list&#39;, Jekyll::CategoryListTag)</span>
+</code></pre>
+</div>
+</p>
+
+<p>这个插件会向liquid注册一个名为category_list的tag，该tag就是以li的形式将站点所有的category组织起来。如果要将category加入到侧边导航栏，需要增加一个aside。</p>
+
+<p><strong>增加aside</strong></p>
+
+<p>复制以下代码到source/_includes/asides/category_list.html。</p>
+
+<p><div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="n">section</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Categories</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+<span class="sr">  &lt;ul id=&quot;categories&quot;&gt;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{</span><span class="o">%</span> <span class="n">category_list</span> <span class="o">%</span><span class="p">}</span>
+<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="o">&lt;</span><span class="sr">/ul&gt;</span>
+<span class="sr">&lt;/se</span><span class="n">ction</span><span class="o">&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<p>配置侧边栏需要修改_config.yml文件，修改其default_asides项：</p>
+
+<p><div class="highlight"><pre><code class="ruby"><span class="n">default_asides</span><span class="p">:</span> <span class="o">[</span><span class="n">asides</span><span class="o">/</span><span class="n">category_list</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="n">asides</span><span class="o">/</span><span class="n">recent_posts</span><span class="o">.</span><span class="n">html</span><span class="o">]</span>
+</code></pre>
+</div>
+</p>
+
+<p>以上asides根据自己的需求调整。</p>
+]]></content>
+  </entry>
+  
+</feed>
