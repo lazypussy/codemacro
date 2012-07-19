@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: octopress | loop in codes]]></title>
   <link href="http://codemacro.com/tags/octopress/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-07-18T17:47:08+08:00</updated>
+  <updated>2012-07-19T17:54:59+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -23,6 +23,9 @@
 <p><strong>octopress-tag-pages</strong></p>
 
 <p>复制tag_generator.rb到/plugins目录；复制tag_index.html到/source/_layouts目录。<strong>需要注意的是，还需要复制tag_feed.xml到/source/_includes/custom/目录。</strong>这个官方文档里没提到，在我机器上rake generate时报错。其他文件就不需要复制了，都是些例子。</p>
+
+<!-- more -->
+
 
 <p><strong>octopress-tag-cloud</strong></p>
 
@@ -90,6 +93,9 @@
 </p>
 
 <p>这个插件会向liquid注册一个名为category_list的tag，该tag就是以li的形式将站点所有的category组织起来。如果要将category加入到侧边导航栏，需要增加一个aside。</p>
+
+<!-- more -->
+
 
 <p><strong>增加aside</strong></p>
 

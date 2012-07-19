@@ -9,9 +9,9 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="最近一直在学习Lisp这门语言。回头一看，基本上接近1个月了。刚开始接触Lisp是因为看
-了&lt;Lisp本质&gt;，然后我发现有很多人宗教般地忠诚这门语言，于是就来了兴趣。 当然并不是每次因为某篇写得很geek技术文章就去学习某个新的技术点。一个月时间对我来
-说还是很珍贵了。 &hellip;">
+  <meta name="description" content="变量，是所有编程语言里都有的语法概念。在C/C++中，变量用于标示一个内存地址，而变
+量名则在语法层面上代表这个地址。当链接器最终链接我们的程序时，就将这些名字替换
+为实际的地址。在其他语言中，变量虽然或多或少有其他不同的含义，但也大致如此。 Lisp中的变量也差不多这样， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/03/21/lisp-symbol/">Lisp一瞥：增强型变量Symbol</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-21T00:00:00+08:00" pubdate data-updated="true">Mar 21<span>st</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>变量，是所有编程语言里都有的语法概念。在C/C++中，变量用于标示一个内存地址，而变
+量名则在语法层面上代表这个地址。当链接器最终链接我们的程序时，就将这些名字替换
+为实际的地址。在其他语言中，变量虽然或多或少有其他不同的含义，但也大致如此。</p>
+
+<p>Lisp中的变量也差不多这样，但若将variable和Lisp中的 <strong>symbol</strong> 放在一起，则多少会 带来些困惑。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2011/03/21/lisp-symbol/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -136,7 +181,8 @@
 <li class='category'><a href='/categories/lua/'>lua (2)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
 <li class='category'><a href='/categories/other/'>other (3)</a></li>
-<li class='category'><a href='/categories/tips/'>tips (3)</a></li>
+<li class='category'><a href='/categories/tips/'>tips (4)</a></li>
+<li class='category'><a href='/categories/web/'>web (1)</a></li>
 
   </ul>
 </section>
@@ -144,6 +190,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/07/19/popup-window-in-html/">HTML中实现弹出窗口</a>
+      </li>
     
       <li class="post">
         <a href="/2012/07/18/start-to-write-tips/">开始记录编程方面的技巧</a>
@@ -161,10 +211,6 @@
         <a href="/2012/05/10/tolua-api/">tolua的tolua_toxxx系列API设计</a>
       </li>
     
-      <li class="post">
-        <a href="/2012/04/25/game-server-info-2/">谈谈我们的游戏逻辑服务器实现（二）</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -178,14 +224,14 @@
   <h1>Tags</h1>
   <ul class="tag-cloud">
 <a style="font-size: 90%" href="/tags/blog/">blog</a>
-<a style="font-size: 90%" href="/tags/c-c-/">c/c++</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
 <a style="font-size: 185%" href="/tags/game-develop/">game develop</a>
+<a style="font-size: 90%" href="/tags/github/">github</a>
 <a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
 <a style="font-size: 210%" href="/tags/lisp/">lisp</a>
 <a style="font-size: 150%" href="/tags/lua/">lua</a>
 <a style="font-size: 150%" href="/tags/octopress/">octopress</a>
-<a style="font-size: 150%" href="/tags/tips/">tips</a>
+<a style="font-size: 185%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
 
   </ul>
