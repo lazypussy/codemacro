@@ -9,8 +9,7 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="问题 在Lua中，因为函数也是第一类值，所以会出现将函数作为另一个函数的参数，或者函数作
-为函数的返回值。这种机制在很多地方都能代码更灵活更简洁，例如: table.sort(table [,comp]) 这里的comp就要求传入一个函数，我们在调用时，大概会有如下形式: table.sort(t &hellip;">
+  <meta name="description" content="本文描述如何使用Lisp工具集搭建一个完整的个人博客站点。一个搭建好的例子站点可以参看我的个人博客：http://codemacro.com。 要搭建一个独立博客，需要两方面的支持。一是博客软件，二是根据选择的博客软件取得必须的“硬件“。例如我这里使用的是Lisp工具集， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +66,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2011/09/29/build-blog-by-lisp/">使用Lisp搭建独立博客</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-29T00:00:00+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>本文描述如何使用Lisp工具集搭建一个完整的个人博客站点。一个搭建好的例子站点可以参看我的个人博客：http://codemacro.com。</p>
+
+<p>要搭建一个独立博客，需要两方面的支持。一是博客软件，二是根据选择的博客软件取得必须的“硬件“。例如我这里使用的是Lisp工具集，就需要一个可以完全控制的服务器，所以这里我需要一个VPS。当然，购买一个合适的域名也是必须的。以下将针对这些内容做描述。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2011/09/29/build-blog-by-lisp/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -261,50 +303,6 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2011/03/30/lisp-rss/">Lisp实践：开发RSS阅读器</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-03-30T00:00:00+08:00" pubdate data-updated="true">Mar 30<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>一、RSS阅读器的实现</h1>
-
-<p>RSS Reader的实现并不像它看上去那么复杂。当初在决定写这个作为Lisp练习时，甚至觉得
-没有多少内容可做。其简单程度甚至用不了你启动一个慢速IDE的时间:D。对Lisp无兴趣的 TX只需要读完这一节即可，</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2011/03/30/lisp-rss/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/4/">&larr; Older</a>
@@ -326,8 +324,8 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
 <li class='category'><a href='/categories/lua/'>lua (2)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
 <li class='category'><a href='/categories/other/'>other (3)</a></li>
-<li class='category'><a href='/categories/tips/'>tips (4)</a></li>
-<li class='category'><a href='/categories/web/'>web (1)</a></li>
+<li class='category'><a href='/categories/tips/'>tips (5)</a></li>
+<li class='category'><a href='/categories/web/'>web (2)</a></li>
 
   </ul>
 </section>
@@ -335,6 +333,10 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/07/20/get-client-timezone-in-rails/">Rails中获取客户端时区</a>
+      </li>
     
       <li class="post">
         <a href="/2012/07/19/popup-window-in-html/">HTML中实现弹出窗口</a>
@@ -350,10 +352,6 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
     
       <li class="post">
         <a href="/2012/07/18/add-category-list-to-octopress/">为octopress添加分类(category)列表</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/05/10/tolua-api/">tolua的tolua_toxxx系列API设计</a>
       </li>
     
   </ul>
@@ -376,7 +374,7 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
 <a style="font-size: 210%" href="/tags/lisp/">lisp</a>
 <a style="font-size: 150%" href="/tags/lua/">lua</a>
 <a style="font-size: 150%" href="/tags/octopress/">octopress</a>
-<a style="font-size: 185%" href="/tags/tips/">tips</a>
+<a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
 
   </ul>
