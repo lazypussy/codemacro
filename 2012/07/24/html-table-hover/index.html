@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>为octopress添加tag cloud - loop in codes</title>
+  <title>HTML中table的高亮以及tooltip - loop in codes</title>
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="同添加category list一样，网络上有很多方法，这里列举一种。首先到https://github.com/robbyedwards/octopress-tag-pages和https://github.com/robbyedwards/octopress-tag- &hellip;">
+  <meta name="description" content="在一个需要显示很多数据的表格(table)中，为了更友好地查看一行数据，常常需要在鼠标指针移到某一行时，高亮此行。要实现这个效果有很多方法，这里列举一个方法： function setTableHover(t) { $(t + &quot; tbody tr&quot;) .mouseover( &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://codemacro.com/2012/07/18/add-tag-to-octopress">
+  <link rel="canonical" href="http://codemacro.com/2012/07/24/html-table-hover">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -69,7 +69,7 @@
   
   <header>
     
-      <h1 class="entry-title">为octopress添加tag Cloud</h1>
+      <h1 class="entry-title">HTML中table的高亮以及tooltip</h1>
     
     
       <p class="meta">
@@ -85,48 +85,92 @@
   
 
 
-<time datetime="2012-07-18T16:37:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+<time datetime="2012-07-24T16:08:00+08:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>同添加category list一样，网络上有很多方法，这里列举一种。首先到<a href="https://github.com/robbyedwards/octopress-tag-pages">https://github.com/robbyedwards/octopress-tag-pages</a>和<a href="https://github.com/robbyedwards/octopress-tag-cloud">https://github.com/robbyedwards/octopress-tag-cloud</a>clone这两个项目的代码。这两个项目分别用于产生tag page和tag cloud。 针对这两个插件，需要手工复制一些文件到你的octopress目录。</p>
+<div class="entry-content"><p>在一个需要显示很多数据的表格(table)中，为了更友好地查看一行数据，常常需要在鼠标指针移到某一行时，高亮此行。要实现这个效果有很多方法，这里列举一个方法：</p>
 
-<p><strong>octopress-tag-pages</strong></p>
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">setTableHover</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="nx">t</span> <span class="o">+</span> <span class="s2">&quot; tbody tr&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">mouseover</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);})</span>
+      <span class="p">.</span><span class="nx">mouseout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);</span> <span class="p">})</span>
+<span class="p">}</span>
+</code></pre>
+</div>
 
-<p>复制tag_generator.rb到/plugins目录；复制tag_index.html到/source/_layouts目录。<strong>需要注意的是，还需要复制tag_feed.xml到/source/_includes/custom/目录。</strong>这个官方文档里没提到，在我机器上rake generate时报错。其他文件就不需要复制了，都是些例子。</p>
+
+<p>主要就是在鼠标移到某一行时，为该行添加一个高亮的css class，鼠标离开时移除该class即可。可以为一个特定的table设定：</p>
 
 <!-- more -->
 
 
-<p><strong>octopress-tag-cloud</strong></p>
 
-<p>仅复制tag_cloud.rb到/plugins目录即可。但这仅仅只是为liquid添加了一个tag（非本文所提tag）。如果要在侧边导航里添加一个tag cloud，我们还需要手动添加aside。</p>
 
-<p>复制以下代码到/source/_includes/custom/asides/tags.html。</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="n">section</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Tags</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-<span class="sr">  &lt;ul class=&quot;tag-cloud&quot;&gt;</span>
-<span class="sr">    {% tag_cloud font-size: 90-210%, limit: 10, style: para %}</span>
-<span class="sr">  &lt;/u</span><span class="n">l</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="sr">/section&gt;</span>
+<div class="highlight"><pre><code class="html"><span class="nt">&lt;table</span> <span class="na">id=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="nx">setTableHover</span><span class="p">(</span><span class="s1">&#39;#test&#39;</span><span class="p">)</span>
+<span class="nt">&lt;/script&gt;</span>
 </code></pre>
 </div>
 
 
-<p>tag_cloud的参数中，style :para指定不使用li来分割，limit限定10个tag，font-size指定tag的大小范围，具体参数参看官方文档。</p>
+<p>甚至可以为将某个页面的所有table设为高亮：</p>
 
-<p>最后，当然是在_config.xml的default_asides 中添加这个tag cloud到导航栏，例如：</p>
+<div class="highlight"><pre><code class="html"><span class="nt">&lt;script&gt;</span>
+    <span class="nx">setTableHover</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+</div>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">default_asides</span><span class="p">:</span> <span class="o">[</span><span class="n">asides</span><span class="o">/</span><span class="n">category_list</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="n">asides</span><span class="o">/</span><span class="n">recent_posts</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="n">custom</span><span class="o">/</span><span class="n">asides</span><span class="o">/</span><span class="n">tags</span><span class="o">.</span><span class="n">html</span><span class="o">]</span>
+
+<p>css里需要编写这个hover：</p>
+
+<div class="highlight"><pre><code class="css"><span class="nc">.hover</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="m">#e9cffa</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre>
 </div>
 
 
 
+
+<hr/>
+
+
+<p>除了高亮显示某一行外，可能还需要在鼠标移动到某个单元格时，弹出一个tooltip。这里的tooltip可以是<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>，也就是一个div元素。</p>
+
+<div class="highlight"><pre><code class="html"><span class="nt">&lt;tr&gt;</span>
+  <span class="nt">&lt;td</span> <span class="na">class=</span><span class="s">&quot;tip&quot;</span><span class="nt">&gt;</span>
+    hello
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&#39;popup&#39;</span> <span class="na">style=</span><span class="s">&#39;display:none;&#39;</span><span class="nt">&gt;</span>this is the tip<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/td&gt;</span>
+<span class="nt">&lt;/tr&gt;</span>
+</code></pre>
+</div>
+
+
+<p>要实现此效果，可以通过修改包含tip class的鼠标事件响应：</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.tip&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
+        <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">show_popupex</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">),</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+        <span class="p">},</span>
+        <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+
+<p>hover的第一个参数表示鼠标进入的响应，第二个参数表示鼠标离开的响应。show_popupex用于将一个元素以绝对位置显示在指定元素（这里是单元格）附近，可以参看<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>那篇文章。</p>
 </div>
 
 
@@ -149,12 +193,12 @@
   
 
 
-<time datetime="2012-07-18T16:37:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+<time datetime="2012-07-24T16:08:00+08:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/categories/tips/'>tips</a>
+    <a class='category' href='/categories/tips/'>tips</a>, <a class='category' href='/categories/web/'>web</a>
   
 </span>
 
@@ -170,10 +214,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/2012/07/18/add-category-list-to-octopress/" title="Previous Post: 为octopress添加分类(category)列表">&laquo; 为octopress添加分类(category)列表</a>
+        <a class="basic-alignment left" href="/2012/07/20/get-client-timezone-in-rails/" title="Previous Post: Rails中获取客户端时区">&laquo; Rails中获取客户端时区</a>
       
-      
-        <a class="basic-alignment right" href="/2012/07/18/start-to-write-tips/" title="Next Post: 开始记录编程方面的技巧">开始记录编程方面的技巧 &raquo;</a>
       
     </p>
   </footer>
@@ -278,8 +320,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://codemacro.com/2012/07/18/add-tag-to-octopress/';
-        var disqus_url = 'http://codemacro.com/2012/07/18/add-tag-to-octopress/';
+        var disqus_identifier = 'http://codemacro.com/2012/07/24/html-table-hover/';
+        var disqus_url = 'http://codemacro.com/2012/07/24/html-table-hover/';
         var disqus_script = 'embed.js';
       
     (function () {

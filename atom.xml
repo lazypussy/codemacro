@@ -4,7 +4,7 @@
   <title><![CDATA[loop in codes]]></title>
   <link href="http://codemacro.com/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-07-20T17:29:39+08:00</updated>
+  <updated>2012-07-24T16:34:43+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,93 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[HTML中table的高亮以及tooltip]]></title>
+    <link href="http://codemacro.com/2012/07/24/html-table-hover/"/>
+    <updated>2012-07-24T16:08:00+08:00</updated>
+    <id>http://codemacro.com/2012/07/24/html-table-hover</id>
+    <content type="html"><![CDATA[<p>在一个需要显示很多数据的表格(table)中，为了更友好地查看一行数据，常常需要在鼠标指针移到某一行时，高亮此行。要实现这个效果有很多方法，这里列举一个方法：</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">setTableHover</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="nx">t</span> <span class="o">+</span> <span class="s2">&quot; tbody tr&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">mouseover</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);})</span>
+      <span class="p">.</span><span class="nx">mouseout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);</span> <span class="p">})</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+<p>主要就是在鼠标移到某一行时，为该行添加一个高亮的css class，鼠标离开时移除该class即可。可以为一个特定的table设定：</p>
+
+<!-- more -->
+
+
+
+
+<div class="highlight"><pre><code class="html"><span class="nt">&lt;table</span> <span class="na">id=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="nx">setTableHover</span><span class="p">(</span><span class="s1">&#39;#test&#39;</span><span class="p">)</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+</div>
+
+
+<p>甚至可以为将某个页面的所有table设为高亮：</p>
+
+<div class="highlight"><pre><code class="html"><span class="nt">&lt;script&gt;</span>
+    <span class="nx">setTableHover</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+</div>
+
+
+<p>css里需要编写这个hover：</p>
+
+<div class="highlight"><pre><code class="css"><span class="nc">.hover</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="m">#e9cffa</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+
+
+<hr/>
+
+
+<p>除了高亮显示某一行外，可能还需要在鼠标移动到某个单元格时，弹出一个tooltip。这里的tooltip可以是<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>，也就是一个div元素。</p>
+
+<div class="highlight"><pre><code class="html"><span class="nt">&lt;tr&gt;</span>
+  <span class="nt">&lt;td</span> <span class="na">class=</span><span class="s">&quot;tip&quot;</span><span class="nt">&gt;</span>
+    hello
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&#39;popup&#39;</span> <span class="na">style=</span><span class="s">&#39;display:none;&#39;</span><span class="nt">&gt;</span>this is the tip<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/td&gt;</span>
+<span class="nt">&lt;/tr&gt;</span>
+</code></pre>
+</div>
+
+
+<p>要实现此效果，可以通过修改包含tip class的鼠标事件响应：</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.tip&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
+        <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">show_popupex</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">),</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+        <span class="p">},</span>
+        <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+
+<p>hover的第一个参数表示鼠标进入的响应，第二个参数表示鼠标离开的响应。show_popupex用于将一个元素以绝对位置显示在指定元素（这里是单元格）附近，可以参看<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>那篇文章。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails中获取客户端时区]]></title>

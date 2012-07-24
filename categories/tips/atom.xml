@@ -4,7 +4,7 @@
   <title><![CDATA[Category: tips | loop in codes]]></title>
   <link href="http://codemacro.com/categories/tips/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-07-20T17:29:39+08:00</updated>
+  <updated>2012-07-24T16:34:43+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,110 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[HTML中table的高亮以及tooltip]]></title>
+    <link href="http://codemacro.com/2012/07/24/html-table-hover/"/>
+    <updated>2012-07-24T16:08:00+08:00</updated>
+    <id>http://codemacro.com/2012/07/24/html-table-hover</id>
+    <content type="html"><![CDATA[<p>在一个需要显示很多数据的表格(table)中，为了更友好地查看一行数据，常常需要在鼠标指针移到某一行时，高亮此行。要实现这个效果有很多方法，这里列举一个方法：</p>
+
+<p><div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">setTableHover</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="nx">t</span> <span class="o">+</span> <span class="s2">&quot; tbody tr&quot;</span><span class="p">)</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>  <span class="p">.</span><span class="nx">mouseover</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);})</span>
+  <span class="p">.</span><span class="nx">mouseout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);</span> <span class="p">})</span>
+<span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
+</code></pre>
+</div>
+</p>
+
+<p>主要就是在鼠标移到某一行时，为该行添加一个高亮的css class，鼠标离开时移除该class即可。可以为一个特定的table设定：</p>
+
+<!-- more -->
+
+
+<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;table</span> <span class="na">id=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+
+
+<span class="nt">&lt;script&gt;</span>
+    <span class="nx">setTableHover</span><span class="p">(</span><span class="s1">&#39;#test&#39;</span><span class="p">)</span>
+<span class="nt">&lt;/script&gt;</span>
+
+
+<span class="nt">&lt;p&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<p>甚至可以为将某个页面的所有table设为高亮：</p>
+
+<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+    <span class="nx">setTableHover</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+<span class="nt">&lt;/script&gt;</span>
+
+
+<span class="nt">&lt;p&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<p>css里需要编写这个hover：</p>
+
+<p><div class="highlight"><pre><code class="css"><span class="nc">.hover</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="m">#e9cffa</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+</p>
+
+<hr/>
+
+
+<p>除了高亮显示某一行外，可能还需要在鼠标移动到某个单元格时，弹出一个tooltip。这里的tooltip可以是<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>，也就是一个div元素。</p>
+
+<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;tr&gt;</span>
+  <span class="nt">&lt;td</span> <span class="na">class=</span><span class="s">&quot;tip&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
+
+<span class="nt">&lt;pre&gt;&lt;code&gt;</span>hello
+<span class="ni">&amp;lt;</span>div class=&#39;popup&#39; style=&#39;display:none;&#39;<span class="ni">&amp;gt;</span>this is the tip<span class="ni">&amp;lt;</span>/div<span class="ni">&amp;gt;</span>
+<span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>  <span class="nt">&lt;/td&gt;</span>
+<span class="nt">&lt;/tr&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<p>要实现此效果，可以通过修改包含tip class的鼠标事件响应：</p>
+
+<p><div class="highlight"><pre><code class="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.tip&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
+    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">show_popupex</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">),</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+    <span class="p">},</span>
+    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="p">);</span>
+<span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
+</code></pre>
+</div>
+</p>
+
+<p>hover的第一个参数表示鼠标进入的响应，第二个参数表示鼠标离开的响应。show_popupex用于将一个元素以绝对位置显示在指定元素（这里是单元格）附近，可以参看<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>那篇文章。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails中获取客户端时区]]></title>
@@ -220,74 +324,6 @@
 </code></pre>
 </div>
 </p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[为octopress添加分类(category)列表]]></title>
-    <link href="http://codemacro.com/2012/07/18/add-category-list-to-octopress/"/>
-    <updated>2012-07-18T16:10:00+08:00</updated>
-    <id>http://codemacro.com/2012/07/18/add-category-list-to-octopress</id>
-    <content type="html"><![CDATA[<p>参考<a href="http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/">http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/</a>。大致步骤为：</p>
-
-<p><strong>增加category_list插件</strong></p>
-
-<p>保存以下代码到plugins/category_list_tag.rb：</p>
-
-<p><div class="highlight"><pre><code class="ruby"><span class="k">module</span> <span class="nn">Jekyll</span>
-  <span class="k">class</span> <span class="nc">CategoryListTag</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Tag</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-
-<span class="sr">&lt;pre&gt;&lt;code&gt;def render(context)</span>
-<span class="sr">  html = &quot;&quot;</span>
-<span class="sr">  categories = context.registers[:site].categories.keys</span>
-<span class="sr">  categories.sort.each do |category|</span>
-<span class="sr">    posts_in_category = context.registers[:site].categories[category].size</span>
-<span class="sr">    category_dir = context.registers[:site].config[&#39;category_dir&#39;]</span>
-<span class="sr">    category_url = File.join(category_dir, category.gsub(/</span><span class="n">_</span><span class="o">|</span><span class="p">\</span><span class="n">P</span><span class="p">{</span><span class="no">Word</span><span class="p">}</span><span class="o">/</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/-{2,}/</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">downcase</span><span class="p">)</span>
-    <span class="n">html</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s2">&quot;&amp;lt;li class=&#39;category&#39;&amp;gt;&amp;lt;a href=&#39;http://codemacro.com/</span><span class="si">#{</span><span class="n">category_url</span><span class="si">}</span><span class="s2">/&#39;&amp;gt;</span><span class="si">#{</span><span class="n">category</span><span class="si">}</span><span class="s2"> (</span><span class="si">#{</span><span class="n">posts_in_category</span><span class="si">}</span><span class="s2">)&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
-  <span class="k">end</span>
-  <span class="n">html</span>
-<span class="k">end</span>
-<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
-<span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-
-<span class="sr">&lt;p&gt;Liquid::Template.register_tag(&#39;category_list&#39;, Jekyll::CategoryListTag)</span>
-</code></pre>
-</div>
-</p>
-
-<p>这个插件会向liquid注册一个名为category_list的tag，该tag就是以li的形式将站点所有的category组织起来。如果要将category加入到侧边导航栏，需要增加一个aside。</p>
-
-<!-- more -->
-
-
-<p><strong>增加aside</strong></p>
-
-<p>复制以下代码到source/_includes/asides/category_list.html。</p>
-
-<p><div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="n">section</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Categories</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-<span class="sr">  &lt;ul id=&quot;categories&quot;&gt;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">{</span><span class="o">%</span> <span class="n">category_list</span> <span class="o">%</span><span class="p">}</span>
-<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="o">&lt;</span><span class="sr">/ul&gt;</span>
-<span class="sr">&lt;/se</span><span class="n">ction</span><span class="o">&gt;</span>
-</code></pre>
-</div>
-</p>
-
-<p>配置侧边栏需要修改_config.yml文件，修改其default_asides项：</p>
-
-<p><div class="highlight"><pre><code class="ruby"><span class="n">default_asides</span><span class="p">:</span> <span class="o">[</span><span class="n">asides</span><span class="o">/</span><span class="n">category_list</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="n">asides</span><span class="o">/</span><span class="n">recent_posts</span><span class="o">.</span><span class="n">html</span><span class="o">]</span>
-</code></pre>
-</div>
-</p>
-
-<p>以上asides根据自己的需求调整。</p>
 ]]></content>
   </entry>
   
