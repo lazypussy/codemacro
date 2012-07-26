@@ -4,7 +4,7 @@
   <title><![CDATA[loop in codes]]></title>
   <link href="http://codemacro.com/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-07-24T16:34:43+08:00</updated>
+  <updated>2012-07-26T14:43:01+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,121 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[为octopress每篇文章添加一个文章信息]]></title>
+    <link href="http://codemacro.com/2012/07/26/post-footer-plugin-for-octopress/"/>
+    <updated>2012-07-26T14:27:00+08:00</updated>
+    <id>http://codemacro.com/2012/07/26/post-footer-plugin-for-octopress</id>
+    <content type="html"><![CDATA[<p>当你的博客文章被转载时，你肯定希望转载者能添加一个原始地址。或者你的文章被各种RSS抓取器抓取时，你也希望能在明显的位置显示这个原始地址。使用octopress写博客时，可以通过插件来做这件事。最开始，我只是想单纯地添加这个“原始地址“，一番google未能找到现成的插件，所以只好动手。</p>
+
+<p>话说编写octopress真不是件容易事，因为我实在没找到编写插件的文档。octopress基于jekyll，jekyll又使用了liquid。最后我把这几个项目的文档都翻了下，也仅仅看到几个代码示例，而且liquid的API页面居然出错。无奈之下只好多翻了些现有插件的代码，摸索着来写。写octopress的插件，主要分为generator/tag/filter几种。tag很好理解，就是在文章中插入一个插件注册的tag，然后生成页面时就会调用到对应的插件。filter大概就是把文章内容过滤一遍转换成其他内容输出。</p>
+
+<!-- more -->
+
+
+<p>后来发现了一篇文章<a href="http://xoyo.name/2012/04/auto-spacing-for-octopress/">&lt;给中英文间加个空格></a>，这人写的插件从流程上大致是我需要的，模仿如下：</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="c1">#</span>
+<span class="c1"># post_footer_filter.rb</span>
+<span class="c1"># Append every post some footer infomation like original url </span>
+<span class="c1"># Kevin Lynx</span>
+<span class="c1"># 7.26.2012</span>
+<span class="c1">#</span>
+<span class="nb">require</span> <span class="s1">&#39;./plugins/post_filters&#39;</span>
+
+<span class="k">module</span> <span class="nn">AppendFooterFilter</span>
+  <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+     <span class="n">author</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">config</span><span class="o">[</span><span class="s1">&#39;author&#39;</span><span class="o">]</span>
+     <span class="n">url</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">config</span><span class="o">[</span><span class="s1">&#39;url&#39;</span><span class="o">]</span>
+     <span class="n">pre</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">config</span><span class="o">[</span><span class="s1">&#39;original_url_pre&#39;</span><span class="o">]</span>
+     <span class="n">post</span><span class="o">.</span><span class="n">content</span> <span class="o">+</span> <span class="sx">%Q[&lt;p class=&#39;post-footer&#39;&gt;</span>
+<span class="sx">            </span><span class="si">#{</span><span class="n">pre</span> <span class="ow">or</span> <span class="s2">&quot;original link:&quot;</span><span class="si">}</span><span class="sx"></span>
+<span class="sx">            &lt;a href=&#39;</span><span class="si">#{</span><span class="n">post</span><span class="o">.</span><span class="n">full_url</span><span class="si">}</span><span class="sx">&#39;&gt;</span><span class="si">#{</span><span class="n">post</span><span class="o">.</span><span class="n">full_url</span><span class="si">}</span><span class="sx">&lt;/a&gt;&lt;br/&gt;</span>
+<span class="sx">            &amp;nbsp;written by &lt;a href=&#39;</span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="sx">&#39;&gt;</span><span class="si">#{</span><span class="n">author</span><span class="si">}</span><span class="sx">&lt;/a&gt;</span>
+<span class="sx">            &amp;nbsp;posted at &lt;a href=&#39;</span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="sx">&#39;&gt;</span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="sx">&lt;/a&gt;</span>
+<span class="sx">            &lt;/p&gt;]</span>
+  <span class="k">end</span> 
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nn">Jekyll</span>
+  <span class="k">class</span> <span class="nc">AppendFooter</span> <span class="o">&lt;</span> <span class="no">PostFilter</span>
+    <span class="kp">include</span> <span class="no">AppendFooterFilter</span>
+    <span class="k">def</span> <span class="nf">pre_render</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+      <span class="n">post</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">post</span><span class="p">)</span> <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">is_post?</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="o">.</span><span class="n">register_filter</span> <span class="no">AppendFooterFilter</span>
+</code></pre>
+</div>
+
+
+<p>大概就是当传入的页面是post时，就添加页脚信息，我这里主要添加了原始地址和作者信息，并且留了个post-footer作为这个段落的样式定制。附加的信息对于RSS输出同样有效。</p>
+
+<p>这个插件的使用方式很简单，直接放到plugins目录下即可。可以在_config.yml中配置下origional_url_pre，例如配置为“原始地址：“。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/07/26/post-footer-plugin-for-octopress/'>http://codemacro.com/2012/07/26/post-footer-plugin-for-octopress/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ruby中的case...when语法]]></title>
+    <link href="http://codemacro.com/2012/07/26/ruby-case-when/"/>
+    <updated>2012-07-26T10:13:00+08:00</updated>
+    <id>http://codemacro.com/2012/07/26/ruby-case-when</id>
+    <content type="html"><![CDATA[<p>参考<a href="http://stackoverflow.com/questions/948135/how-to-write-a-switch-statement-in-ruby">How to write a switch statement in Ruby?</a></p>
+
+<p>其实用Rails写个业务逻辑不算复杂的app根本用不上ruby的很多高级语法，更别说&lt;meta programming in ruby>中的东西了（凡是打上meta programming标签的都不是什么简单的东西，参考c++/lisp）。ruby中的case&#8230;when语句和c/c++中的switch&#8230;case其实根本不是一回事。&lt;Programming in Ruby 2nd>：</p>
+
+<blockquote><p>case operates by comparing the target with each of the comparison expression after the when keywords. This test is done using comparison === target.</p></blockquote>
+
+<!-- more -->
+
+
+<p>也就是说case&#8230;when用的不是==操作符，不是使用相等逻辑去判断，而是使用===运算符。===运算符从C++的角度简单来说就是判定is-a关系，例如</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="no">Fixnum</span> <span class="o">===</span> <span class="mi">1</span>
+<span class="nb">String</span> <span class="o">===</span> <span class="s2">&quot;hello&quot;</span>
+<span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">2</span>
+</code></pre>
+</div>
+
+
+<p>1 is a Fixnum，hello is a String，2 is a (1..3) (in the range of)。比较让人产生误解的，大概就是1===1也为true。所以理解起来，也不纯碎是is-a关系。</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">case</span> <span class="n">a</span>
+<span class="k">when</span> <span class="no">Fixnum</span>
+    <span class="nb">puts</span> <span class="s2">&quot;fixnum&quot;</span>
+<span class="k">when</span> <span class="nb">String</span>
+    <span class="nb">puts</span> <span class="s2">&quot;string&quot;</span>
+<span class="k">when</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">&quot;between 1 and 3&quot;</span>
+<span class="k">else</span>
+    <span class="nb">puts</span> <span class="s2">&quot;default&quot;</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+
+<p>最后，作为一种functional-like language，其语句也算是表达式，意即也有返回值。case..when的返回值就是执行的分支的返回值。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/07/26/ruby-case-when/'>http://codemacro.com/2012/07/26/ruby-case-when/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[HTML中table的高亮以及tooltip]]></title>
@@ -97,6 +212,14 @@
 
 
 <p>hover的第一个参数表示鼠标进入的响应，第二个参数表示鼠标离开的响应。show_popupex用于将一个元素以绝对位置显示在指定元素（这里是单元格）附近，可以参看<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>那篇文章。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/07/24/html-table-hover/'>http://codemacro.com/2012/07/24/html-table-hover/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -149,6 +272,14 @@
 
 
 <p>但经过我实际测试，部署在heroku上的应用偶尔会发现session[:zone_name]取出来是nil，尽管我确认了timezone函数是被调用过的。这难道跟session的超时有关？后来我只好将timezone name写到客户端页面中，然后在其他请求中再把这个时区名发回来。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/07/20/get-client-timezone-in-rails/'>http://codemacro.com/2012/07/20/get-client-timezone-in-rails/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -223,6 +354,14 @@
 
 
 <p>其中profile-link就是那个“个人资料“链接。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/07/19/popup-window-in-html/'>http://codemacro.com/2012/07/19/popup-window-in-html/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -249,6 +388,14 @@
 <p>这样，我的博客<a href="http://codemacro.com">http://codemacro.com</a>的rss输出可能会繁杂点，这对于某些人而言估计会起到恶心的效果。而我自己的博客可能也会变得不那么像个人博客。我也想过单独做个网站出来，但仔细想想还是制止自己少瞎折腾了。如有建议欢迎批评。</p>
 
 <p>好，就这样，没了。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/07/18/start-to-write-tips/'>http://codemacro.com/2012/07/18/start-to-write-tips/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -291,6 +438,14 @@
 </div>
 
 
+
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/07/18/add-tag-to-octopress/'>http://codemacro.com/2012/07/18/add-tag-to-octopress/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
 
 ]]></content>
   </entry>
@@ -354,6 +509,14 @@
 
 
 <p>以上asides根据自己的需求调整。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/07/18/add-category-list-to-octopress/'>http://codemacro.com/2012/07/18/add-category-list-to-octopress/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -440,6 +603,14 @@
 
 
 <p>另，程序悲剧也来源于臆想。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/05/10/tolua-api/'>http://codemacro.com/2012/05/10/tolua-api/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -490,6 +661,14 @@
 <h2>END</h2>
 
 <p>到目前为止，导致服务器CPU负载过高，一般都是由BUG导致。这些BUG通常会造成一个过长的列表，然后有针对这个列表的遍历操作，从而导致CPU负载过高。更重要的，我们使用了这么多的脚本去开发这个游戏，如何找到一个更有效合理的监测方法，如何让程序框架更稳定，则是接下来更困难而又必须去面对的事情。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/04/25/game-server-info-2/'>http://codemacro.com/2012/04/25/game-server-info-2/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -563,6 +742,14 @@
 
 
 <p>下一篇我将谈谈一些遇到的问题。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/04/23/game-server-info-1/'>http://codemacro.com/2012/04/23/game-server-info-1/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -634,6 +821,14 @@
 <li>在_post目录下创建日志</li>
 <li>提交日志到Github</li>
 </ul>
+
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/04/20/blog-on-github/'>http://codemacro.com/2012/04/20/blog-on-github/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
 
 ]]></content>
   </entry>
@@ -713,6 +908,14 @@ Rails的应用。当我用这货来做WEB的时候，我才发现曾经用Lisp�
 <h2>末了</h2>
 
 <p>曾经我以为我很牛逼，曾经我以为程序员很牛逼。后来我慢慢发现自己很垃圾。我没有写出来过牛逼的程序，大概也没能力写。还记得那个程序员的故事吗？就是有个傻逼也以为程序员很牛逼，但不幸在一家非IT公司的IT部门工作，他的程序员同事的工作就是每周填个excel表格。他后来很绝望，因为他没有为世界贡献过任何代码。后来，这货丢下一切，坐上去某地的飞机走了。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/02/04/codertrace/'>http://codemacro.com/2012/02/04/codertrace/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -880,6 +1083,14 @@ API，因此可以使用一些博客客户端来发表文章（仅测过我自�
 <h2>最后</h2>
 
 <p>本文描述较为粗略，主要是很多细节我自己也记不清。如有问题可以发邮件给我。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2011/09/29/build-blog-by-lisp/'>http://codemacro.com/2011/09/29/build-blog-by-lisp/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -1025,6 +1236,14 @@ table在Lua里的代价，也就多了几次Lua函数调用。</p>
 接口。Lua中的table有同样的问题。究其原因，主要是Lua中的函数没有直接的c/c++数据结 构对应。</p>
 
 <p>;; END</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2011/05/09/lua-function-arg/'>http://codemacro.com/2011/05/09/lua-function-arg/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -1186,6 +1405,14 @@ entity-&gt;AddComponent (componentFactory-&gt;Create ("PropertyAccessor"));
 </code></pre>
 
 <p>;;END;;</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2011/05/02/entity-property/'>http://codemacro.com/2011/05/02/entity-property/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -1374,6 +1601,14 @@ call eax
 <p>正是Bottom::ldisplay！到这里，整个问题的原因就被梳理出来了。</p>
 
 <p>;;END;;</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2011/04/30/multi-inherit-void/'>http://codemacro.com/2011/04/30/multi-inherit-void/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -1535,6 +1770,14 @@ private、protected。访问权限的加入旨在更精确地暴露模块接口�
 ，每个类中哪些信息是提供给外部模块的，哪些信息是私有的。这些过程是设计模块化程 序的重要方式。</p>
 
 <p>但需要重新强调的是，过了某个度，那又是另一种形式的糟糕设计。但其中拿捏技巧，则只 能靠实践获取。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2011/04/04/module-level/'>http://codemacro.com/2011/04/04/module-level/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -1738,6 +1981,14 @@ Reader里订阅的一些RSS。最大的问题，就是关于HTTP重定向的问�
 
 
 <p>;;EOF;;</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2011/03/30/lisp-rss/'>http://codemacro.com/2011/03/30/lisp-rss/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
 ]]></content>
   </entry>
   
@@ -2055,314 +2306,14 @@ Function来使用。如何解决这个问题？想想，symbol-function可以取
 <li>[7]  这可能导致更多的错误</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[用lisp开发博客客户端]]></title>
-    <link href="http://codemacro.com/2011/03/13/lisp-writer/"/>
-    <updated>2011-03-13T00:00:00+08:00</updated>
-    <id>http://codemacro.com/2011/03/13/lisp-writer</id>
-    <content type="html"><![CDATA[<p>最近一直在学习Lisp这门语言。回头一看，基本上接近1个月了。刚开始接触Lisp是因为看
-了&lt;Lisp本质&gt;，然后我发现有很多人宗教般地忠诚这门语言，于是就来了兴趣。</p>
 
-<p><img src="http://codemacro.com/assets/res/lisp_writer/lisp_believer.png" alt="lisp_believer" /></p>
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2011/03/21/lisp-symbol/'>http://codemacro.com/2011/03/21/lisp-symbol/</a><br/>
+            &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
 
-<p>当然并不是每次因为某篇写得很geek技术文章就去学习某个新的技术点。一个月时间对我来
-说还是很珍贵了。但是Lisp绝对是大部分程序员都值得一学的语言（就像Haskell一样）。
-我能给出的简单理由包括：</p>
-
-<!-- more -->
-
-
-<ul>
-<li>大部分程序员只会命令式语言（C/C++/C Like etc)，缺乏函数式语言解决编程问题的思
-想（当然Lisp不是纯函数式)</li>
-<li>Lisp是仅次于Fortran的古老语言，很多优秀的语言设计思想在现代的一些语言里都找得
-到</li>
-<li>装B党必备</li>
-</ul>
-
-
-<p>另一方面，结合我一个月以来的读书和两个练习工程的实践经历，我觉得也有些理由值得你
-不去学习Lisp：</p>
-
-<ul>
-<li>你会Haskell或者其他函数式语言</li>
-<li>我目前还是觉得Lisp学习曲线高(大概是因为我读到的书都在应用语法层兜圈子，事实上
-Lisp的语法之统一，全特么的是s-expression)，你不愿意花费这些成本</li>
-<li>you are too old bo to be a B</li>
-</ul>
-
-
-<h2>关于这篇文档</h2>
-
-<p>这篇博客我使用reStructuredText格式编写，然后用docutls导出为html，再然后使用这回
-用lisp开发的基于metaweblog API的博客客户端，自动发布到CPPBLOG。</p>
-
-<h2>他们怎么说Lisp</h2>
-
-<p>我就摘录些书上的观点(历史)：</p>
-
-<ul>
-<li>1958年，John McCarthy和他的学生搞出了Lisp，包括其第一个实现，最初貌似也是以一
-篇论文起头</li>
-<li>Lisp可以让你做其他语言里无法做的事情(&lt;ANSI common Lisp&gt;)</li>
-<li>大部分编程语言只会告诉你不能怎样做，这限制了你解决问题的思路，Lisp not (&lt;ANSI
-Common Lisp&gt;)</li>
-<li>Lisp让你以Lisp的思维思考问题，换到其他语言你会说：为什么X语言就不支持这个特性
-呢(Once you&#8217;ve leanred Lisp, you&#8217;ll even dream in Lisp) (&lt;Land Of Lisp&gt;)</li>
-<li>Lisp代码更清晰地体现你的想法(&lt;Practical Common Lisp&gt;)</li>
-</ul>
-
-
-<h2>And my opinion</h2>
-
-<p>我可还没到把Lisp捧上天的地步。如果Lisp如此之好，为什么用的人不多？&lt;Land Of Lisp&gt;
-里作者恰好对这个问题做了回答(bla bla bla，懒得细读)。</p>
-
-<ul>
-<li>Lisp也是一门杂和型风格的语言，函数式、命令式、面向对象，以及最被人吹捧的宏编程
-&#8211;程序自己写自己</li>
-<li>Lisp的语句全部以(xxx xxx)的形式出现，被称为s-expression，我看称为括号表达式还
-差不多</li>
-<li>Lisp每条语句都有返回值，没基础过函数式编程的同学，if语句也是有返回值的</li>
-<li>函数式编程语言的一个重要特性就是闭包(closure)，这个东西用来避免全局变量实在太
-geek了</li>
-</ul>
-
-
-<h2>开始学习Lisp</h2>
-
-<p>Lisp不像有些语言，有个直接的机构来维护。感觉它更像C/C++一样，只有个标准，然后有
-若干编译器（解释器）实现。Lisp在几十年的发展中，产生了很多种方言。方言也就是形变
-神不变的语言变种，本文说的Lisp均指Lisp的方言Common Lisp。另一个比较有名的方言是
-Scheme，关于各个方言的特点，&lt;Land Of Lisp&gt;里也给了一个图片：</p>
-
-<p><img src="http://codemacro.com/assets/res/lisp_writer/dialect.png" alt="dialect" /></p>
-
-<p>其中，最左边那只wolf就是Common Lisp，右边那只sheep就是Scheme。</p>
-
-<p>要学习Lisp，首先就是选择方言。然后最重要的就是选择一个编译器实现。世界上知名的有
-十几种实现（也许更多）。一些商业版本非常强大，甚至能编译出很小的本地代码执行文件
-，不过价格也不菲。当然也有很多开源免费的实现，例如CLISP、SBCL。我选用的是SBCL。</p>
-
-<p>SBCL交互式命令行不支持括号匹配，甚至没有输入历史。要实现这两个功能，可以装一个
-lisp工具：linedit。在lisp的世界中，要获得一个lisp的库实在不是件方便的事。尤其是
-这些免费的编译器实现，并不像有些语言一样，直接随编译器带个几十M的库。</p>
-
-<p>然后就有了quicklisp这个工具。该工具就像Ubuntu系统里的软件管理器一样，你可以在
-lisp里直接获取某个库。quicklisp检查该库是否存在，不存在直接从它的服务器上下载人
-然后自动安装。</p>
-
-<p>此外，在lisp的世界里，写出来的程序不再是跨OS。OS的差异由编译器实现来解决。但是，
-写lisp程序却需要考虑跨编译器实现（egg hurt）。这也是个无比伤神的事，比跨OS更伤
-神。因为OS就那么几个，但lisp的编译器实现，流行的也有好几个。</p>
-
-<p>lisp的世界里，工程组织也有特殊的一套，就像makefile一样，这就是asdf。</p>
-
-<h2>博客客户端如何实现</h2>
-
-<p>像我们这种基本没接触过Web开发的人，可能完全没有思路去实现一个博客客户端。事实上
-实现起来非常简单。</p>
-
-<p>使用过其他博客客户端（例如Windows Live writer）的人肯定知道metaweblog API，在配
-置客户端的时候需要填入。例如CPPBLOG的这个地址就是
-http://www.cppblog.com/kevinlynx/services/metaweblog.aspx。这个页面展示了一些API
-说明。这些API就是博客客户端和服务器进行操作通信的接口。意思是说，服务器端提供这
-这些接口，我们的客户端调用这些接口即可。例如:</p>
-
-<pre><code>blogger.deletePost，调用该接口即可删除一篇博客文章
-</code></pre>
-
-<p>但是客户端如何调用到这个接口呢？这需要通过一种新的技术（或者说标准），即 <strong>xml rpc</strong>
-。rpc大家应该清楚，xml rpc其实说白了， <strong>就是把接口调用的细则塞进</strong> <strong>http
-请求发给web服务器，服务器接收请求完成操作后再把结果以http回应的形式丢给客户端，
-即完成了一次接口调用</strong> 。</p>
-
-<p>至于http请求回应的细则就不提了，无非就是一些特殊格式的数据，通过tcp连接与服务器
-交互这些数据。</p>
-
-<p>所以，基本上，整个过程还是非常简单。如何来将调用细节塞进http请求，则是以xml rpc
-标准来做，其格式正好是xml格式。举个例子吧:</p>
-
-<div class="highlight"><pre><code class="xml"><span class="cp">&lt;?xml version=&#39;1.0&#39;?&gt;</span>
-<span class="nt">&lt;methodCall&gt;</span>
-    <span class="nt">&lt;methodName&gt;</span>title_or_id<span class="nt">&lt;/methodName&gt;</span>
-        <span class="nt">&lt;params&gt;</span>
-        <span class="nt">&lt;/params&gt;</span>
-<span class="nt">&lt;/methodCall&gt;</span>
-</code></pre>
-</div>
-
-
-<p>当然这部分数据之前就是若干http请求的数据。服务器回应也是以xml格式组织:</p>
-
-<div class="highlight"><pre><code class="xml"><span class="cp">&lt;?xml version=&#39;1.0&#39;?&gt;</span>
-<span class="nt">&lt;methodResponse&gt;</span>
-    <span class="nt">&lt;params&gt;</span>
-        <span class="nt">&lt;param&gt;</span>
-            <span class="nt">&lt;value&gt;&lt;string&gt;</span>Welcome to Zope.org<span class="nt">&lt;/string&gt;&lt;/value&gt;</span>
-        <span class="nt">&lt;/param&gt;</span>
-    <span class="nt">&lt;/params&gt;</span>
-<span class="nt">&lt;/methodResponse&gt;</span>
-</code></pre>
-</div>
-
-
-<p>我们的博客客户端所要做的，就是把这些博客发布相关的操作封装起来提供给使用者。底层
-实现主要包括http请求、xml-rpc的组织等。何况，这两部分在各个语言里都有大量的库存
-在，lisp自然也有。</p>
-
-<p>我这里直接选取了lisp的一个xml-rpc库：s-xml-rpc，基本上百来行代码就可以把各个功
-能跑一遍。例如以下lisp代码就实现了通过s-xml-rpc删除CPPBLOG的一篇文章:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defun</span> <span class="nv">delete-post</span> <span class="p">(</span><span class="nv">postid</span><span class="p">)</span>
-  <span class="p">(</span><span class="nv">rpc-call</span> 
-    <span class="s">&quot;blogger.deletePost&quot;</span>
-    <span class="nv">postid</span>
-    <span class="s">&quot;kevinlynx&quot;</span>
-    <span class="s">&quot;password&quot;</span>
-    <span class="no">t</span><span class="p">))</span>
-</code></pre>
-</div>
-
-
-<p>发布博客也很简单，根据metaweblog API接口的说明，发布博客时需要填充一个结构体。但
-主要涉及到的数据仅包括：文章内容、文章标题、文章分类（可选）:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defun</span> <span class="nv">new-post</span> <span class="p">(</span><span class="nv">title</span> <span class="nv">context</span> <span class="k">&amp;optional</span> <span class="p">(</span><span class="nv">cates</span><span class="p">))</span>
-  <span class="p">(</span><span class="nv">rpc-call</span> 
-    <span class="s">&quot;metaWeblog.newPost&quot;</span>
-    <span class="s">&quot;&quot;</span>
-    <span class="s">&quot;kevinlynx&quot;</span>
-    <span class="s">&quot;password&quot;</span>
-    <span class="p">(</span><span class="nv">new-post-struct</span> <span class="nv">title</span> <span class="nv">context</span> <span class="nv">cates</span><span class="p">)</span>
-    <span class="no">t</span><span class="p">))</span>
-</code></pre>
-</div>
-
-
-<p>值得注意的是，如果文章中有贴图，则需要事先将图片文件上传到服务器。CPPBLOG的
-metaweblog API里恰有API提供:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defun</span> <span class="nv">new-media-object</span> <span class="p">(</span><span class="nv">filename</span><span class="p">)</span>
-  <span class="p">(</span><span class="nv">rpc-call</span> 
-    <span class="s">&quot;metaWeblog.newMediaObject&quot;</span>
-    <span class="s">&quot;&quot;</span>
-    <span class="s">&quot;kevinlynx&quot;</span>
-    <span class="s">&quot;password&quot;</span>
-    <span class="p">(</span><span class="nv">new-media-object-struct</span> <span class="nv">filename</span><span class="p">)))</span>
-</code></pre>
-</div>
-
-
-<p>该函数读入图片文件，然后调用metaWeblog.newMediaObject接口，即可完成上传。上传成
-功后，服务器会返回该图片的URL。然后在我们的文章中就可以使用该图片了。</p>
-
-<h2>完整实现方案</h2>
-
-<p>仅仅将metaweblog的一些接口做封装，对于一个可以使用的博客客户端来说还远远不够。大
-部分同类工具都有一个友好的GUI编辑界面。我并不打算弄一个编辑界面出来，吃力不讨好
-的事情。</p>
-
-<p>我的打算是先用其他工具对文章做排版处理，最后导出为html格式。因为CPPBLOG支持直接
-发布一个html文件。然后在用这个lisp工具将整个文件作为博客文章内容发布。</p>
-
-<p>恰好公司最近打算用reStructureText(rst)格式来编辑文档，作为熟悉手段，我决定拿这个
-来练手。rst格式非常简单，同wiki命令很相似。在vim里编辑该文件非常合适，因为默认支
-持。见图:</p>
-
-<p><img src="http://codemacro.com/assets/res/lisp_writer/rst.png" alt="rst_sample" /></p>
-
-<p>由图即可看出，rst是一种半所见即所得的格式。即：它遵循你在编辑器里的排版，同时也
-通过一些tag（例如image）来控制更丰富的输出。</p>
-
-<p>rst有很多前端工具，可以将rst文件输出，例如rst2html.py就可以输出为html。好吧，最
-最终我们得到了html格式的博客文章。</p>
-
-<p>但是如果文章中出现了图片，而图片基本上在本地，转成html后也是相对路径。我需要我的
-lisp writer(cl-writer)能自动扫描文章，发现有图片的地方，就自动将图片上传。最恶心
-的是上传后还得替换图片引用路径。这个工作可以在rst格式上做，也可以在结果格式html
-上做。通过xml解析库解析html比直接解析rst格式更简单，并且在扩展性上更好。</p>
-
-<p>最终这个html中图片路径替换工作只消耗了不到100行lisp代码。这在很大程度上也依赖于
-s-xml库的接口设计。</p>
-
-<p>最终封装好的发布接口如下，从这里也可以看出，函数式语言锻炼我们写出功能单一代码度
-短小的接口:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defun</span> <span class="nv">writer-post-new</span> <span class="p">(</span><span class="nv">post-file</span> <span class="k">&amp;key</span> <span class="p">(</span><span class="nv">u</span> <span class="p">(</span><span class="nv">get-default-user</span><span class="p">))(</span><span class="nv">cates</span><span class="p">))</span>
-  <span class="p">(</span><span class="nv">read-post-file</span> <span class="nv">u</span> <span class="nv">post-file</span> <span class="nv">context</span> <span class="nv">title</span>
-                  <span class="p">(</span><span class="nv">new-post</span> <span class="nv">u</span> <span class="nv">title</span> <span class="nv">context</span> <span class="nv">cates</span><span class="p">)))</span>
-</code></pre>
-</div>
-
-
-<h2>END</h2>
-
-<p>别指望我发布的代码能够让你一键在你的博客上留下&#8221;this is a test&#8221;，你甚至别指望它能
-能够工作。但如果你本来就是一个资深的lisper，或者虽然不是lisper但却执意想看看结果
-。这里我就简要说说如何让这些代码欢乐起来:</p>
-
-<ul>
-<li>OS Ubuntu10.04，下载安装SBCL，不会有问题；</li>
-<li>下载安装quicklisp，官方文档hand by hand，简单不会有问题；</li>
-<li>SBCL交互环境中使用quicklisp安装s-xml-rpc:</li>
-</ul>
-
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nv">ql:quickload</span> <span class="s">&quot;s-xml-rpc&quot;</span><span class="p">)</span> 
-</code></pre>
-</div>
-
-
-<ul>
-<li>装载我的代码:</li>
-</ul>
-
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nv">asdf:load-system</span> <span class="ss">:cl-writer</span><span class="p">)</span>
-</code></pre>
-</div>
-
-
-<ul>
-<li>在home下添加配置文件.cl-writer.lisp，配置你博客信息，例如:</li>
-</ul>
-
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">in-package</span> <span class="nv">cl-writer</span><span class="p">)</span>
-<span class="p">(</span><span class="nb">setf</span> <span class="vg">*default-user*</span> <span class="p">(</span><span class="nv">make-cppblog-user</span> <span class="s">&quot;账户名&quot;</span> <span class="s">&quot;密码&quot;</span><span class="p">))</span>
-</code></pre>
-</div>
-
-
-<ul>
-<li>SBCL交互环境下测试:</li>
-</ul>
-
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">in-package</span> <span class="nv">cl-writer</span><span class="p">)</span>
-<span class="p">(</span><span class="nv">new-post</span> <span class="p">(</span><span class="nv">get-default-user</span><span class="p">)</span> <span class="s">&quot;this is a test&quot;</span> <span class="s">&quot;title&quot;</span><span class="p">)</span>
-</code></pre>
-</div>
-
-
-<p><a href="http://www.cppblog.com/Files/kevinlynx/cl-writer.tar.gz">下载代码</a></p>
-
-<p>最后，终于敲完这篇文章，我需要通过以下步骤来发表它:</p>
-
-<pre><code>in shell:
-
-rst2html.py lisp_xml_rpc.rst lisp_xml_rpc.html
-
-in SBCL:
-
-(writer-post-new "lisp_xml_rpc.html")
-</code></pre>
-
-<p>EOF</p>
 ]]></content>
   </entry>
   

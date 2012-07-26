@@ -9,11 +9,7 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="简介 因为写 ext-blog
-的原因，慢慢喜欢上github_ 。然后突然有一天产生了一个想法：如果可以把自己的博客_ 和
-github主页
-集中到一块展示给别人，会不会是一种很方便的自我简介方式？然后我就动手写了
-codertrace.com 。 ">
+  <meta name="description" content="我们的逻辑服务器(Game Server，以下简称GS)主要逻辑大概是从去年夏天开始写的。因为很多基础模块，包括整体结构沿用了上个项目的代码，所以算不上从头开始做。转眼又快一年，我觉得回头总结下对于经验的积累太有必要。 整体架构 GS的架构很大程度取决于游戏的功能需求， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +66,94 @@ codertrace.com 。 ">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/04/23/game-server-info-1/">谈谈我们的游戏逻辑服务器实现（一）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-23T00:00:00+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我们的逻辑服务器(Game Server，以下简称GS)主要逻辑大概是从去年夏天开始写的。因为很多基础模块，包括整体结构沿用了上个项目的代码，所以算不上从头开始做。转眼又快一年，我觉得回头总结下对于经验的积累太有必要。</p>
+
+<h2>整体架构</h2>
+
+<p>GS的架构很大程度取决于游戏的功能需求，当然更受限于上个项目的基础架构。基础架构包括场景、对象的关系管理，消息广播等。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/04/23/game-server-info-1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/04/20/blog-on-github/">使用Github Page来写博客</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-20T00:00:00+08:00" pubdate data-updated="true">Apr 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最开始知道<a href="http://pages.github.com/">Github Page</a>，是通过<a href="http://codertrace.com">codertrace</a>上的某些注册用户，他们的BLOG就建立在Github Page上，并且清一色的干净整洁（简陋），这看起来很酷。</p>
+
+<p>Github提供了很多很合coder口味的东西，例如Gist，也包括这里提到的Page。Page并不是特用于建立博客的产品，它仅提供静态页面的显示。它最酷的地方，是通过Git的方式来让你管理这些静态页面。通过建立一个repository，并使用markdown语法来编写文章，然后通过Git来管理这些文章，你就可以自动将其发布出去。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/04/20/blog-on-github/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -222,92 +306,6 @@ codertrace.com 。 ">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2011/05/02/entity-property/">MMO游戏对象属性设计</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-02T00:00:00+08:00" pubdate data-updated="true">May 2<span>nd</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>一般的MMORPG中，游戏对象主要包括怪物和玩家。这两类对象在经过游戏性方面的不断“进化”后，其属性数量及与之相关的逻辑往往会变得很巨大。如何将这一块做得既不损失效率，又能保证结构的灵活、清晰、可维护？本文将提供一种简单的结构。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2011/05/02/entity-property/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2011/04/30/multi-inherit-void/">多重继承和void*的糗事</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-04-30T00:00:00+08:00" pubdate data-updated="true">Apr 30<span>th</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>C++为了兼容C，导致了不少语言阴暗面。Bjarne
-Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，强制转换也是C++的一大诟病。但是，因为我们的应用环境总是那么“不
-纯”，所以也就常常导致各种问题。</p>
-
-<p>本文即描述了一个关于强制转换带来的问题。这个问题几年前我曾遇到过(&lt;<a href="http://www.cppblog.com/kevinlynx/archive/2008/04/24/48001.html">多线程下vc2003,vc2005对虚函数表处理的BUG？</a>>)，当时没来得及深究。深究C++的某些语法，实在是件辛苦事。所以，这里也不提过于诡异的用法。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2011/04/30/multi-inherit-void/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/4/">&larr; Older</a>
@@ -328,8 +326,9 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
 <li class='category'><a href='/categories/lisp/'>lisp (4)</a></li>
 <li class='category'><a href='/categories/lua/'>lua (2)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
-<li class='category'><a href='/categories/other/'>other (3)</a></li>
-<li class='category'><a href='/categories/tips/'>tips (6)</a></li>
+<li class='category'><a href='/categories/other/'>other (4)</a></li>
+<li class='category'><a href='/categories/ruby/'>ruby (1)</a></li>
+<li class='category'><a href='/categories/tips/'>tips (8)</a></li>
 <li class='category'><a href='/categories/web/'>web (3)</a></li>
 
   </ul>
@@ -338,6 +337,14 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/07/26/post-footer-plugin-for-octopress/">为octopress每篇文章添加一个文章信息</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/07/26/ruby-case-when/">ruby中的case&#8230;when语法</a>
+      </li>
     
       <li class="post">
         <a href="/2012/07/24/html-table-hover/">HTML中table的高亮以及tooltip</a>
@@ -349,14 +356,6 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
     
       <li class="post">
         <a href="/2012/07/19/popup-window-in-html/">HTML中实现弹出窗口</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/07/18/start-to-write-tips/">开始记录编程方面的技巧</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/07/18/add-tag-to-octopress/">为octopress添加tag cloud</a>
       </li>
     
   </ul>
@@ -371,21 +370,22 @@ Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，�
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-<a style="font-size: 90%" href="/tags/blog/">blog</a>
+<a style="font-size: 133%" href="/tags/blog/">blog</a>
 <a style="font-size: 90%" href="/tags/c-c-/">c/c++</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
-<a style="font-size: 172%" href="/tags/game-develop/">game develop</a>
+<a style="font-size: 158%" href="/tags/game-develop/">game develop</a>
 <a style="font-size: 90%" href="/tags/github/">github</a>
-<a style="font-size: 142%" href="/tags/html/">html</a>
+<a style="font-size: 133%" href="/tags/html/">html</a>
 <a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
-<a style="font-size: 193%" href="/tags/lisp/">lisp</a>
-<a style="font-size: 142%" href="/tags/lua/">lua</a>
+<a style="font-size: 175%" href="/tags/lisp/">lisp</a>
+<a style="font-size: 133%" href="/tags/lua/">lua</a>
 <a style="font-size: 90%" href="/tags/module/">module</a>
-<a style="font-size: 142%" href="/tags/octopress/">octopress</a>
+<a style="font-size: 158%" href="/tags/octopress/">octopress</a>
 <a style="font-size: 90%" href="/tags/rails/">rails</a>
+<a style="font-size: 90%" href="/tags/ruby/">ruby</a>
 <a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
-<a style="font-size: 142%" href="/tags/web/">web</a>
+<a style="font-size: 133%" href="/tags/web/">web</a>
 
   </ul>
 </section>

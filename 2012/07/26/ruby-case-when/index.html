@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>为octopress添加分类(category)列表 - loop in codes</title>
+  <title>ruby中的case...when语法 - loop in codes</title>
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="参考http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/。大致步骤为： 增加category_list插件 保存以下代码到plugins/category_list_tag.rb： module Jekyll &hellip;">
+  <meta name="description" content="参考How to write a switch statement in Ruby? 其实用Rails写个业务逻辑不算复杂的app根本用不上ruby的很多高级语法，更别说&lt;meta programming in ruby>中的东西了（凡是打上meta &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://codemacro.com/2012/07/18/add-category-list-to-octopress">
+  <link rel="canonical" href="http://codemacro.com/2012/07/26/ruby-case-when">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -69,7 +69,7 @@
   
   <header>
     
-      <h1 class="entry-title">为octopress添加分类(category)列表</h1>
+      <h1 class="entry-title">ruby中的case...when语法</h1>
     
     
       <p class="meta">
@@ -85,71 +85,52 @@
   
 
 
-<time datetime="2012-07-18T16:10:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+<time datetime="2012-07-26T10:13:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>参考<a href="http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/">http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/</a>。大致步骤为：</p>
+<div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/948135/how-to-write-a-switch-statement-in-ruby">How to write a switch statement in Ruby?</a></p>
 
-<p><strong>增加category_list插件</strong></p>
+<p>其实用Rails写个业务逻辑不算复杂的app根本用不上ruby的很多高级语法，更别说&lt;meta programming in ruby>中的东西了（凡是打上meta programming标签的都不是什么简单的东西，参考c++/lisp）。ruby中的case&#8230;when语句和c/c++中的switch&#8230;case其实根本不是一回事。&lt;Programming in Ruby 2nd>：</p>
 
-<p>保存以下代码到plugins/category_list_tag.rb：</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="k">module</span> <span class="nn">Jekyll</span>
-  <span class="k">class</span> <span class="nc">CategoryListTag</span> <span class="o">&lt;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Tag</span>
-    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
-      <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-      <span class="n">categories</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">registers</span><span class="o">[</span><span class="ss">:site</span><span class="o">].</span><span class="n">categories</span><span class="o">.</span><span class="n">keys</span>
-      <span class="n">categories</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">category</span><span class="o">|</span>
-        <span class="n">posts_in_category</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">registers</span><span class="o">[</span><span class="ss">:site</span><span class="o">].</span><span class="n">categories</span><span class="o">[</span><span class="n">category</span><span class="o">].</span><span class="n">size</span>
-        <span class="n">category_dir</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">registers</span><span class="o">[</span><span class="ss">:site</span><span class="o">].</span><span class="n">config</span><span class="o">[</span><span class="s1">&#39;category_dir&#39;</span><span class="o">]</span>
-        <span class="n">category_url</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">category_dir</span><span class="p">,</span> <span class="n">category</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/_|\P{Word}/</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/-{2,}/</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">downcase</span><span class="p">)</span>
-        <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;&lt;li class=&#39;category&#39;&gt;&lt;a href=&#39;/</span><span class="si">#{</span><span class="n">category_url</span><span class="si">}</span><span class="s2">/&#39;&gt;</span><span class="si">#{</span><span class="n">category</span><span class="si">}</span><span class="s2"> (</span><span class="si">#{</span><span class="n">posts_in_category</span><span class="si">}</span><span class="s2">)&lt;/a&gt;&lt;/li&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
-      <span class="k">end</span>
-      <span class="n">html</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="o">.</span><span class="n">register_tag</span><span class="p">(</span><span class="s1">&#39;category_list&#39;</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">CategoryListTag</span><span class="p">)</span>
-</code></pre>
-</div>
-
-
-<p>这个插件会向liquid注册一个名为category_list的tag，该tag就是以li的形式将站点所有的category组织起来。如果要将category加入到侧边导航栏，需要增加一个aside。</p>
+<blockquote><p>case operates by comparing the target with each of the comparison expression after the when keywords. This test is done using comparison === target.</p></blockquote>
 
 <!-- more -->
 
 
-<p><strong>增加aside</strong></p>
+<p>也就是说case&#8230;when用的不是==操作符，不是使用相等逻辑去判断，而是使用===运算符。===运算符从C++的角度简单来说就是判定is-a关系，例如</p>
 
-<p>复制以下代码到source/_includes/asides/category_list.html。</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="n">section</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Categories</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-<span class="sr">  &lt;ul id=&quot;categories&quot;&gt;</span>
-<span class="sr">    {% category_list %}</span>
-<span class="sr">  &lt;/u</span><span class="n">l</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="sr">/section&gt;</span>
+<div class="highlight"><pre><code class="ruby"><span class="no">Fixnum</span> <span class="o">===</span> <span class="mi">1</span>
+<span class="nb">String</span> <span class="o">===</span> <span class="s2">&quot;hello&quot;</span>
+<span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">2</span>
 </code></pre>
 </div>
 
 
-<p>配置侧边栏需要修改_config.yml文件，修改其default_asides项：</p>
+<p>1 is a Fixnum，hello is a String，2 is a (1..3) (in the range of)。比较让人产生误解的，大概就是1===1也为true。所以理解起来，也不纯碎是is-a关系。</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">default_asides</span><span class="p">:</span> <span class="o">[</span><span class="n">asides</span><span class="o">/</span><span class="n">category_list</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="n">asides</span><span class="o">/</span><span class="n">recent_posts</span><span class="o">.</span><span class="n">html</span><span class="o">]</span>
+<div class="highlight"><pre><code class="ruby"><span class="k">case</span> <span class="n">a</span>
+<span class="k">when</span> <span class="no">Fixnum</span>
+    <span class="nb">puts</span> <span class="s2">&quot;fixnum&quot;</span>
+<span class="k">when</span> <span class="nb">String</span>
+    <span class="nb">puts</span> <span class="s2">&quot;string&quot;</span>
+<span class="k">when</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">&quot;between 1 and 3&quot;</span>
+<span class="k">else</span>
+    <span class="nb">puts</span> <span class="s2">&quot;default&quot;</span>
+<span class="k">end</span>
 </code></pre>
 </div>
 
 
-<p>以上asides根据自己的需求调整。</p>
+<p>最后，作为一种functional-like language，其语句也算是表达式，意即也有返回值。case..when的返回值就是执行的分支的返回值。</p>
 
 <p class='post-footer'>
             原文地址：
-            <a href='http://codemacro.com/2012/07/18/add-category-list-to-octopress/'>http://codemacro.com/2012/07/18/add-category-list-to-octopress/</a><br/>
+            <a href='http://codemacro.com/2012/07/26/ruby-case-when/'>http://codemacro.com/2012/07/26/ruby-case-when/</a><br/>
             &nbsp;written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>
@@ -176,12 +157,12 @@
   
 
 
-<time datetime="2012-07-18T16:10:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+<time datetime="2012-07-26T10:13:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/categories/tips/'>tips</a>
+    <a class='category' href='/categories/ruby/'>ruby</a>, <a class='category' href='/categories/tips/'>tips</a>
   
 </span>
 
@@ -197,10 +178,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/2012/05/10/tolua-api/" title="Previous Post: tolua的tolua_toxxx系列API设计">&laquo; tolua的tolua_toxxx系列API设计</a>
+        <a class="basic-alignment left" href="/2012/07/24/html-table-hover/" title="Previous Post: HTML中table的高亮以及tooltip">&laquo; HTML中table的高亮以及tooltip</a>
       
       
-        <a class="basic-alignment right" href="/2012/07/18/add-tag-to-octopress/" title="Next Post: 为octopress添加tag cloud">为octopress添加tag cloud &raquo;</a>
+        <a class="basic-alignment right" href="/2012/07/26/post-footer-plugin-for-octopress/" title="Next Post: 为octopress每篇文章添加一个文章信息">为octopress每篇文章添加一个文章信息 &raquo;</a>
       
     </p>
   </footer>
@@ -307,8 +288,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://codemacro.com/2012/07/18/add-category-list-to-octopress/';
-        var disqus_url = 'http://codemacro.com/2012/07/18/add-category-list-to-octopress/';
+        var disqus_identifier = 'http://codemacro.com/2012/07/26/ruby-case-when/';
+        var disqus_url = 'http://codemacro.com/2012/07/26/ruby-case-when/';
         var disqus_script = 'embed.js';
       
     (function () {
