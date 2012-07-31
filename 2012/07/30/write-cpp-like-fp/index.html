@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>loop in codes</title>
+  <title>像写函数式语言代码一样写C++ - loop in codes</title>
   <meta name="author" content="Kevin Lynx">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://codemacro.com">
+  <link rel="canonical" href="http://codemacro.com/2012/07/30/write-cpp-like-fp">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -64,15 +64,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/2012/07/30/write-cpp-like-fp/">像写函数式语言代码一样写C++</a></h1>
+      <h1 class="entry-title">像写函数式语言代码一样写C++</h1>
     
     
       <p class="meta">
@@ -95,7 +92,7 @@
   </header>
 
 
-  <div class="entry-content"><p>忘记最早接触函数式编程语言是什么时候了，也忘记接触的第一门函数式语言是哪一门。断断续续接触过好几种函数式语言（当然都算不纯的，ruby/lisp不算纯吧），这些语言的思想在潜移默化中多多少少对我有所影响。</p>
+<div class="entry-content"><p>忘记最早接触函数式编程语言是什么时候了，也忘记接触的第一门函数式语言是哪一门。断断续续接触过好几种函数式语言（当然都算不纯的，ruby/lisp不算纯吧），这些语言的思想在潜移默化中多多少少对我有所影响。</p>
 
 <p>我是个C++程序员，我不知道我平时写的都是些什么代码。最让人印象深刻就是我会经常写遍历STL容器的代码，是经常，这样的遍历你可能也不陌生：</p>
 
@@ -261,65 +258,16 @@
             </p>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/07/26/post-footer-plugin-for-octopress/">为octopress每篇文章添加一个文章信息</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Kevin Lynx</span></span>
 
-<time datetime="2012-07-26T14:27:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>当你的博客文章被转载时，你肯定希望转载者能添加一个原始地址。或者你的文章被各种RSS抓取器抓取时，你也希望能在明显的位置显示这个原始地址。使用octopress写博客时，可以通过插件来做这件事。最开始，我只是想单纯地添加这个“原始地址“，一番google未能找到现成的插件，所以只好动手。</p>
-
-<p>话说编写octopress真不是件容易事，因为我实在没找到编写插件的文档。octopress基于jekyll，jekyll又使用了liquid。最后我把这几个项目的文档都翻了下，也仅仅看到几个代码示例，而且liquid的API页面居然出错。无奈之下只好多翻了些现有插件的代码，摸索着来写。写octopress的插件，主要分为generator/tag/filter几种。tag很好理解，就是在文章中插入一个插件注册的tag，然后生成页面时就会调用到对应的插件。filter大概就是把文章内容过滤一遍转换成其他内容输出。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/07/26/post-footer-plugin-for-octopress/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/07/26/ruby-case-when/">ruby中的case&#8230;when语法</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -331,144 +279,42 @@
   
 
 
-<time datetime="2012-07-26T10:13:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/948135/how-to-write-a-switch-statement-in-ruby">How to write a switch statement in Ruby?</a></p>
-
-<p>其实用Rails写个业务逻辑不算复杂的app根本用不上ruby的很多高级语法，更别说&lt;meta programming in ruby>中的东西了（凡是打上meta programming标签的都不是什么简单的东西，参考c++/lisp）。ruby中的case&#8230;when语句和c/c++中的switch&#8230;case其实根本不是一回事。&lt;Programming in Ruby 2nd>：</p>
-
-<blockquote><p>case operates by comparing the target with each of the comparison expression after the when keywords. This test is done using comparison === target.</p></blockquote>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/07/26/ruby-case-when/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2012-07-30T17:11:00+08:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/07/24/html-table-hover/">HTML中table的高亮以及tooltip</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/categories/c-c-/'>c/c++</a>, <a class='category' href='/categories/tips/'>tips</a>
+  
+</span>
 
 
-<time datetime="2012-07-24T16:08:00+08:00" pubdate data-updated="true">Jul 24<span>th</span>, 2012</time>
-        
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>在一个需要显示很多数据的表格(table)中，为了更友好地查看一行数据，常常需要在鼠标指针移到某一行时，高亮此行。要实现这个效果有很多方法，这里列举一个方法：</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">setTableHover</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="nx">t</span> <span class="o">+</span> <span class="s2">&quot; tbody tr&quot;</span><span class="p">)</span>
-      <span class="p">.</span><span class="nx">mouseover</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);})</span>
-      <span class="p">.</span><span class="nx">mouseout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);</span> <span class="p">})</span>
-<span class="p">}</span>
-</code></pre>
+      <div class="sharing">
+  
+  
+  
 </div>
 
-
-<p>主要就是在鼠标移到某一行时，为该行添加一个高亮的css class，鼠标离开时移除该class即可。可以为一个特定的table设定：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/07/24/html-table-hover/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/07/20/get-client-timezone-in-rails/">Rails中获取客户端时区</a></h1>
-    
-    
-      <p class="meta">
-        
+        <a class="basic-alignment left" href="/2012/07/26/post-footer-plugin-for-octopress/" title="Previous Post: 为octopress每篇文章添加一个文章信息">&laquo; 为octopress每篇文章添加一个文章信息</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-20T16:42:00+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>开发网站功能时，有时候需要获取客户端（浏览器）所在的时区，然后根据不同的时区做一些不同的逻辑功能。这里提供一种方法，其思路为客户端通过js获取时区，然后发送给服务器，服务器存储时区到session中。</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">submit_timezone</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;offset_min&#39;</span> <span class="o">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">getTimezoneOffset</span><span class="p">())});</span>
-<span class="p">}</span>
-
-<span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">submit_timezone</span><span class="p">(</span><span class="s1">&#39;&lt;%= sys_timezone_path %&gt;&#39;</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre>
 </div>
 
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/07/20/get-client-timezone-in-rails/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -500,7 +346,7 @@
       </li>
     
       <li class="post">
-        <a href="/2012/07/26/ruby-case-when/">ruby中的case&#8230;when语法</a>
+        <a href="/2012/07/26/ruby-case-when/">ruby中的case...when语法</a>
       </li>
     
       <li class="post">
@@ -546,6 +392,7 @@
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -560,7 +407,10 @@
       var disqus_shortname = 'loopincodes';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://codemacro.com/2012/07/30/write-cpp-like-fp/';
+        var disqus_url = 'http://codemacro.com/2012/07/30/write-cpp-like-fp/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

@@ -4,7 +4,7 @@
   <title><![CDATA[loop in codes]]></title>
   <link href="http://codemacro.com/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-07-26T16:30:20+08:00</updated>
+  <updated>2012-07-31T09:38:46+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,179 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[像写函数式语言代码一样写C++]]></title>
+    <link href="http://codemacro.com/2012/07/30/write-cpp-like-fp/"/>
+    <updated>2012-07-30T17:11:00+08:00</updated>
+    <id>http://codemacro.com/2012/07/30/write-cpp-like-fp</id>
+    <content type="html"><![CDATA[<p>忘记最早接触函数式编程语言是什么时候了，也忘记接触的第一门函数式语言是哪一门。断断续续接触过好几种函数式语言（当然都算不纯的，ruby/lisp不算纯吧），这些语言的思想在潜移默化中多多少少对我有所影响。</p>
+
+<p>我是个C++程序员，我不知道我平时写的都是些什么代码。最让人印象深刻就是我会经常写遍历STL容器的代码，是经常，这样的遍历你可能也不陌生：</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">for</span> <span class="p">(</span><span class="n">ListType</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">con</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">con</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">something</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+<p>或者针对std::map/set等的查找：</p>
+
+<div class="highlight"><pre><code class="c"><span class="n">Table</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">table</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">==</span> <span class="n">table</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+    <span class="k">do</span><span class="o">-</span><span class="n">something</span>
+<span class="k">do</span><span class="o">-</span><span class="n">something</span>
+</code></pre>
+</div>
+
+
+<p>多亏STL接口的一致性，这让我们写出了很多“一致性“代码。慢慢地我觉得恶心，不禁想起函数式编程语言中，对于这种需求一般都会提供类似的接口：</p>
+
+<div class="highlight"><pre><code class="lua"><span class="n">con</span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">some</span><span class="o">-</span><span class="n">filed</span> <span class="o">==</span> <span class="n">some</span><span class="o">-</span><span class="n">value</span><span class="p">)</span> <span class="k">return</span> <span class="n">something</span> <span class="k">end</span><span class="p">)</span>
+<span class="o">#</span> <span class="err">或者</span>
+<span class="n">con</span><span class="p">.</span><span class="n">each</span> <span class="k">do</span> <span class="err">|</span><span class="n">it</span><span class="err">|</span> <span class="k">if</span> <span class="n">it</span><span class="p">.</span><span class="n">some</span><span class="o">-</span><span class="n">filed</span> <span class="o">==</span> <span class="n">some</span><span class="o">-</span><span class="n">value</span> <span class="k">then</span> <span class="k">return</span> <span class="n">something</span> <span class="k">end</span> <span class="k">end</span>
+<span class="o">#</span> <span class="err">或者</span>
+<span class="p">(</span><span class="n">con</span><span class="p">.</span><span class="n">map</span> <span class="p">(</span><span class="n">lambda</span> <span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">(</span><span class="k">if</span> <span class="p">((</span><span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">some</span><span class="o">-</span><span class="n">filed</span> <span class="n">some</span><span class="o">-</span><span class="n">value</span><span class="p">))</span> <span class="p">(</span><span class="k">return</span> <span class="n">something</span><span class="p">))))</span>
+</code></pre>
+</div>
+
+
+<p>（好吧，lisp我又忘了）总之，这种针对容器的遍历操作，都会成为一种内置接口，并且通过lambda来让用户直接编写处理代码，少去写循环的冗余。然后，我写了类似下面的一组宏（随手敲的不保证能运行）：</p>
+
+<div class="highlight"><pre><code class="c"><span class="cp">#define IT_N __it</span>
+
+<span class="cp">#define TRAVERSE_MAP(type, map, exps) \</span>
+<span class="cp">    for (type::iterator IT_N = map.begin(); IT_N != map.end(); ++IT_N) { \</span>
+<span class="cp">        exps; \</span>
+<span class="cp">    }</span>
+<span class="cp">#define I_KEY (IT_N-&gt;first)</span>
+<span class="cp">#define I_VALUE (IT_N-&gt;second)</span>
+
+<span class="cp">#define TRAVERSE_LIST(type, list, exps) \</span>
+<span class="cp">    for (type::iterator IT_N = list.begin(); IT_N != list.end(); ++IT_N) { \</span>
+<span class="cp">        exps; \</span>
+<span class="cp">    }</span>
+<span class="cp">#define L_VALUE (*IT_N)</span>
+
+<span class="cp">#define FIDN_MAP_ITEM(type, map, key, fexps, texps) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        type::iterator IT_N = map.find(key); \</span>
+<span class="cp">        if (IT_N == map.end()) { \</span>
+<span class="cp">            fexps; \</span>
+<span class="cp">        } else { \</span>
+<span class="cp">            texps; \</span>
+<span class="cp">        } \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define VAL_N __val</span>
+<span class="cp">#define FIND_LIST_ITEM_IF(type, list, cmp, fexps, texps) \</span>
+<span class="cp">    do { \</span>
+<span class="cp">        struct Comp { \</span>
+<span class="cp">            bool operator() (const type::value_type &amp;VAL_N) const { \</span>
+<span class="cp">                return cmp; \</span>
+<span class="cp">            } \</span>
+<span class="cp">        }; \</span>
+<span class="cp">        type::iterator IT_N = std::find_if(list.begin(), list.end(), Comp()); \</span>
+<span class="cp">        if (IT_N != list.end()) { \</span>
+<span class="cp">            texps; \</span>
+<span class="cp">        } else { \</span>
+<span class="cp">            fexps; \</span>
+<span class="cp">        } \</span>
+<span class="cp">    } while(0)</span>
+
+<span class="cp">#define NULL_EXP ;</span>
+</code></pre>
+</div>
+
+
+<p>当然，以上接口都还包含一些const版本，用于const容器的使用。使用的时候（截取的项目中的使用例子）：</p>
+
+<div class="highlight"><pre><code class="c"><span class="n">TRAVERSE_MAP</span><span class="p">(</span><span class="n">TimerTable</span><span class="p">,</span> <span class="n">m_timers</span><span class="p">,</span> 
+        <span class="n">I_VALUE</span><span class="p">.</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">OnTimerCancel</span><span class="p">(</span><span class="n">I_KEY</span><span class="p">,</span> <span class="n">I_VALUE</span><span class="p">.</span><span class="n">arg</span><span class="p">);</span>
+        <span class="n">TIMER_CANCEL</span><span class="p">(</span><span class="n">I_VALUE</span><span class="p">.</span><span class="n">id</span><span class="p">));</span> 
+
+<span class="n">TRAVERSE_LIST</span><span class="p">(</span><span class="n">AreaList</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span>
+        <span class="n">ids</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">L_VALUE</span><span class="o">-&gt;</span><span class="n">ID</span><span class="p">()));</span>
+
+<span class="n">FIND_MAP_ITEM</span><span class="p">(</span><span class="n">PropertyTable</span><span class="p">,</span> <span class="n">m_properties</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span>
+        <span class="n">LogWarn</span><span class="p">(</span><span class="s">&quot;set a non-existed property %s&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span> <span class="k">return</span> <span class="n">NIL_VALUE</span><span class="p">,</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">val</span><span class="p">.</span><span class="n">Type</span><span class="p">()</span> <span class="o">!=</span> <span class="n">I_VALUE</span><span class="p">.</span><span class="n">type</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">NIL_VALUE</span><span class="p">;</span> 
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">GValue</span> <span class="n">old</span> <span class="o">=</span> <span class="n">I_VALUE</span><span class="p">;</span>
+            <span class="n">I_VALUE</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span> 
+            <span class="k">return</span> <span class="n">old</span><span class="p">;</span>
+        <span class="p">});</span>
+</code></pre>
+</div>
+
+
+<p>多亏了C/C++宏对一切内容的可容纳性，可以让我往宏参数里塞进像if这种复合语句，甚至多条语句（例如最后一个例子）。这些宏我使用了一段时间，开始觉得挺爽，很多函数的实现里，我再也不用写那些重复的代码了。但是后来我发觉这些代码越来越恶心了。最大的弊端在于不可调试，我只能将断点下到更深的代码层；然后就是看起来特不直观，连作者自己都看得觉得不直观了，可想而知那些连函数式编程语言都不知道是什么的C++程序员看到这些代码会是什么心情（可以想象哥已经被诅咒了多少次）。</p>
+
+<p>函数式语言让人写出更短的代码，这一点也对我有影响，例如我最近又写下了一些邪恶代码：</p>
+
+<div class="highlight"><pre><code class="c"><span class="c1">// split a string into several sub strings by a split character i.e:</span>
+<span class="c1">// &quot;a;b;c;&quot; =&gt; &quot;a&quot;, &quot;b&quot;, &quot;c&quot;</span>
+<span class="c1">// &quot;a;b;c&quot; =&gt; &quot;a&quot;, &quot;b&quot;, &quot;c&quot;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">SplitString</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">,</span> <span class="kt">char</span> <span class="n">split</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">last</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">str</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">split</span><span class="p">);</span> <span class="n">pos</span> <span class="o">!=</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">;</span> <span class="n">last</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">str</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">split</span><span class="p">,</span> <span class="n">last</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">ret</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">last</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">last</span> <span class="o">&lt;</span> <span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">?</span> <span class="n">ret</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">last</span><span class="p">))</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+<p>恶心的就是最后那条return语句，因为我需要处理&#8221;a;b;c&#8221;这种c后面没加分隔符的情况，但我并不愿意为了这个需求再写一个会占超过一行的if语句。因为，我太喜欢ruby里的if了：</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">do</span><span class="o">-</span><span class="n">something</span> <span class="k">if</span> <span class="n">exp</span>
+</code></pre>
+</div>
+
+
+<p>也就是ruby里允许这种只有一行if的代码将if放在其后并作为一条语句。我的不愿意其实是有理由的，在c/c++中有太多只有一行条件体的if语句，对这些语句参合进编程风格/可读性进来后，就不得不让你写出不安的代码，例如：</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span> <span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 某些编程风格里不允许这样做，因为它不方便调试</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 某些风格里又有大括号的统一要求</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 就算符合风格了，但这一条语句就得多个大括号</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span> 
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 某些风格里这大括号就更奢侈了</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+<p>这个return除了乍看上去有点纠结外，其实也不算什么大问题，但是那个问号表达式返回的0实在没有任何意义，而正是没有意义才会让它误导人。本来我是可以写成：</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">return</span> <span class="n">last</span> <span class="o">&lt;</span> <span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">ret</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">last</span><span class="p">)),</span> <span class="n">ret</span><span class="p">;</span>
+</code></pre>
+</div>
+
+
+<p>这样利用条件表达式的短路运算，代码也清晰多了。但是，std::vector::push_back是一个没有返回值的函数，所以。</p>
+
+<p>全文完。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/07/30/write-cpp-like-fp/'>http://codemacro.com/2012/07/30/write-cpp-like-fp/</a><br/>
+            written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[为octopress每篇文章添加一个文章信息]]></title>
@@ -1985,331 +2158,6 @@ Reader里订阅的一些RSS。最大的问题，就是关于HTTP重定向的问�
 <p class='post-footer'>
             原文地址：
             <a href='http://codemacro.com/2011/03/30/lisp-rss/'>http://codemacro.com/2011/03/30/lisp-rss/</a><br/>
-            written by <a href='http://codemacro.com'>Kevin Lynx</a>
-            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
-            </p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Lisp一瞥：增强型变量Symbol]]></title>
-    <link href="http://codemacro.com/2011/03/21/lisp-symbol/"/>
-    <updated>2011-03-21T00:00:00+08:00</updated>
-    <id>http://codemacro.com/2011/03/21/lisp-symbol</id>
-    <content type="html"><![CDATA[<p>变量，是所有编程语言里都有的语法概念。在C/C++中，变量用于标示一个内存地址，而变
-量名则在语法层面上代表这个地址。当链接器最终链接我们的程序时，就将这些名字替换
-为实际的地址。在其他语言中，变量虽然或多或少有其他不同的含义，但也大致如此。</p>
-
-<p>Lisp中的变量也差不多这样，但若将variable和Lisp中的 <strong>symbol</strong> 放在一起，则多少会 带来些困惑。</p>
-
-<!-- more -->
-
-
-<h2>Lisp中的“变量&#8221;</h2>
-
-<p>很多教授Lisp的书中，大概会简单地告诉我们可以使用如下的方式定义一个全局变量 [1]_.</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defparameter</span> <span class="vg">*var*</span> <span class="mi">1</span><span class="p">)</span>
-</code></pre>
-</div>
-
-
-<p>如上代码，我们便定义了一个全局变量 <code>*var*</code> [2]_ ，它被初始化为数值1。同样，我们 还可以使用另一种基本相同的方式:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defvar</span> <span class="vg">*var*</span> <span class="mi">1</span><span class="p">)</span>
-</code></pre>
-</div>
-
-
-<p>除了全局变量，我们还可以定义局部变量。但局部变量的定义稍显麻烦（却可能是另一种
-设计考虑）。定义局部变量需要使用一些宏，或者特殊运算符，例如:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">var</span> <span class="mi">1</span><span class="p">))</span>
-  <span class="p">(</span><span class="nb">format</span> <span class="no">t</span> <span class="s">&quot;~a&quot;</span> <span class="nv">var</span><span class="p">))</span>
-</code></pre>
-</div>
-
-
-<p>好了，就这些了。Lisp中关于变量的细节，也就这些。你甚至能用你在C/C++中的经验来窥
-探一切。但是，我们很快就看到了很多困惑的地方。</p>
-
-<p>我遇到的第一个困惑的地方来源于函数，那么等我讲讲函数再来分享下坎坷。</p>
-
-<h2>Lisp中的函数</h2>
-
-<p>Lisp中的函数绝对不复杂，你绝对不用担心我在忽悠你 [3]_ 。作为一门函数式语言，其首要
-任务就是加强函数这个东西在整个语言里的功能。如果你喜欢广阅各种与你工作不相干的
-技术，你肯定已经对很多函数式语言世界中的概念略有耳闻。例如闭包，以及first class type [4]_ 。</p>
-
-<p>Lisp中的函数就是first class type。这什么意思呢？直白来说，
-<strong>Lisp中的函数和变量 没什么区别，享有同等待遇</strong> 。进一步来说，变量fn的值可以是数值1，也可以是字符串
-&#8220;hello&#8221;，甚至是某个函数。这其实就是C++程序员说的functor。</p>
-
-<p>Lisp中定义函数非常简单:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defun</span> <span class="nv">add2</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> 
-  <span class="p">(</span><span class="nb">+</span> <span class="mi">2</span> <span class="nv">x</span><span class="p">))</span>
-</code></pre>
-</div>
-
-
-<p>这样，我们就定义了一个名为add2，有1个参数，1个返回值的函数。要调用该函数时，只需 要 <code>(add2 2)</code>
-即可。这简直和我们在Lisp中完成一个加法一模一样:<code>(+ 2 3)</code></p>
-
-<p>Lisp作为一门函数式语言，其函数也能作为另一个函数的参数和返回值 [5]_</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defun</span> <span class="nv">apply-fn</span> <span class="p">(</span><span class="nv">fn</span> <span class="nv">x</span><span class="p">)</span>
-  <span class="p">(</span><span class="nb">funcall</span> <span class="nv">fn</span> <span class="nv">x</span><span class="p">))</span>
-</code></pre>
-</div>
-
-
-<p>apply-fn函数第一个参数是一个函数，它使用funcall函数间接地调用fn指向的函数。作为
-一个C++程序员，这简直太好理解了，这完全就是一个函数指针的语法糖嘛。于是，假设我 们要使用apply-fn来间接调用add2函数:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nv">apply-fn</span> <span class="nv">add2</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">;; wrong </span>
-</code></pre>
-</div>
-
-
-<p>可是这是不对的。我们需要通过另一个特殊操作符来完成这件事:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nv">apply-fn</span> <span class="nf">#&#39;</span><span class="nv">add2</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">;; right</span>
-</code></pre>
-</div>
-
-
-<p>#&#8217;操作符用于将add2对应的函数取出来，这么说当然不大准确。Again，作为一个C++程序员
-，这简直就是个取地址操作符&amp;的语法糖嘛。好吧，这么理解起来似乎没问题了。</p>
-
-<p>Lisp中能甚至能在任何地方定义一个函数，例如我们创建一个函数，该函数返回创建出来的 函数，这是一个典型的讲解什么是 <strong>闭包</strong>
-的例子:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defun</span> <span class="nv">get-add-n</span> <span class="p">(</span><span class="nv">n</span><span class="p">)</span>
-  <span class="nf">#&#39;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
-       <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">n</span><span class="p">)))</span>
-</code></pre>
-</div>
-
-
-<p>无论如何，get-add-n函数返回一个函数，该函数是add2函数的泛型实现。它可以将你传入
-的参数加上n。这些代码里使用了lambda表达式。lambda表达式直白来说，就是创建一个字
-面上的函数。这又是什么意思呢？就像我们在代码中写出2，写出&#8221;hello&#8221;一样，2就是个字
-面上的数字，&#8221;hello&#8221;就是个字面上的字符串 [6]_ 。</p>
-
-<p>那么，总而言之，通过lambda创建一个函数体，然后通过#&#8217;操作符即可得到一个函数，虽然 没有名字。有了以上知识后，Again
-and again，作为一个C++程序员，很快我们就能得到一
-个程序：定义变量，用变量去保存一个函数，然后通过这个变量来调用这个函数。这是多么
-天经地义的事，就像之前那个通过参数调用其指向的函数一样:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="c1">;; wrong </span>
-<span class="p">(</span><span class="nb">defvar</span> <span class="nv">fn</span> <span class="nf">#&#39;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="p">(</span><span class="nv">fn</span> <span class="mi">3</span><span class="p">)</span>
-</code></pre>
-</div>
-
-
-<p>这样的代码是不对的，错误发生于第二行，无论你使用的Lisp实现是哪种，大概会得到如下 的错误信息:</p>
-
-<pre><code>"The function FN is undefined."
-</code></pre>
-
-<p>老实说，这已经算是多么有迹可循的错误提示了啊。将以上代码和之前的apply-fn对比，是
-多么得神似啊，可惜就是错的。这是我们遇到的第一个理解偏差导致的问题。如果你还不深
-入探究，你将会在这一块遇到更多麻烦。及时地拿出你的勇气，披荆斩棘，刨根究底，绝对 是学习编程的好品质。</p>
-
-<h2>“万恶之源“：SYMBOL</h2>
-
-<p>上文中提到的变量函数之类，之所以会在某些时候与我们的理解发生偏差，并且总是存在些
-神秘的地方无法解释。这完全是因为我们理解得太片面导致。Lisp中的Symbol可以说就是某
-个变量，或者某个函数，但这太片面。Lisp中的Symbol拥有更丰富的含义。</p>
-
-<h3>Symbol的名字</h3>
-
-<p>就像很多语言的变量、函数名一样，Lisp中的Symbol比其他语言在命名方面更自由：
-<strong>只 要位于&#8217;|&#8217;字符之间的字符串，就表示一个合法的Symbol名。</strong> 我们可以使用函数
-symbol-name来获取一个Symbol的名字，例如:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">symbol-name</span> <span class="ss">&#39;|this is a symbol name|</span><span class="p">)</span>
-</code></pre>
-</div>
-
-
-<pre><code>输出："this is a symbol name"
-</code></pre>
-
-<p>&#8216;(quote)操作符告诉Lisp不要对其修饰的东西进行求值(evaluate)。但假如没有这个操作符
-会怎样呢？后面我们将看到会怎样。</p>
-
-<h3>Symbol本质</h3>
-
-<p><ANSI Common Lisp\>一书中有句话真正地揭示了Symbol的本质：
-<strong>Symbols are real objects</strong>
-。是的，Symbols是对象，这个对象就像我们理解的C++中的对象一样，它是一个
-复合的数据结构。该数据结构里包含若干域，或者通俗而言：数据成员。借用<ANSI Common Lisp\>中的一图：</p>
-
-<blockquote><p><img src="http://codemacro.com/assets/res/lisp_symbol/symbol-obj.png" alt="image" /></p></blockquote>
-
-<p>通过这幅图，可以揭开所有谜底。一个Symbol包含至少图中的几个域，例如Name、Value、
-Function等。在Lisp中有很多函数来访问这些域，例如上文中使用到的symbol-name，这个
-函数本质上就是取出一个Symbol的Name域。</p>
-
-<h3>Symbol与Variable和Function的联系</h3>
-
-<p>自然而然地，翻阅Lisp文档，我们会发现果然还有其他函数来访问Symbol的其他域，例如:</p>
-
-<pre><code>symbol-function
-symbol-value
-symbol-package
-symbol-plist
-</code></pre>
-
-<p>但是这些又与上文提到的变量和函数有什么联系呢？真相只有一个，
-<strong>变量、函数粗略来 说就是Symbol的一个域，一个成员。变量对应Value域，函数对应Function域。一个Symbol 这些域有数据了，我们说它们发生了绑定(bind)。</strong>
-而恰好，我们有几个函数可以用于判 定这些域是否被绑定了值:</p>
-
-<pre><code>boundp ;判定Value域是否被绑定
-fboundp;判定Function域是否被绑定
-</code></pre>
-
-<p>通过一些代码来回味以上结论:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defvar</span> <span class="vg">*var*</span> <span class="mi">1</span><span class="p">)</span>
-<span class="p">(</span><span class="nb">boundp</span> <span class="ss">&#39;*var*</span><span class="p">)</span> <span class="c1">; 返回真</span>
-<span class="p">(</span><span class="nb">fboundp</span> <span class="ss">&#39;*var*</span><span class="p">)</span> <span class="c1">; 返回假</span>
-<span class="p">(</span><span class="nb">defun</span> <span class="vg">*var*</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="nv">x</span><span class="p">)</span> <span class="c1">; 定义一个名为*var*的函数，返回值即为参数</span>
-<span class="p">(</span><span class="nb">fboundp</span> <span class="ss">&#39;*var*</span><span class="p">)</span> <span class="c1">; 返回真</span>
-</code></pre>
-</div>
-
-
-<p>上面的代码简直揭秘了若干惊天地泣鬼神的真相。首先，我们使用我们熟知的defvar定义了 一个名为 <code>*var*</code>
-的变量，初值为1，然后使用boundp去判定 <code>*var*</code> 的Value域是否 发生了绑定。这其实是说：
-<strong>原来定义变量就是定义了一个Symbol，给变量赋值，原来就 是给Symbol的Value域赋值！</strong></p>
-
-<p><strong>其实，Lisp中所有这些符号，都是Symbol。</strong> 什么变量，什么函数，都是浮云。上面的
-例子中，紧接着用fboundp判断Symbol <code>*var*</code> 的Function域是否绑定，这个时候为假。 然后我们定义了一个名为
-<code>*var*</code> 的函数，之后再判断，则已然为真。这也是为什么， <strong>在Lisp中某个函数可以和某个变量同名的原因所在。</strong>
-从这段代码中我们也可以看出 defvar/defun这些操作符、宏所做事情的本质。</p>
-
-<h3>More More More</h3>
-
-<p>事情就这样结束了？Of course not。还有很多上文提到的疑惑没有解决。首先，Symbol是
-如此复杂，那么Lisp如何决定它在不同环境下的含义呢？Symbol虽然是个对象，但它并不像
-C++中的对象一样，它出现时并不指代自己！不同应用环境下，它指代的东西也不一样。这 些指代主要包括变量和函数，意思是说：
-<strong>Symbol出现时，要么指的是它的Value，要么是 它的Function。</strong> 这种背地里干的事情，也算是造成迷惑的一个原因。</p>
-
-<p>当一个Symbol出现在一个List的第一个元素时，它被处理为函数。这么说有点迷惑人，因为
-它带进了Lisp中代码和数据之间的模糊边界特性。简单来说，就是当Symbol出现在一个括号
-表达式(s-expression)中第一个位置时，算是个函数，例如:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nv">add2</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">; add2位于第一个位置，被当作函数处理</span>
-<span class="p">(</span><span class="vg">*var*</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">; 这里*var*被当作函数调用，返回3</span>
-</code></pre>
-</div>
-
-
-<p>除此之外，我能想到的其他大部分情况，一个Symbol都被指代为它的Value域，也就是被当 作变量，例如:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="vg">*var*</span> <span class="vg">*var*</span><span class="p">)</span> <span class="c1">; 这是正确的语句，返回1</span>
-</code></pre>
-</div>
-
-
-<p>这看起来是多么古怪的代码。但是运用我们上面说的结论，便可轻易解释：表达式中第一个 <code>*var*</code>
-被当作函数处理，它需要一个参数；表达式第二部分的 <code>*var*</code> 被当作变量 处理，它的值为1，然后将其作为参数传入。</p>
-
-<p>再来说说&#8217;(quote)操作符，这个操作符用于防止其操作数被求值。而当一个Symbol出现时，
-它总是会被求值，所以，我们可以分析以下代码:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">symbol-value</span> <span class="vg">*var*</span><span class="p">)</span> <span class="c1">; wrong</span>
-</code></pre>
-</div>
-
-
-<p>这个代码并不正确，因为 <code>*var*</code> 总是会被求值，就像 <code>(*var* *var*)</code> 一样，第二 个 <code>*var*</code>
-被求值，得到数字1。这里也会发生这种事情，那么最终就等同于:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">symbol-value</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">; wrong</span>
-</code></pre>
-</div>
-
-
-<p>我们试图去取数字1的Value域，而数字1并不是一个Symbol。所以，我们需要quote运算符:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">symbol-value</span> <span class="ss">&#39;*var*</span><span class="p">)</span> <span class="c1">; right</span>
-</code></pre>
-</div>
-
-
-<p>这句代码是说，取Symbol <code>*var*</code> 本身的Value域！而不是其他什么地方。至此，我们 便可以分析以下复杂情况:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defvar</span> <span class="vg">*name*</span> <span class="s">&quot;kevin lynx&quot;</span><span class="p">)</span>
-<span class="p">(</span><span class="nb">defvar</span> <span class="vg">*ref*</span> <span class="ss">&#39;*name*</span><span class="p">)</span> <span class="c1">; *ref*的Value保存的是另一个Symbol</span>
-<span class="p">(</span><span class="nb">symbol-value</span> <span class="vg">*ref*</span><span class="p">)</span> <span class="c1">; 取*ref*的Value，得到*name*，再取*name*的Value</span>
-</code></pre>
-</div>
-
-
-<p>现在，我们甚至能解释上文留下的一个问题:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="c1">;; wrong </span>
-<span class="p">(</span><span class="nb">defvar</span> <span class="nv">fn</span> <span class="nf">#&#39;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="p">(</span><span class="nv">fn</span> <span class="mi">3</span><span class="p">)</span>
-</code></pre>
-</div>
-
-
-<p>给fn的Value赋值一个函数， <code>(fn 3)</code> 当一个Symbol作为函数使用时，也就是取其
-Function域来做调用。但其Function域什么也没有，我们试图将一个Symbol的Value域当作
-Function来使用。如何解决这个问题？想想，symbol-function可以取到一个Symbol的 Function域:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">setf</span> <span class="p">(</span><span class="nb">symbol-function</span> <span class="ss">&#39;fn</span><span class="p">)</span> <span class="nf">#&#39;</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="mi">2</span><span class="p">)))</span>
-<span class="p">(</span><span class="nv">fn</span> <span class="mi">3</span><span class="p">)</span>
-</code></pre>
-</div>
-
-
-<p>通过显示地给fn的Function域赋值，而不是通过defvar隐式地对其Value域赋值，就可以使 <code>(fn 3)</code>
-调用正确。还有另一个问题也能轻易解释:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nv">apply-fn</span> <span class="nv">add2</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">; wrong</span>
-</code></pre>
-</div>
-
-
-<p>本意是想传入add2这个Symbol的function域，但是直接这样写的话，传入的其实是add2的 Value域 [7]_
-，这当然是不正确的。对比正确的写法，我们甚至能猜测#&#8217;运算符就是一个
-取Symbol的Function域的运算符。进一步，我们还可以给出另一种写法:</p>
-
-<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nv">apply-fn</span> <span class="p">(</span><span class="nb">symbol-function</span> <span class="ss">&#39;add2</span><span class="p">)</span> <span class="mi">2</span><span class="p">)</span>
-</code></pre>
-</div>
-
-
-<p>深入理解事情的背后，你会发现你能写出多么灵活的代码。</p>
-
-<h2>END</h2>
-
-<p>关于Symbol的内容还有更多，例如Package。正确理解这些内容以及他们之间的关系，有助 于更深刻地理解Lisp。</p>
-
-<h2>注解</h2>
-
-<ul>
-<li>[1]  在Lisp中全局变量又被称为dynamic variables</li>
-<li>[2]  Lisp中按照习惯通常在为全局变量命名时会加上星号，就像我们习惯使用g_一样</li>
-<li>[3]  因为我确实在忽悠你</li>
-<li>[4]  first class type，有人翻译为“一等公民”，我觉得压力巨大</li>
-<li>[5]  即高阶函数</li>
-<li>[6]  “字面“主要是针对这些信息会被词法分析程序直接处理</li>
-<li>[7]  这可能导致更多的错误</li>
-</ul>
-
-
-<p class='post-footer'>
-            原文地址：
-            <a href='http://codemacro.com/2011/03/21/lisp-symbol/'>http://codemacro.com/2011/03/21/lisp-symbol/</a><br/>
             written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>
