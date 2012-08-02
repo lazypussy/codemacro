@@ -4,7 +4,7 @@
   <title><![CDATA[Category: tips | loop in codes]]></title>
   <link href="http://codemacro.com/categories/tips/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-08-02T10:41:38+08:00</updated>
+  <updated>2012-08-02T16:48:15+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -25,77 +25,80 @@
 <!-- more -->
 
 
-<p>{% highlight lua %}
-local function newindex(self, key, value)</p>
+<p><div class="highlight"><pre><code class="lua"><span class="kd">local</span> <span class="k">function</span> <span class="nf">newindex</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>getmetatable(self).__object[key] = value
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nb">getmetatable</span><span class="p">(</span><span class="n">self</span><span class="p">).</span><span class="n">__object</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">local</span> <span class="k">function</span> <span class="nf">index</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="nb">getmetatable</span><span class="p">(</span><span class="n">self</span><span class="p">).</span><span class="n">__object</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">function</span> <span class="nf">newObject</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">class</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">class</span><span class="p">.</span><span class="n">__index</span> <span class="o">=</span> <span class="k">class</span>
+<span class="nc">setmetatable</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">class</span><span class="p">)</span>
+<span class="k">return</span> <span class="nb">setmetatable</span><span class="p">({},</span> <span class="p">{</span> <span class="n">__newindex</span> <span class="o">=</span> <span class="n">newindex</span><span class="p">,</span> <span class="n">__index</span> <span class="o">=</span> <span class="n">index</span><span class="p">,</span> <span class="n">__object</span> <span class="o">=</span> <span class="n">o</span> <span class="p">})</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
 </code></pre>
-
-<p>end</p>
-
-<p>local function index(self, key)</p>
-
-<pre><code>return getmetatable(self).__object[key]
-</code></pre>
-
-<p>end</p>
-
-<p>function newObject(o, class)</p>
-
-<pre><code>class.__index = class
-setmetatable(o, class)
-return setmetatable({}, { __newindex = newindex, __index = index, __object = o })
-</code></pre>
-
-<p>end
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>基于newObject函数，可以这样定义类：</p>
 
-<p>{% highlight lua %}
-Button = {}</p>
+<p><div class="highlight"><pre><code class="lua"><span class="n">Button</span> <span class="o">=</span> <span class="p">{}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<p>function Button.new(text, x, y, onclick, parent)</p>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">function</span> <span class="nf">Button</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">onclick</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>-- 定义这个类的数据成员
-local obj = {
-    text = text,
-    onclick = onclick,
-    normal_img = nil,
-    text_inst = nil,
-    hover_img = nil,
-}
-obj = newObject(obj, Button)
-...
-return obj
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1">-- 定义这个类的数据成员</span>
+<span class="kd">local</span> <span class="n">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">onclick</span> <span class="o">=</span> <span class="n">onclick</span><span class="p">,</span>
+    <span class="n">normal_img</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="n">text_inst</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="n">hover_img</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">newObject</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Button</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="k">return</span> <span class="n">obj</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">function</span> <span class="nf">Button</span><span class="p">:</span><span class="n">onTouchDown</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">...</span>
+<span class="c1">-- 可以访问成员，即使看起来normal_img不属于Button这个table</span>
+<span class="n">self</span><span class="p">.</span><span class="n">normal_img</span><span class="p">.</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">function</span> <span class="nf">Button</span><span class="p">:</span><span class="n">onTouchUp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="p">...</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
 </code></pre>
-
-<p>end</p>
-
-<p>function Button:onTouchDown(x, y)</p>
-
-<pre><code>...
--- 可以访问成员，即使看起来normal_img不属于Button这个table
-self.normal_img.visible = true
-</code></pre>
-
-<p>end</p>
-
-<p>function Button:onTouchUp(x, y)</p>
-
-<pre><code>...
-</code></pre>
-
-<p>end
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>通过以上定义后，就可以以面向对象的方式来使用Button类了：</p>
 
-<p>{% highlight lua %}
-local btn = Button.new()
-btn:OnTouchDown(100, 100)
-btn:OnTouchUp(100, 100)
-{% endhighlight %}</p>
+<p><div class="highlight"><pre><code class="lua"><span class="kd">local</span> <span class="n">btn</span> <span class="o">=</span> <span class="n">Button</span><span class="p">.</span><span class="n">new</span><span class="p">()</span>
+<span class="n">btn</span><span class="p">:</span><span class="n">OnTouchDown</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">btn</span><span class="p">:</span><span class="n">OnTouchUp</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre>
+</div>
+</p>
 
 <p>其实现原理，主要就是将类的函数集通过<code>__index</code>开放给对象，在这些函数中，其<code>self</code>就像c++ 中的<code>this</code>一样拥有多态性，即其是创建出来的对象，而不是作为类角色的那个<code>table</code>（例如Button）。</p>
 ]]></content>
@@ -110,197 +113,203 @@ btn:OnTouchUp(100, 100)
 
 <p>我是个C++程序员，我不知道我平时写的都是些什么代码。最让人印象深刻就是我会经常写遍历STL容器的代码，是经常，这样的遍历你可能也不陌生：</p>
 
-<p>{% highlight c++ %}
-{% raw %}
-for (ListType::iterator it = con.begin(); it != con.end(); ++it) {</p>
+<p><div class="highlight"><pre><code class="c"><span class="k">for</span> <span class="p">(</span><span class="n">ListType</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">con</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">con</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>something
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">something</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
 </code></pre>
-
-<p>}
-{% endraw %}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <!-- more -->
 
 
 <p>或者针对std::map/set等的查找：</p>
 
-<p>{% highlight c++ %}
-{% raw %}
-Table::iterator it = table.find(key);
-if (it == table.end())</p>
+<p><div class="highlight"><pre><code class="c"><span class="n">Table</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">table</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">==</span> <span class="n">table</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>do-something
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">do</span><span class="o">-</span><span class="n">something</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">do</span><span class="o">-</span><span class="n">something</span>
 </code></pre>
-
-<p>do-something
-{% endraw %}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>多亏STL接口的一致性，这让我们写出了很多“一致性“代码。慢慢地我觉得恶心，不禁想起函数式编程语言中，对于这种需求一般都会提供类似的接口：</p>
 
-<p>{% highlight lua %}
-con.map(function (it) if (it->some-filed == some-value) return something end)</p>
+<p><div class="highlight"><pre><code class="lua"><span class="n">con</span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">some</span><span class="o">-</span><span class="n">filed</span> <span class="o">==</span> <span class="n">some</span><span class="o">-</span><span class="n">value</span><span class="p">)</span> <span class="k">return</span> <span class="n">something</span> <span class="k">end</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<h1>或者</h1>
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="err">或者</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 
-<p>con.each do |it| if it.some-filed == some-value then return something end end</p>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">con</span><span class="p">.</span><span class="n">each</span> <span class="k">do</span> <span class="err">|</span><span class="n">it</span><span class="err">|</span> <span class="k">if</span> <span class="n">it</span><span class="p">.</span><span class="n">some</span><span class="o">-</span><span class="n">filed</span> <span class="o">==</span> <span class="n">some</span><span class="o">-</span><span class="n">value</span> <span class="k">then</span> <span class="k">return</span> <span class="n">something</span> <span class="k">end</span> <span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<h1>或者</h1>
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="err">或者</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 
-<p>(con.map (lambda (it) (if ((= it.some-filed some-value)) (return something))))
-{% endhighlight %}</p>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">(</span><span class="n">con</span><span class="p">.</span><span class="n">map</span> <span class="p">(</span><span class="n">lambda</span> <span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">(</span><span class="k">if</span> <span class="p">((</span><span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">some</span><span class="o">-</span><span class="n">filed</span> <span class="n">some</span><span class="o">-</span><span class="n">value</span><span class="p">))</span> <span class="p">(</span><span class="k">return</span> <span class="n">something</span><span class="p">))))</span>
+</code></pre>
+</div>
+</p>
 
 <p>（好吧，lisp我又忘了）总之，这种针对容器的遍历操作，都会成为一种内置接口，并且通过lambda来让用户直接编写处理代码，少去写循环的冗余。然后，我写了类似下面的一组宏（随手敲的不保证能运行）：</p>
 
-<p>{% highlight c++ %}
-{% raw %}</p>
+<p><div class="highlight"><pre><code class="c"><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<h1>define IT_N __it</h1>
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">IT_N</span> <span class="n">__it</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 
-<h1>define TRAVERSE_MAP(type, map, exps) \</h1>
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">TRAVERSE_MAP</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">map</span><span class="p">,</span> <span class="n">exps</span><span class="p">)</span> <span class="err">\</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 
-<pre><code>for (type::iterator IT_N = map.begin(); IT_N != map.end(); ++IT_N) { \
-    exps; \
-}
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">for</span> <span class="p">(</span><span class="n">type</span><span class="o">::</span><span class="n">iterator</span> <span class="n">IT_N</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">IT_N</span> <span class="o">!=</span> <span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">IT_N</span><span class="p">)</span> <span class="p">{</span> \
+    <span class="n">exps</span><span class="p">;</span> \
+<span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">I_KEY</span> <span class="p">(</span><span class="n">IT_N</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">I_VALUE</span> <span class="p">(</span><span class="n">IT_N</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">TRAVERSE_LIST</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">list</span><span class="p">,</span> <span class="n">exps</span><span class="p">)</span> <span class="err">\</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">for</span> <span class="p">(</span><span class="n">type</span><span class="o">::</span><span class="n">iterator</span> <span class="n">IT_N</span> <span class="o">=</span> <span class="n">list</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">IT_N</span> <span class="o">!=</span> <span class="n">list</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">IT_N</span><span class="p">)</span> <span class="p">{</span> \
+    <span class="n">exps</span><span class="p">;</span> \
+<span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">L_VALUE</span> <span class="p">(</span><span class="o">*</span><span class="n">IT_N</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">FIND_MAP_ITEM</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">map</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">fexps</span><span class="p">,</span> <span class="n">texps</span><span class="p">)</span> <span class="err">\</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">do</span> <span class="p">{</span> \
+    <span class="n">type</span><span class="o">::</span><span class="n">iterator</span> <span class="n">IT_N</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">key</span><span class="p">);</span> \
+    <span class="k">if</span> <span class="p">(</span><span class="n">IT_N</span> <span class="o">==</span> <span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span> \
+        <span class="n">fexps</span><span class="p">;</span> \
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> \
+        <span class="n">texps</span><span class="p">;</span> \
+    <span class="p">}</span> \
+<span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">VAL_N</span> <span class="n">__val</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">FIND_LIST_ITEM_IF</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">list</span><span class="p">,</span> <span class="n">cmp</span><span class="p">,</span> <span class="n">fexps</span><span class="p">,</span> <span class="n">texps</span><span class="p">)</span> <span class="err">\</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">do</span> <span class="p">{</span> \
+    <span class="k">struct</span> <span class="n">Comp</span> <span class="p">{</span> \
+        <span class="n">bool</span> <span class="n">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">type</span><span class="o">::</span><span class="n">value_type</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">VAL_N</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> \
+            <span class="k">return</span> <span class="n">cmp</span><span class="p">;</span> \
+        <span class="p">}</span> \
+    <span class="p">};</span> \
+    <span class="n">type</span><span class="o">::</span><span class="n">iterator</span> <span class="n">IT_N</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">find_if</span><span class="p">(</span><span class="n">list</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">list</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">Comp</span><span class="p">());</span> \
+    <span class="k">if</span> <span class="p">(</span><span class="n">IT_N</span> <span class="o">!=</span> <span class="n">list</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span> \
+        <span class="n">texps</span><span class="p">;</span> \
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> \
+        <span class="n">fexps</span><span class="p">;</span> \
+    <span class="p">}</span> \
+<span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NULL_EXP</span> <span class="p">;</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
 </code></pre>
-
-<h1>define I_KEY (IT_N->first)</h1>
-
-<h1>define I_VALUE (IT_N->second)</h1>
-
-<h1>define TRAVERSE_LIST(type, list, exps) \</h1>
-
-<pre><code>for (type::iterator IT_N = list.begin(); IT_N != list.end(); ++IT_N) { \
-    exps; \
-}
-</code></pre>
-
-<h1>define L_VALUE (*IT_N)</h1>
-
-<h1>define FIND_MAP_ITEM(type, map, key, fexps, texps) \</h1>
-
-<pre><code>do { \
-    type::iterator IT_N = map.find(key); \
-    if (IT_N == map.end()) { \
-        fexps; \
-    } else { \
-        texps; \
-    } \
-} while(0)
-</code></pre>
-
-<h1>define VAL_N __val</h1>
-
-<h1>define FIND_LIST_ITEM_IF(type, list, cmp, fexps, texps) \</h1>
-
-<pre><code>do { \
-    struct Comp { \
-        bool operator() (const type::value_type &amp;VAL_N) const { \
-            return cmp; \
-        } \
-    }; \
-    type::iterator IT_N = std::find_if(list.begin(), list.end(), Comp()); \
-    if (IT_N != list.end()) { \
-        texps; \
-    } else { \
-        fexps; \
-    } \
-} while(0)
-</code></pre>
-
-<h1>define NULL_EXP ;</h1>
-
-<p>{% endraw %}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>当然，以上接口都还包含一些const版本，用于const容器的使用。使用的时候（截取的项目中的使用例子）：</p>
 
-<p>{% highlight c++ %}
-TRAVERSE_MAP(TimerTable, m_timers,</p>
+<p><div class="highlight"><pre><code class="c"><span class="n">TRAVERSE_MAP</span><span class="p">(</span><span class="n">TimerTable</span><span class="p">,</span> <span class="n">m_timers</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>    I_VALUE.obj-&gt;OnTimerCancel(I_KEY, I_VALUE.arg);
-    TIMER_CANCEL(I_VALUE.id)); 
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">I_VALUE</span><span class="p">.</span><span class="n">obj</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">OnTimerCancel</span><span class="p">(</span><span class="n">I_KEY</span><span class="p">,</span> <span class="n">I_VALUE</span><span class="p">.</span><span class="n">arg</span><span class="p">);</span>
+    <span class="n">TIMER_CANCEL</span><span class="p">(</span><span class="n">I_VALUE</span><span class="p">.</span><span class="n">id</span><span class="p">));</span> 
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">TRAVERSE_LIST</span><span class="p">(</span><span class="n">AreaList</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">ids</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">L_VALUE</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">ID</span><span class="p">()));</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">FIND_MAP_ITEM</span><span class="p">(</span><span class="n">PropertyTable</span><span class="p">,</span> <span class="n">m_properties</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">LogWarn</span><span class="p">(</span><span class="s">&quot;set a non-existed property %s&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span> <span class="k">return</span> <span class="n">NIL_VALUE</span><span class="p">,</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">val</span><span class="p">.</span><span class="n">Type</span><span class="p">()</span> <span class="o">!=</span> <span class="n">I_VALUE</span><span class="p">.</span><span class="n">type</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">NIL_VALUE</span><span class="p">;</span> 
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">GValue</span> <span class="n">old</span> <span class="o">=</span> <span class="n">I_VALUE</span><span class="p">;</span>
+        <span class="n">I_VALUE</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span> 
+        <span class="k">return</span> <span class="n">old</span><span class="p">;</span>
+    <span class="p">});</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
 </code></pre>
-
-<p>TRAVERSE_LIST(AreaList, areas,</p>
-
-<pre><code>    ids.push_back(L_VALUE-&gt;ID()));
-</code></pre>
-
-<p>FIND_MAP_ITEM(PropertyTable, m_properties, name,</p>
-
-<pre><code>    LogWarn("set a non-existed property %s", name.c_str()); return NIL_VALUE,
-    if (val.Type() != I_VALUE.type()) {
-        return NIL_VALUE; 
-    } else {
-        GValue old = I_VALUE;
-        I_VALUE = val; 
-        return old;
-    });
-</code></pre>
-
-<p>{% endhighlight %}</p>
+</div>
+</p>
 
 <p>多亏了C/C++宏对一切内容的可容纳性，可以让我往宏参数里塞进像if这种复合语句，甚至多条语句（例如最后一个例子）。这些宏我使用了一段时间，开始觉得挺爽，很多函数的实现里，我再也不用写那些重复的代码了。但是后来我发觉这些代码越来越恶心了。最大的弊端在于不可调试，我只能将断点下到更深的代码层；然后就是看起来特不直观，连作者自己都看得觉得不直观了，可想而知那些连函数式编程语言都不知道是什么的C++程序员看到这些代码会是什么心情（可以想象哥已经被诅咒了多少次）。</p>
 
 <p>函数式语言让人写出更短的代码，这一点也对我有影响，例如我最近又写下了一些邪恶代码：</p>
 
-<p>{% highlight c++ %}
-// split a string into several sub strings by a split character i.e:
-// "a;b;c;" => "a", "b", "c"
-// "a;b;c" => "a", "b", "c"
-std::vector&lt;std::string> SplitString(const std::string &amp;str, char split) {</p>
+<p><div class="highlight"><pre><code class="c"><span class="c1">// split a string into several sub strings by a split character i.e:</span>
+<span class="c1">// &quot;a;b;c;&quot; =&gt; &quot;a&quot;, &quot;b&quot;, &quot;c&quot;</span>
+<span class="c1">// &quot;a;b;c&quot; =&gt; &quot;a&quot;, &quot;b&quot;, &quot;c&quot;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">SplitString</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">str</span><span class="p">,</span> <span class="kt">char</span> <span class="n">split</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>std::vector&lt;std::string&gt; ret;
-size_t last = 0;
-for (size_t pos = str.find(split); pos != std::string::npos; last = pos + 1, pos = str.find(split, last)) {
-    ret.push_back(str.substr(last, pos - last));
-}
-return last &lt; str.length() ? ret.push_back(str.substr(last)) : 0, ret;
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">ret</span><span class="p">;</span>
+<span class="kt">size_t</span> <span class="n">last</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">str</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">split</span><span class="p">);</span> <span class="n">pos</span> <span class="o">!=</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">;</span> <span class="n">last</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">str</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">split</span><span class="p">,</span> <span class="n">last</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">ret</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">last</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="n">last</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">?</span> <span class="n">ret</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">last</span><span class="p">))</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ret</span><span class="p">;</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
 </code></pre>
-
-<p>}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>恶心的就是最后那条return语句，因为我需要处理"a;b;c"这种c后面没加分隔符的情况，但我并不愿意为了这个需求再写一个会占超过一行的if语句。因为，我太喜欢ruby里的if了：</p>
 
-<p>{% highlight ruby %}
-do-something if exp
-{% endhighlight %}</p>
+<p><div class="highlight"><pre><code class="ruby"><span class="k">do</span><span class="o">-</span><span class="n">something</span> <span class="k">if</span> <span class="n">exp</span>
+</code></pre>
+</div>
+</p>
 
 <p>也就是ruby里允许这种只有一行if的代码将if放在其后并作为一条语句。我的不愿意其实是有理由的，在c/c++中有太多只有一行条件体的if语句，对这些语句参合进编程风格/可读性进来后，就不得不让你写出不安的代码，例如：</p>
 
-<p>{% highlight c++ %}
-if (something) return something; // 某些编程风格里不允许这样做，因为它不方便调试</p>
+<p><div class="highlight"><pre><code class="c"><span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span> <span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 某些编程风格里不允许这样做，因为它不方便调试&lt;/p&gt;</span>
 
-<p>if (something)</p>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>return something; // 某些风格里又有大括号的统一要求
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 某些风格里又有大括号的统一要求</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 就算符合风格了，但这一条语句就得多个大括号</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span>
+<span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 某些风格里这大括号就更奢侈了</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
 </code></pre>
-
-<p>if (something) {</p>
-
-<pre><code>return something; // 就算符合风格了，但这一条语句就得多个大括号
-</code></pre>
-
-<p>}</p>
-
-<p>if (something)
-{</p>
-
-<pre><code>return something; // 某些风格里这大括号就更奢侈了
-</code></pre>
-
-<p>}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>这个return除了乍看上去有点纠结外，其实也不算什么大问题，但是那个问号表达式返回的0实在没有任何意义，而正是没有意义才会让它误导人。本来我是可以写成：</p>
 
-<p>{% highlight c++ %}
-return last &lt; str.length() &amp;&amp; ret.push_back(str.substr(last)), ret;
-{% endhighlight %}</p>
+<p><div class="highlight"><pre><code class="c"><span class="k">return</span> <span class="n">last</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="n">ret</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">last</span><span class="p">)),</span> <span class="n">ret</span><span class="p">;</span>
+</code></pre>
+</div>
+</p>
 
 <p>这样利用条件表达式的短路运算，代码也清晰多了。但是，std::vector::push_back是一个没有返回值的函数，所以。</p>
 
@@ -322,53 +331,52 @@ return last &lt; str.length() &amp;&amp; ret.push_back(str.substr(last)), ret;
 
 <p>后来发现了一篇文章<a href="http://xoyo.name/2012/04/auto-spacing-for-octopress/">&lt;给中英文间加个空格></a>，这人写的插件从流程上大致是我需要的，模仿如下：</p>
 
-<p>{% highlight ruby %}
-{% raw %}
-#</p>
+<p><div class="highlight"><pre><code class="ruby"><span class="c1">#&lt;/p&gt;</span>
 
-<h1>post_footer_filter.rb</h1>
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">post_footer_filter</span><span class="o">.</span><span class="n">rb</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
 
-<h1>Append every post some footer infomation like original url</h1>
+<span class="sr">&lt;h1&gt;Append every post some footer infomation like original url&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 
-<h1>Kevin Lynx</h1>
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Kevin</span> <span class="no">Lynx</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
 
-<h1>7.26.2012</h1>
+<span class="sr">&lt;h1&gt;7.26.2012&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 
-<p>#
-require './plugins/post_filters'</p>
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="c1">#</span>
+<span class="nb">require</span> <span class="s1">&#39;./plugins/post_filters&#39;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 
-<p>module AppendFooterFilter
-  def append(post)</p>
+<span class="sr">&lt;p&gt;module AppendFooterFilter</span>
+<span class="sr">  def append(post)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
 
-<pre><code> author = post.site.config['author']
- url = post.site.config['url']
- pre = post.site.config['original_url_pre']
- post.content + %Q[&lt;p class='post-footer'&gt;
-        #{pre or "original link:"}
-        &lt;a href='#{post.full_url}'&gt;#{post.full_url}&lt;/a&gt;&lt;br/&gt;
-        &amp;nbsp;written by &lt;a href='#{url}'&gt;#{author}&lt;/a&gt;
-        &amp;nbsp;posted at &lt;a href='#{url}'&gt;#{url}&lt;/a&gt;
-        &lt;/p&gt;]
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span> <span class="n">author</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">config</span><span class="o">[</span><span class="s1">&#39;author&#39;</span><span class="o">]</span>
+ <span class="n">url</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">config</span><span class="o">[</span><span class="s1">&#39;url&#39;</span><span class="o">]</span>
+ <span class="n">pre</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">config</span><span class="o">[</span><span class="s1">&#39;original_url_pre&#39;</span><span class="o">]</span>
+ <span class="n">post</span><span class="o">.</span><span class="n">content</span> <span class="o">+</span> <span class="sx">%Q[&amp;lt;p class=&#39;post-footer&#39;&amp;gt;</span>
+<span class="sx">        </span><span class="si">#{</span><span class="n">pre</span> <span class="ow">or</span> <span class="s2">&quot;original link:&quot;</span><span class="si">}</span><span class="sx"></span>
+<span class="sx">        &amp;lt;a href=&#39;</span><span class="si">#{</span><span class="n">post</span><span class="o">.</span><span class="n">full_url</span><span class="si">}</span><span class="sx">&#39;&amp;gt;</span><span class="si">#{</span><span class="n">post</span><span class="o">.</span><span class="n">full_url</span><span class="si">}</span><span class="sx">&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;</span>
+<span class="sx">        &amp;amp;nbsp;written by &amp;lt;a href=&#39;</span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="sx">&#39;&amp;gt;</span><span class="si">#{</span><span class="n">author</span><span class="si">}</span><span class="sx">&amp;lt;/a&amp;gt;</span>
+<span class="sx">        &amp;amp;nbsp;posted at &amp;lt;a href=&#39;</span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="sx">&#39;&amp;gt;</span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="sx">&amp;lt;/a&amp;gt;</span>
+<span class="sx">        &amp;lt;/p&amp;gt;]</span>
+<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+<span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;p&gt;module Jekyll</span>
+<span class="sr">  class AppendFooter &amp;lt; PostFilter&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kp">include</span> <span class="no">AppendFooterFilter</span>
+<span class="k">def</span> <span class="nf">pre_render</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+  <span class="n">post</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">post</span><span class="p">)</span> <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">is_post?</span>
+<span class="k">end</span>
+<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+<span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;p&gt;Liquid::Template.register_filter AppendFooterFilter</span>
 </code></pre>
-
-<p>  end
-end</p>
-
-<p>module Jekyll
-  class AppendFooter &lt; PostFilter</p>
-
-<pre><code>include AppendFooterFilter
-def pre_render(post)
-  post.content = append(post) if post.is_post?
-end
-</code></pre>
-
-<p>  end
-end</p>
-
-<p>Liquid::Template.register_filter AppendFooterFilter
-{% endraw %}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>大概就是当传入的页面是post时，就添加页脚信息，我这里主要添加了原始地址和作者信息，并且留了个post-footer作为这个段落的样式定制。附加的信息对于RSS输出同样有效。</p>
 
@@ -392,38 +400,40 @@ end</p>
 
 <p>也就是说case...when用的不是==操作符，不是使用相等逻辑去判断，而是使用===运算符。===运算符从C++的角度简单来说就是判定is-a关系，例如</p>
 
-<p>{% highlight ruby %}
-Fixnum === 1
-String === "hello"
-(1..3) === 2
-{% endhighlight %}</p>
+<p><div class="highlight"><pre><code class="ruby"><span class="no">Fixnum</span> <span class="o">===</span> <span class="mi">1</span>
+<span class="nb">String</span> <span class="o">===</span> <span class="s2">&quot;hello&quot;</span>
+<span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">2</span>
+</code></pre>
+</div>
+</p>
 
 <p>1 is a Fixnum，hello is a String，2 is a (1..3) (in the range of)。比较让人产生误解的，大概就是1===1也为true。所以理解起来，也不纯碎是is-a关系。</p>
 
-<p>{% highlight ruby %}
-case a
-when Fixnum</p>
+<p><div class="highlight"><pre><code class="ruby"><span class="k">case</span> <span class="n">a</span>
+<span class="k">when</span> <span class="no">Fixnum</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 
-<pre><code>puts "fixnum"
+<span class="sr">&lt;pre&gt;&lt;code&gt;puts &quot;fixnum&quot;</span>
+<span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+
+<span class="sr">&lt;p&gt;when String&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nb">puts</span> <span class="s2">&quot;string&quot;</span>
+<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">when</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;pre&gt;&lt;code&gt;puts &quot;between 1 and 3&quot;</span>
+<span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+
+<span class="sr">&lt;p&gt;else&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nb">puts</span> <span class="s2">&quot;default&quot;</span>
+<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">end</span>
 </code></pre>
-
-<p>when String</p>
-
-<pre><code>puts "string"
-</code></pre>
-
-<p>when (1..3)</p>
-
-<pre><code>puts "between 1 and 3"
-</code></pre>
-
-<p>else</p>
-
-<pre><code>puts "default"
-</code></pre>
-
-<p>end
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>最后，作为一种functional-like language，其语句也算是表达式，意即也有返回值。case..when的返回值就是执行的分支的返回值。</p>
 ]]></content>
@@ -436,100 +446,98 @@ when Fixnum</p>
     <id>http://codemacro.com/2012/07/24/html-table-hover</id>
     <content type="html"><![CDATA[<p>在一个需要显示很多数据的表格(table)中，为了更友好地查看一行数据，常常需要在鼠标指针移到某一行时，高亮此行。要实现这个效果有很多方法，这里列举一个方法：</p>
 
-<p>{% highlight javascript %}
-{% raw %}
-function setTableHover(t) {
-  $(t + " tbody tr")</p>
+<p><div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">setTableHover</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="nx">t</span> <span class="o">+</span> <span class="s2">&quot; tbody tr&quot;</span><span class="p">)</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
 
-<pre><code>  .mouseover(function() { $(this).addClass("hover");})
-  .mouseout(function() { $(this).removeClass("hover"); })
+<span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>  <span class="p">.</span><span class="nx">mouseover</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);})</span>
+  <span class="p">.</span><span class="nx">mouseout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);</span> <span class="p">})</span>
+<span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
 </code></pre>
-
-<p>}
-{% endraw %}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>主要就是在鼠标移到某一行时，为该行添加一个高亮的css class，鼠标离开时移除该class即可。可以为一个特定的table设定：</p>
 
 <!-- more -->
 
 
-<p>{% highlight html %}
-{% raw %}</p>
+<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;/p&gt;</span>
 
-<table id="test">
-</table>
-
-
-<script>
-    setTableHover('#test')
-</script>
+<span class="nt">&lt;table</span> <span class="na">id=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
 
 
-<p>{% endraw %}
-{% endhighlight %}</p>
+<span class="nt">&lt;script&gt;</span>
+    <span class="nx">setTableHover</span><span class="p">(</span><span class="s1">&#39;#test&#39;</span><span class="p">)</span>
+<span class="nt">&lt;/script&gt;</span>
+
+
+<span class="nt">&lt;p&gt;</span>
+</code></pre>
+</div>
+</p>
 
 <p>甚至可以为将某个页面的所有table设为高亮：</p>
 
-<p>{% highlight html %}
-{% raw %}</p>
+<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;/p&gt;</span>
 
-<script>
-    setTableHover('table')
-</script>
+<span class="nt">&lt;script&gt;</span>
+    <span class="nx">setTableHover</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
+<span class="nt">&lt;/script&gt;</span>
 
 
-<p>{% endraw %}
-{% endhighlight %}</p>
+<span class="nt">&lt;p&gt;</span>
+</code></pre>
+</div>
+</p>
 
 <p>css里需要编写这个hover：</p>
 
-<p>{% highlight css %}
-{% raw %}
-.hover {
-  background: #e9cffa;
-}
-{% endraw %}
-{% endhighlight %}</p>
+<p><div class="highlight"><pre><code class="css"><span class="nc">.hover</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="m">#e9cffa</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+</p>
 
 <hr/>
 
 
 <p>除了高亮显示某一行外，可能还需要在鼠标移动到某个单元格时，弹出一个tooltip。这里的tooltip可以是<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>，也就是一个div元素。</p>
 
-<p>{% highlight html %}
-{% raw %}
-<tr>
-  <td class="tip"></p>
+<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;tr&gt;</span>
+  <span class="nt">&lt;td</span> <span class="na">class=</span><span class="s">&quot;tip&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
 
-<pre><code>hello
-&lt;div class='popup' style='display:none;'&gt;this is the tip&lt;/div&gt;
+<span class="nt">&lt;pre&gt;&lt;code&gt;</span>hello
+<span class="ni">&amp;lt;</span>div class=&#39;popup&#39; style=&#39;display:none;&#39;<span class="ni">&amp;gt;</span>this is the tip<span class="ni">&amp;lt;</span>/div<span class="ni">&amp;gt;</span>
+<span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>  <span class="nt">&lt;/td&gt;</span>
+<span class="nt">&lt;/tr&gt;</span>
 </code></pre>
-
-<p>  </td>
-</tr>
-{% endraw %}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>要实现此效果，可以通过修改包含tip class的鼠标事件响应：</p>
 
-<p>{% highlight javascript %}
-{% raw %}
-$(function () {</p>
+<p><div class="highlight"><pre><code class="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
 
-<pre><code>$('.tip').hover(
-    function () {
-        show_popupex($(this).find("div"), $(this));
-    },
-    function () {
-        $(this).find("div").hide();
-    }
-    );
+<span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.tip&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
+    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">show_popupex</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">),</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+    <span class="p">},</span>
+    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="p">);</span>
+<span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+
+<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
 </code></pre>
-
-<p>});
-{% endraw %}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>hover的第一个参数表示鼠标进入的响应，第二个参数表示鼠标离开的响应。show_popupex用于将一个元素以绝对位置显示在指定元素（这里是单元格）附近，可以参看<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>那篇文章。</p>
 ]]></content>
