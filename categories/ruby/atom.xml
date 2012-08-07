@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | loop in codes]]></title>
   <link href="http://codemacro.com/categories/ruby/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-08-03T15:10:27+08:00</updated>
+  <updated>2012-08-07T14:41:10+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[编写独立的Ruby脚本]]></title>
+    <link href="http://codemacro.com/2012/08/07/write-standalone-ruby-script/"/>
+    <updated>2012-08-07T14:33:00+08:00</updated>
+    <id>http://codemacro.com/2012/08/07/write-standalone-ruby-script</id>
+    <content type="html"><![CDATA[<p>Ruby肯定不仅仅用于编写Rails程序。要使用Ruby编写独立的脚本/程序，就像shell一样，其方式也很简单：</p>
+
+<p><div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;h1&gt;!/us</span><span class="n">r</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span> <span class="n">ruby</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+
+<span class="sr">&lt;p&gt;if ARGV.size == 0</span>
+<span class="sr">  puts &#39;usage: program arg1 arg2&#39;</span>
+<span class="sr">  exit</span>
+<span class="sr">end</span>
+<span class="sr">ARGV.each do |arg| print arg end</span>
+</code></pre>
+</div>
+</p>
+
+<p>脚本内容没有什么限制，函数、类、模块的组织方式也随意。ARGV是一个特殊的变量，是一个数组，其内保存了传入脚本的参数，不包含程序名。当然，不要忘记给脚本加上可执行权限。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[『你会把Ruby的哪些特性加入Java』]]></title>

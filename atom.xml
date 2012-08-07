@@ -4,7 +4,7 @@
   <title><![CDATA[loop in codes]]></title>
   <link href="http://codemacro.com/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-08-03T15:10:27+08:00</updated>
+  <updated>2012-08-07T14:41:10+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,170 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[编写独立的Ruby脚本]]></title>
+    <link href="http://codemacro.com/2012/08/07/write-standalone-ruby-script/"/>
+    <updated>2012-08-07T14:33:00+08:00</updated>
+    <id>http://codemacro.com/2012/08/07/write-standalone-ruby-script</id>
+    <content type="html"><![CDATA[<p>Ruby肯定不仅仅用于编写Rails程序。要使用Ruby编写独立的脚本/程序，就像shell一样，其方式也很简单：</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="c1">#!/usr/bin/env ruby</span>
+<span class="k">if</span> <span class="no">ARGV</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> 
+  <span class="nb">puts</span> <span class="s1">&#39;usage: program arg1 arg2&#39;</span>
+  <span class="nb">exit</span>
+<span class="k">end</span>
+<span class="no">ARGV</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span> <span class="nb">print</span> <span class="n">arg</span> <span class="k">end</span>
+</code></pre>
+</div>
+
+
+<p>脚本内容没有什么限制，函数、类、模块的组织方式也随意。ARGV是一个特殊的变量，是一个数组，其内保存了传入脚本的参数，不包含程序名。当然，不要忘记给脚本加上可执行权限。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/08/07/write-standalone-ruby-script/'>http://codemacro.com/2012/08/07/write-standalone-ruby-script/</a><br/>
+            written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[让wxListCtrl支持子item编辑]]></title>
+    <link href="http://codemacro.com/2012/08/07/edit-item-wxlistctrl/"/>
+    <updated>2012-08-07T13:48:00+08:00</updated>
+    <id>http://codemacro.com/2012/08/07/edit-item-wxlistctrl</id>
+    <content type="html"><![CDATA[<p>我使用的wxLua版本信息为<code>wxLua 2.8.7.0 built with wxWidgets 2.8.8</code>，也就是LuaForWindows_v5.1.4-40.exe这个安装包里自带的wxLua。我不知道其他wxWidgets版本里wxListCtrl怎样，但我使用的版本里wxListCtrl是不支持编辑里面的子item的。在我使用的report模式下，子item也就是特定某一行一列的item。</p>
+
+<p>google了一下，发现悲剧地需要自己实现，主要就是自己显示一个wxTextCtrl：</p>
+
+<!-- more -->
+
+
+
+
+<div class="highlight"><pre><code class="lua"><span class="c1">--</span>
+<span class="c1">-- file: wxListCtrlTextEdit.lua</span>
+<span class="c1">-- author: Kevin Lynx</span>
+<span class="c1">-- date: 08.06.2012</span>
+<span class="c1">--</span>
+<span class="kd">local</span> <span class="n">EditList</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1">-- get the column by an abs point</span>
+<span class="k">function</span> <span class="nf">EditList</span><span class="p">:</span><span class="n">getColumn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">:</span><span class="n">GetColumnCount</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">do</span>
+        <span class="kd">local</span> <span class="n">w</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">:</span><span class="n">GetColumnWidth</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">w</span> <span class="k">then</span> <span class="k">return</span> <span class="n">i</span> <span class="k">end</span>
+        <span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">w</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+<span class="k">end</span>
+
+<span class="c1">-- when a mouse down, show a text edit control </span>
+<span class="k">function</span> <span class="nf">EditList</span><span class="p">:</span><span class="n">onLeftDown</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">IsShown</span><span class="p">()</span> <span class="k">then</span>
+        <span class="n">self</span><span class="p">:</span><span class="n">closeEditor</span><span class="p">()</span>
+    <span class="k">end</span>
+    <span class="kd">local</span> <span class="n">p</span> <span class="o">=</span> <span class="n">evt</span><span class="p">:</span><span class="n">GetPoint</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">row</span> <span class="o">=</span> <span class="n">evt</span><span class="p">:</span><span class="n">GetIndex</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">col</span> <span class="o">=</span> <span class="n">self</span><span class="p">:</span><span class="n">getColumn</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxListCtrlEx</span><span class="p">.</span><span class="n">GetSubItemRect</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+    <span class="n">rect</span><span class="p">:</span><span class="n">SetHeight</span><span class="p">(</span><span class="n">rect</span><span class="p">:</span><span class="n">GetHeight</span><span class="p">()</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">-- adjust</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">SetSize</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">Show</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">SetValue</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxListCtrlEx</span><span class="p">.</span><span class="n">GetItemText</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">SetFocus</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">row</span> <span class="o">=</span> <span class="n">row</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">EditList</span><span class="p">:</span><span class="n">closeEditor</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">IsShown</span><span class="p">()</span> <span class="k">then</span> <span class="k">return</span> <span class="k">end</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">Hide</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">:</span><span class="n">SetItem</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">row</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">col</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">GetValue</span><span class="p">())</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">EditList</span><span class="p">:</span><span class="n">initialize</span><span class="p">()</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">editor</span> <span class="o">=</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxTextCtrl</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxID_ANY</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxDefaultPosition</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxDefaultSize</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxTE_PROCESS_ENTER</span> <span class="o">+</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxTE_RICH2</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxEVT_COMMAND_TEXT_ENTER</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="n">self</span><span class="p">:</span><span class="n">closeEditor</span><span class="p">()</span> <span class="k">end</span><span class="p">)</span>
+    <span class="c1">-- not work actually</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxEVT_COMMAND_KILL_FOCUS</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="n">self</span><span class="p">:</span><span class="n">closeEditor</span><span class="p">()</span> <span class="k">end</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">Hide</span><span class="p">()</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">wx</span><span class="p">.</span><span class="n">wxListCtrlTextEdit</span><span class="p">(</span><span class="n">listctrl</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">listctrl</span> <span class="o">=</span> <span class="n">listctrl</span><span class="p">,</span>
+        <span class="n">editor</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="kd">local</span> <span class="n">editlist</span> <span class="o">=</span> <span class="n">newObject</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">EditList</span><span class="p">)</span>
+    <span class="n">editlist</span><span class="p">:</span><span class="n">initialize</span><span class="p">()</span>
+    <span class="n">listctrl</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="n">evt</span><span class="p">)</span> <span class="n">editlist</span><span class="p">:</span><span class="n">onLeftDown</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span> <span class="k">end</span><span class="p">)</span>
+    <span class="n">listctrl</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxEVT_COMMAND_LIST_ITEM_FOCUSED</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="n">editlist</span><span class="p">:</span><span class="n">closeEditor</span><span class="p">()</span> <span class="k">end</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">listctrl</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+
+<p>其原理就是获取到当前鼠标点击所在的子item位置，然后在此位置显示一个wxEditCtrl即可。以上代码需要依赖我之前写的<a href="http://codemacro.com/2012/08/02/simple-oo-in-lua/">Lua里实现简单的类-对象</a>中的代码，同时依赖以下针对wxListCtrl的扩展接口：</p>
+
+<div class="highlight"><pre><code class="lua"><span class="c1">--</span>
+<span class="c1">-- file: wxListCtrlExtend.lua</span>
+<span class="c1">-- author: Kevin Lynx</span>
+<span class="c1">-- date: 08.07.2012</span>
+<span class="c1">-- brief: extend some util functions to wx.wxListCtrl</span>
+<span class="c1">-- </span>
+<span class="n">wx</span><span class="p">.</span><span class="n">wxListCtrlEx</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nf">wx</span><span class="p">.</span><span class="n">wxListCtrlEx</span><span class="p">.</span><span class="n">GetSubItemRect</span><span class="p">(</span><span class="n">listctrl</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxRect</span><span class="p">()</span>
+    <span class="n">listctrl</span><span class="p">:</span><span class="n">GetItemRect</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="kd">local</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">col</span> <span class="k">do</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">listctrl</span><span class="p">:</span><span class="n">GetColumnWidth</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxRect</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">w</span><span class="p">,</span> <span class="n">rect</span><span class="p">:</span><span class="n">GetY</span><span class="p">(),</span> <span class="n">w</span><span class="p">,</span> <span class="n">rect</span><span class="p">:</span><span class="n">GetHeight</span><span class="p">())</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nf">wx</span><span class="p">.</span><span class="n">wxListCtrlEx</span><span class="p">.</span><span class="n">GetItemText</span><span class="p">(</span><span class="n">listctrl</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">info</span> <span class="o">=</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxListItem</span><span class="p">()</span>
+    <span class="n">info</span><span class="p">:</span><span class="n">SetId</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="n">info</span><span class="p">:</span><span class="n">SetColumn</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">info</span><span class="p">:</span><span class="n">SetMask</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxLIST_MASK_TEXT</span><span class="p">)</span>
+    <span class="n">listctrl</span><span class="p">:</span><span class="n">GetItem</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">info</span><span class="p">:</span><span class="n">GetText</span><span class="p">()</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+
+<p>在我看到的wxWidgets官方文档里，其实wxListCtrl已经有<code>GetSubItemRect</code>接口，并且在另一些示例代码里，也看到了<code>GetItemText</code>接口，但是，我使用的版本里没有，所以只好自己写。基于以上，要使用这个可以支持编辑子item的wxListCtrl，可以：</p>
+
+<div class="highlight"><pre><code class="lua"><span class="n">list</span> <span class="o">=</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxListCtrlTextEdit</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxListCtrl</span><span class="p">(</span><span class="n">dialog</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxID_ANY</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxDefaultPosition</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxDefaultSize</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxLC_REPORT</span><span class="p">))</span>
+</code></pre>
+</div>
+
+
+<p>也就是通过wx.wxListCtrlTextEdit这个函数做下处理，这个函数返回的是本身的wxListCtrl。当然更好的方式是使用继承之类的方式，开发一种新的控件，但在Lua中，针对usedata类型的扩展貌似只能这样了。</p>
+
+<p>最好吐槽下，这个控件扩展其实很恶心。本来我打算当编辑控件失去焦点后就隐藏它，但是往编辑控件上注册KILL_FOCUS事件始终不起作用；我又打算弄个ESC键盘事件去手动取消，但显然wxTextCtrl是不支持键盘事件的。好吧，凑合用了。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/08/07/edit-item-wxlistctrl/'>http://codemacro.com/2012/08/07/edit-item-wxlistctrl/</a><br/>
+            written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[『你会把Ruby的哪些特性加入Java』]]></title>
@@ -1646,371 +1810,6 @@ table在Lua里的代价，也就多了几次Lua函数调用。</p>
 <p class='post-footer'>
             原文地址：
             <a href='http://codemacro.com/2011/05/09/lua-function-arg/'>http://codemacro.com/2011/05/09/lua-function-arg/</a><br/>
-            written by <a href='http://codemacro.com'>Kevin Lynx</a>
-            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
-            </p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[MMO游戏对象属性设计]]></title>
-    <link href="http://codemacro.com/2011/05/02/entity-property/"/>
-    <updated>2011-05-02T00:00:00+08:00</updated>
-    <id>http://codemacro.com/2011/05/02/entity-property</id>
-    <content type="html"><![CDATA[<p>一般的MMORPG中，游戏对象主要包括怪物和玩家。这两类对象在经过游戏性方面的不断“进化”后，其属性数量及与之相关的逻辑往往会变得很巨大。如何将这一块做得既不损失效率，又能保证结构的灵活、清晰、可维护？本文将提供一种简单的结构。</p>
-
-<!-- more -->
-
-
-<h2>原始结构</h2>
-
-<p>最原始的结构，极有可能为这样:</p>
-
-<pre><code>Player:     +---------------+
-            | property-1    |
-            +---------------+
-            | property-2    |
-            +---------------+
-            |     ...       |
-            +---------------+
-            | operator-1    |
-            +---------------+
-            | operator-2    |
-            +---------------+
-            | ...           |
-            +---------------+
-</code></pre>
-
-<p>也就是，一个对象为一个C++类，然后里面直接塞满了各种属性名，然后是针对这个属性的逻辑操作（函数）。其结果就是Player成为巨类。针对这个情况，一直以来我觉得可以使用一种简单的方法来拆分这个类。冠以官腔，称之为Entity-Component-based
-Desgin。产生这种想法和我的个人技术积累有一定关系，见下文。</p>
-
-<h2>Policy-based Design</h2>
-
-<p>Policy-based Design，基于决策的设计。这个概念来源于<Modern C++
-Design\>。虽然这本书讲述的是针对C++模板的使用及设计技巧。但这种思想依然被我潜意识般地用在其他地方。Policy大致来说就是一个小的组件(Component)。它努力不依赖于其他东西，它可能就是个简单的类，它拥有极少的数据结构，及针对这些数据的极少操作接口。举例而言，玩家MP的自动回复功能，就可封装为一个Policy。将许多Policy组合起来，就可完成一个复杂的功能。</p>
-
-<p>这种思想还可指导很多程序结构方面的设计。例如在做功能的接口拆分时，就将每个函数设计得足够小，小到单纯地完成一个功能。一个功能的入口函数，就将之前实现的小函数全部组合起来，然后共同完成功能点。</p>
-
-<p>当然，<Modern C++ Design\>里的Policy在表现形式上有所不同。但其核心思想相同，主要体现在 <strong>组合</strong>
-特点上。</p>
-
-<h2>Entity-Component-based Design</h2>
-
-<p>Entity-Component-based
-Design按照google到的文章，严格来说算是与OOP完全不同的软件设计方法。不过在这里它将按照我的意思重新被解释。</p>
-
-<p>如果说Policy-based
-Design极大可能地影响着我们平时的细节编码，那么Entity-Component则是直接对游戏对象的结构设计做直接的说明。
-<strong>一个游戏对象就是一个Entity。</strong> Entity拥有很少的属性，也许仅包含一个全局标示的ID。
-<strong>一个Component则是Entity的某个行为、或者说某个组成部分。</strong>
-其实说白了，以玩家为例，一个玩家对象就是一个Entity，而一个MP的自动回复功能就可被包装为一个Component。这个Component可能包含若干与该功能相关的数据，例如回复时间间隔，每次的回复量等。我们往玩家对象这个Entity添加各种Component，也就是给玩家添加各种逻辑功能。</p>
-
-<p>但是，Component之间可能会涉及到交互，玩家对象之外的模块可能也会与玩家内的某个Component交互。子功能点的拆分，不得不涉及到更多的胶水代码，这也算一种代价。</p>
-
-<h2>游戏对象属性设计</h2>
-
-<p>这份属性结构设计，基本就是参考了上面提到的设计思想。整个系统有如下组件:</p>
-
-<pre><code>Entity:    +-------------------+
-           | property-table    |
-           +-------------------+
-           | component-table   |
-           +-------------------+
-
-Property:  +-------------------+
-           | observer-list     |
-           +-------------------+ 
-
-Component: +--------------------+
-           | logic-related data |
-           +--------------------+
-           | logic-related func |
-           +--------------------+
-</code></pre>
-
-<p>意即，所有Entity都包含一个属性表和组件表。这里的属性表并非硬编码的属性数据成员集合，而是一个key-value形式的表。Property包含一个观察者列表，其实就是一系列回调函数，但是这些观察者本质上也是组件，后面会提到。Component正如上文描述，仅包含Component本身实现的功能所需要的数据和函数。整个结构大致的代码如下:</p>
-
-<pre><code>class Entity {
-private:
-    GUID id;
-    std::map&lt;std::string, IComponent*&gt; components;
-    std::map&lt;std::string, Property*&gt; properties;
-};
-
-class Property {
-private:
-    std::string name;
-    Value val;
-    std::vector&lt;IComponent*&gt; observers;
-};
-
-class IComponent {
-public:
-    virtual bool Operate (const Args &amp;args) { return false; }
-    virtual void OnNotify (const Property &amp;property, const Args &amp;args) {}
-protected:
-    std::string name;
-    Entity *entity;
-};
-</code></pre>
-
-<p>属性本身是抽象的，这完全是因为我们将属性统一地放在了一个表里。从而又导致属性的值也需要做一个抽象包装。</p>
-
-<p>因为Component主要是针对游戏对象属性而存在的。而针对游戏对象属性的操作，我将其分为主动操作和被动操作，其对应的组件就被称为主动组件和被动组件。这里的主被动，主要是针对这个组件是通过哪种方式启动的。如果是某个地方直接需要某个组件启动，那么称为主动，例如玩家角色刚上线，需要编码角色属性到客户端，则启动属性更新组件；如果某个组件是因为某个属性的改变而启动，则称为被动，例如当玩家受到伤害，HP非满值时，则需要启动HP自动回复组件。</p>
-
-<p>针对组件的主被动特性，就得到主动接口Operate，被动接口OnNotify。因为不同的组件实现，依赖的启动参数可能完全不一样，所以这里对参数做了Args的封装。Args具体实现时，可以采用类继承方式根据具体应用塞入具体的参数；也可以直接使用tuple来包装不同类型不同个数的参数。</p>
-
-<p>因为有了个被动属性，所以就在属性身上放置了一个Observer列表。当然这里不一定要采用这种细粒度的方式&#8212;将Observer绑在属性身上，而可以将observer列表放到Entity身上。接下来看一些具体的用例。</p>
-
-<h3>具体用例</h3>
-
-<p><strong>上线属性更新</strong></p>
-
-<pre><code>// serialize player to client
-// 取得ClientUpdater组件
-IComponent *updater = entity-&gt;GetComponent ("ClientUpdater");
-// 更新至client_socket客户端
-updater-&gt;Operate (Args (client_socket));
-</code></pre>
-
-<p><strong>玩家属性改变</strong></p>
-
-<pre><code>// hurt player
-// 取得属性存取组件
-IComponent *accessor = entity-&gt;GetComponent ("PropertyAccessor");
-// 改变属性
-accessor-&gt;Operate (Args ("HP", Value(10))); // decrease 10 HP
-...
-// dirty property updator component get called
-void DirtyUpdator::OnNotify (const Property &amp;property, const Args &amp;args) {
-    // 将此属性放到脏属性容器，稍候统一更新
-    dirties.push (property);
-}
-</code></pre>
-
-<p>代码到真正应用时，可能会加入更多的接口，以下代码情景不追加叙述。</p>
-
-<p><strong>游戏对象刚创建</strong></p>
-
-<pre><code>// in script, or by config file, or hard code, etc...
-entity-&gt;AddProperty ("HP", Args (10)) ;
-entity-&gt;AddProperty ("MP", Args (5));
-... 
-entity-&gt;AddComponent (componentFactory-&gt;Create ("ClientUpdater"));
-entity-&gt;AddComponent (componentFactory-&gt;Create ("PropertyAccessor"));
-...
-</code></pre>
-
-<p><strong>组件被创建时</strong></p>
-
-<pre><code>ClientUpdater::ClientUpdater () {
-    entity-&gt;GetProperty ("HP")-&gt;AddObserver (this);
-    ...
-}
-</code></pre>
-
-<p>;;END;;</p>
-
-<p class='post-footer'>
-            原文地址：
-            <a href='http://codemacro.com/2011/05/02/entity-property/'>http://codemacro.com/2011/05/02/entity-property/</a><br/>
-            written by <a href='http://codemacro.com'>Kevin Lynx</a>
-            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
-            </p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[多重继承和void*的糗事]]></title>
-    <link href="http://codemacro.com/2011/04/30/multi-inherit-void/"/>
-    <updated>2011-04-30T00:00:00+08:00</updated>
-    <id>http://codemacro.com/2011/04/30/multi-inherit-void</id>
-    <content type="html"><![CDATA[<p>C++为了兼容C，导致了不少语言阴暗面。Bjarne
-Stroustrup在&lt;D&amp;E>一书里也常为此表现出无奈。另一方面，强制转换也是C++的一大诟病。但是，因为我们的应用环境总是那么“不
-纯”，所以也就常常导致各种问题。</p>
-
-<p>本文即描述了一个关于强制转换带来的问题。这个问题几年前我曾遇到过(&lt;<a href="http://www.cppblog.com/kevinlynx/archive/2008/04/24/48001.html">多线程下vc2003,vc2005对虚函数表处理的BUG？</a>>)，当时没来得及深究。深究C++的某些语法，实在是件辛苦事。所以，这里也不提过于诡异的用法。</p>
-
-<!-- more -->
-
-
-<h2>问题</h2>
-
-<p>考虑下面非常普通的多重继承代码:</p>
-
-<div class="highlight"><pre><code class="c"><span class="n">class</span> <span class="n">Left</span> <span class="p">{</span>
-<span class="nl">public:</span>
-    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">ldisplay</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Left::ldisplay</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="n">class</span> <span class="n">Right</span> <span class="p">{</span>
-<span class="nl">public:</span>
-    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">rdisplay</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Right::rdisplay</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="n">class</span> <span class="n">Bottom</span> <span class="o">:</span> <span class="n">public</span> <span class="n">Left</span><span class="p">,</span> <span class="n">public</span> <span class="n">Right</span> <span class="p">{</span>
-<span class="nl">public:</span>
-    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">ldisplay</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Bottom::ldisplay</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-</code></pre>
-</div>
-
-
-<p>这样子的代码在我们的项目中很容易就会出现，例如:</p>
-
-<div class="highlight"><pre><code class="c"><span class="n">class</span> <span class="n">BaseObject</span><span class="p">;</span>
-<span class="n">class</span> <span class="n">EventListener</span><span class="p">;</span>
-<span class="n">class</span> <span class="n">Player</span> <span class="o">:</span> <span class="n">public</span> <span class="n">BaseObject</span><span class="p">,</span> <span class="n">public</span> <span class="n">EventListener</span>
-</code></pre>
-</div>
-
-
-<p>别紧张，我当然不会告诉你这样的代码是有安全隐患的。但它们确实在某些时候会出现隐患。在我们的C++项目中，也极有可能会与一些纯C模块打交道。在C语言里，极有肯能出现以
-下的代码:</p>
-
-<div class="highlight"><pre><code class="c"><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">allocator</span><span class="p">)</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">u</span><span class="p">);</span> 
-<span class="kt">void</span> <span class="n">set_allocator</span> <span class="p">(</span><span class="n">allocator</span> <span class="n">alloc</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">u</span><span class="p">);</span>
-</code></pre>
-</div>
-
-
-<p>之所以使用回调函数，是出于对模块的通用性的考虑。而在调用回调函数时，也通常会预留一个user
-data的指针，用于让应用层自由地传递数据。</p>
-
-<p>以上关于多重继承和void*的使用中，都属于很常规的用法。但是当它们遇到一起时，事情就悲剧了。考虑下面的代码:</p>
-
-<div class="highlight"><pre><code class="c"><span class="n">Bottom</span> <span class="o">*</span><span class="n">bobj</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Bottom</span><span class="p">();</span> <span class="c1">// we HAVE a bottom object</span>
-<span class="n">Right</span> <span class="o">*</span><span class="n">robj</span> <span class="o">=</span> <span class="n">bobj</span><span class="p">;</span> <span class="c1">// robj point to bobj?</span>
-<span class="n">robj</span><span class="o">-&gt;</span><span class="n">rdisplay</span><span class="p">();</span> <span class="c1">// display what ?</span>
-<span class="kt">void</span> <span class="o">*</span><span class="n">vobj</span> <span class="o">=</span> <span class="n">bobj</span><span class="p">;</span> <span class="c1">// we have a VOID* pointer</span>
-<span class="n">robj</span> <span class="o">=</span> <span class="p">(</span><span class="n">Right</span><span class="o">*</span><span class="p">)</span> <span class="n">vobj</span><span class="p">;</span> <span class="c1">// convert it back</span>
-<span class="n">robj</span><span class="o">-&gt;</span><span class="n">rdisplay</span><span class="p">();</span> <span class="c1">// display what?</span>
-</code></pre>
-</div>
-
-
-<p>这里的输出结果是什么呢？:</p>
-
-<div class="highlight"><pre><code class="c"><span class="n">Right</span><span class="o">::</span><span class="n">rdisplay</span> 
-<span class="n">Bottom</span><span class="o">::</span><span class="n">ldisplay</span> <span class="c1">// !!!!</span>
-</code></pre>
-</div>
-
-
-<p>由void*转回来的robj调用rdisplay时，却调用了莫名其妙的Bottom::ldisplay！</p>
-
-<h2>多重继承类的内存布局</h2>
-
-<p>类对象的内存布局，并不属于C++标准。这里仅以vs2005为例。上面例子中，Bottom类的内存布局大概如下:</p>
-
-<pre><code>+-------------+
-| Left_vptr   |
-+-------------+
-| Left data   |
-+-------------+
-| Right_vptr  |
-+-------------+
-| Right data  |
-+-------------+
-| Bottom data |
-+-------------+
-</code></pre>
-
-<p>与单继承不同的是，多重继承的类里，可能会包含多个vptr。当一个Bottom对象被构造好时，其内部的两个vptr也被正确初始化，其指向的vtable分别为:</p>
-
-<pre><code>Left_vptr ---&gt;  +---------------------+
-                | 0: Bottom::ldisplay |
-                +---------------------+
-
-Right_vptr ---&gt; +---------------------+
-                | 0: Right::rdisplay  |
-                +---------------------+
-</code></pre>
-
-<h2>转换的内幕</h2>
-
-<p><strong>类体系间的转换</strong></p>
-
-<p>隐式转换相比强制转换而言，一定算是优美的代码。考虑如下代码的输出:</p>
-
-<div class="highlight"><pre><code class="c"><span class="n">Bottom</span> <span class="o">*</span><span class="n">bobj</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Bottom</span><span class="p">();</span>
-<span class="n">printf</span> <span class="p">(</span><span class="s">&quot;%p</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">bobj</span><span class="p">);</span>
-<span class="n">Right</span> <span class="o">*</span><span class="n">robj</span> <span class="o">=</span> <span class="n">bobj</span><span class="p">;</span>
-<span class="n">printf</span> <span class="p">(</span><span class="s">&quot;%p</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">robj</span><span class="p">);</span>
-</code></pre>
-</div>
-
-
-<p>其输出结果可能为:</p>
-
-<pre><code>003B5DA0
-003B5DA4
-</code></pre>
-
-<p><em><em>结论就是，Right</em>robj = bobj;时，编译器返回了bobj的一个偏移地址。</em>*
-从语言角度看，就是这个转换，返回了bobj中Right*的那一部分的起始地址。但编译器并不总是在bobj上加一个偏移，例如:</p>
-
-<pre><code>bobj = NULL;
-Right *robj = bobj;
-</code></pre>
-
-<p>编译器不会傻到给你一个0x00000004的地址，这简直比NULL更无理。</p>
-
-<p><em><em>void</em>转换</em>*</p>
-
-<p>编译器当然有理由做上面的偏移转换。那是因为在编译阶段，编译器就知道bobj和Right之间的关系。这个偏移量甚至不需要在运行期间动态计算，或是从某个地方取。如果你看过上面代码对应的汇编指令，直接就是:</p>
-
-<pre><code>add eax, 4 ; 直接加 sizeof(Left)，记住，Right在Left之后
-</code></pre>
-
-<p>void<em>就没那么幸运了。void</em>和Bottom没有任何关系，所以:</p>
-
-<pre><code>void *vobj = bobj; // vobj的地址和bobj完全相同
-</code></pre>
-
-<p>然后当你将vobj转换到一个Right*使用时:</p>
-
-<pre><code>robj = (Right*) vobj;  // 没有偏移转换，robj == vobj == bobj
-robj-&gt;rdisplay();
-</code></pre>
-
-<p>robj指向的是Bottom的起始地址，天啊，在我们学习C++时，我们可以说Bottom就是一个Left，也是一个Right，所谓的is
-kind of。但这里的悲剧在于，按照上面的逻辑，我们在使用Right时，其实应该使用Bottom里Right那一部分。
-<strong>但现在这个转换，却让robj指向了Bottom里Left那一部分。</strong></p>
-
-<p>当调用 <code>robj-&gt;rdisplay</code> 时，编译器当然按照Right的内存布局，生成一个虚函数的调用指令，大概就是:</p>
-
-<pre><code>mov vptr, robj-&gt;[0] ;; vptr在robj起始地址处
-mov eax, vptr[0] ;; rdisplay在vtable中位于第一个
-mov ecx, robj
-call eax
-</code></pre>
-
-<p>总而言之， <code>robj-&gt;rdisplay</code>
-就是使用偏移0处的值作为vptr，然后使用vptr指向的vtable中第一个函数作为调用。</p>
-
-<p>但，robj正指向bobj的起始地址，这个地址是放置Left_vptr的地方。这个过程，使用了Left_ptr，而Left_ptr指向的vtable中，第一个函数是什么呢？:</p>
-
-<pre><code>Left_vptr ---&gt;  +---------------------+
-                | 0: Bottom::ldisplay |
-                +---------------------+
-</code></pre>
-
-<p>正是Bottom::ldisplay！到这里，整个问题的原因就被梳理出来了。</p>
-
-<p>;;END;;</p>
-
-<p class='post-footer'>
-            原文地址：
-            <a href='http://codemacro.com/2011/04/30/multi-inherit-void/'>http://codemacro.com/2011/04/30/multi-inherit-void/</a><br/>
             written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: tips | loop in codes]]></title>
   <link href="http://codemacro.com/categories/tips/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-08-03T15:10:27+08:00</updated>
+  <updated>2012-08-07T14:41:10+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,184 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[编写独立的Ruby脚本]]></title>
+    <link href="http://codemacro.com/2012/08/07/write-standalone-ruby-script/"/>
+    <updated>2012-08-07T14:33:00+08:00</updated>
+    <id>http://codemacro.com/2012/08/07/write-standalone-ruby-script</id>
+    <content type="html"><![CDATA[<p>Ruby肯定不仅仅用于编写Rails程序。要使用Ruby编写独立的脚本/程序，就像shell一样，其方式也很简单：</p>
+
+<p><div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;h1&gt;!/us</span><span class="n">r</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span> <span class="n">ruby</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+
+<span class="sr">&lt;p&gt;if ARGV.size == 0</span>
+<span class="sr">  puts &#39;usage: program arg1 arg2&#39;</span>
+<span class="sr">  exit</span>
+<span class="sr">end</span>
+<span class="sr">ARGV.each do |arg| print arg end</span>
+</code></pre>
+</div>
+</p>
+
+<p>脚本内容没有什么限制，函数、类、模块的组织方式也随意。ARGV是一个特殊的变量，是一个数组，其内保存了传入脚本的参数，不包含程序名。当然，不要忘记给脚本加上可执行权限。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[让wxListCtrl支持子item编辑]]></title>
+    <link href="http://codemacro.com/2012/08/07/edit-item-wxlistctrl/"/>
+    <updated>2012-08-07T13:48:00+08:00</updated>
+    <id>http://codemacro.com/2012/08/07/edit-item-wxlistctrl</id>
+    <content type="html"><![CDATA[<p>我使用的wxLua版本信息为<code>wxLua 2.8.7.0 built with wxWidgets 2.8.8</code>，也就是LuaForWindows_v5.1.4-40.exe这个安装包里自带的wxLua。我不知道其他wxWidgets版本里wxListCtrl怎样，但我使用的版本里wxListCtrl是不支持编辑里面的子item的。在我使用的report模式下，子item也就是特定某一行一列的item。</p>
+
+<p>google了一下，发现悲剧地需要自己实现，主要就是自己显示一个wxTextCtrl：</p>
+
+<!-- more -->
+
+
+<h2><div class="highlight"><pre><code class="lua"><span class="o">&lt;/</span><span class="n">h2</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">-- file: wxListCtrlTextEdit.lua</span>
+<span class="c1">-- author: Kevin Lynx&lt;/p&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h2</span><span class="o">&gt;</span><span class="c1">-- date: 08.06.2012&lt;/h2&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">local</span> <span class="n">EditList</span> <span class="o">=</span> <span class="p">{}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">-- get the column by an abs point</span>
+<span class="k">function</span> <span class="nf">EditList</span><span class="p">:</span><span class="n">getColumn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">local</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">:</span><span class="n">GetColumnCount</span><span class="p">()</span>
+<span class="kd">local</span> <span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">do</span>
+    <span class="kd">local</span> <span class="n">w</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">:</span><span class="n">GetColumnWidth</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="err">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">w</span> <span class="k">then</span> <span class="k">return</span> <span class="n">i</span> <span class="k">end</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">+</span> <span class="n">w</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">-- when a mouse down, show a text edit control</span>
+<span class="k">function</span> <span class="nf">EditList</span><span class="p">:</span><span class="n">onLeftDown</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">IsShown</span><span class="p">()</span> <span class="k">then</span>
+    <span class="n">self</span><span class="p">:</span><span class="n">closeEditor</span><span class="p">()</span>
+<span class="k">end</span>
+<span class="kd">local</span> <span class="n">p</span> <span class="o">=</span> <span class="n">evt</span><span class="p">:</span><span class="n">GetPoint</span><span class="p">()</span>
+<span class="kd">local</span> <span class="n">row</span> <span class="o">=</span> <span class="n">evt</span><span class="p">:</span><span class="n">GetIndex</span><span class="p">()</span>
+<span class="kd">local</span> <span class="n">col</span> <span class="o">=</span> <span class="n">self</span><span class="p">:</span><span class="n">getColumn</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxListCtrlEx</span><span class="p">.</span><span class="n">GetSubItemRect</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+<span class="n">rect</span><span class="p">:</span><span class="n">SetHeight</span><span class="p">(</span><span class="n">rect</span><span class="p">:</span><span class="n">GetHeight</span><span class="p">()</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">-- adjust</span>
+<span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">SetSize</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+<span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">Show</span><span class="p">()</span>
+<span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">SetValue</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxListCtrlEx</span><span class="p">.</span><span class="n">GetItemText</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+<span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">SetFocus</span><span class="p">()</span>
+<span class="n">self</span><span class="p">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span>
+<span class="n">self</span><span class="p">.</span><span class="n">row</span> <span class="o">=</span> <span class="n">row</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">function</span> <span class="nf">EditList</span><span class="p">:</span><span class="n">closeEditor</span><span class="p">()</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">IsShown</span><span class="p">()</span> <span class="k">then</span> <span class="k">return</span> <span class="k">end</span>
+<span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">Hide</span><span class="p">()</span>
+<span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">:</span><span class="n">SetItem</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">row</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">col</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">GetValue</span><span class="p">())</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">function</span> <span class="nf">EditList</span><span class="p">:</span><span class="n">initialize</span><span class="p">()</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">self</span><span class="p">.</span><span class="n">editor</span> <span class="o">=</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxTextCtrl</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">listctrl</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxID_ANY</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxDefaultPosition</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxDefaultSize</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxTE_PROCESS_ENTER</span> <span class="o">+</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxTE_RICH2</span><span class="p">)</span>
+<span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxEVT_COMMAND_TEXT_ENTER</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="n">self</span><span class="p">:</span><span class="n">closeEditor</span><span class="p">()</span> <span class="k">end</span><span class="p">)</span>
+<span class="c1">-- not work actually</span>
+<span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxEVT_COMMAND_KILL_FOCUS</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="n">self</span><span class="p">:</span><span class="n">closeEditor</span><span class="p">()</span> <span class="k">end</span><span class="p">)</span>
+<span class="n">self</span><span class="p">.</span><span class="n">editor</span><span class="p">:</span><span class="n">Hide</span><span class="p">()</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">function</span> <span class="nf">wx</span><span class="p">.</span><span class="n">wxListCtrlTextEdit</span><span class="p">(</span><span class="n">listctrl</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">local</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">listctrl</span> <span class="o">=</span> <span class="n">listctrl</span><span class="p">,</span>
+    <span class="n">editor</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="kd">local</span> <span class="n">editlist</span> <span class="o">=</span> <span class="n">newObject</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">EditList</span><span class="p">)</span>
+<span class="n">editlist</span><span class="p">:</span><span class="n">initialize</span><span class="p">()</span>
+<span class="n">listctrl</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="n">evt</span><span class="p">)</span> <span class="n">editlist</span><span class="p">:</span><span class="n">onLeftDown</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span> <span class="k">end</span><span class="p">)</span>
+<span class="n">listctrl</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxEVT_COMMAND_LIST_ITEM_FOCUSED</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="n">editlist</span><span class="p">:</span><span class="n">closeEditor</span><span class="p">()</span> <span class="k">end</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">listctrl</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<p>其原理就是获取到当前鼠标点击所在的子item位置，然后在此位置显示一个wxEditCtrl即可。以上代码需要依赖我之前写的<a href="http://codemacro.com/2012/08/02/simple-oo-in-lua/">Lua里实现简单的类-对象</a>中的代码，同时依赖以下针对wxListCtrl的扩展接口：</p>
+
+<h2><div class="highlight"><pre><code class="lua"><span class="o">&lt;/</span><span class="n">h2</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">-- file: wxListCtrlExtend.lua</span>
+<span class="c1">-- author: Kevin Lynx</span>
+<span class="c1">-- date: 08.07.2012&lt;/p&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h2</span><span class="o">&gt;</span><span class="c1">-- brief: extend some util functions to wx.wxListCtrl&lt;/h2&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">wx</span><span class="p">.</span><span class="n">wxListCtrlEx</span> <span class="o">=</span> <span class="p">{}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">function</span> <span class="nf">wx</span><span class="p">.</span><span class="n">wxListCtrlEx</span><span class="p">.</span><span class="n">GetSubItemRect</span><span class="p">(</span><span class="n">listctrl</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">local</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxRect</span><span class="p">()</span>
+<span class="n">listctrl</span><span class="p">:</span><span class="n">GetItemRect</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="kd">local</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">col</span> <span class="k">do</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">listctrl</span><span class="p">:</span><span class="n">GetColumnWidth</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxRect</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">w</span><span class="p">,</span> <span class="n">rect</span><span class="p">:</span><span class="n">GetY</span><span class="p">(),</span> <span class="n">w</span><span class="p">,</span> <span class="n">rect</span><span class="p">:</span><span class="n">GetHeight</span><span class="p">())</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">function</span> <span class="nf">wx</span><span class="p">.</span><span class="n">wxListCtrlEx</span><span class="p">.</span><span class="n">GetItemText</span><span class="p">(</span><span class="n">listctrl</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">local</span> <span class="n">info</span> <span class="o">=</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxListItem</span><span class="p">()</span>
+<span class="n">info</span><span class="p">:</span><span class="n">SetId</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<span class="n">info</span><span class="p">:</span><span class="n">SetColumn</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+<span class="n">info</span><span class="p">:</span><span class="n">SetMask</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxLIST_MASK_TEXT</span><span class="p">)</span>
+<span class="n">listctrl</span><span class="p">:</span><span class="n">GetItem</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">info</span><span class="p">:</span><span class="n">GetText</span><span class="p">()</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<p>在我看到的wxWidgets官方文档里，其实wxListCtrl已经有<code>GetSubItemRect</code>接口，并且在另一些示例代码里，也看到了<code>GetItemText</code>接口，但是，我使用的版本里没有，所以只好自己写。基于以上，要使用这个可以支持编辑子item的wxListCtrl，可以：</p>
+
+<p><div class="highlight"><pre><code class="lua"><span class="n">list</span> <span class="o">=</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxListCtrlTextEdit</span><span class="p">(</span><span class="n">wx</span><span class="p">.</span><span class="n">wxListCtrl</span><span class="p">(</span><span class="n">dialog</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxID_ANY</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxDefaultPosition</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxDefaultSize</span><span class="p">,</span> <span class="n">wx</span><span class="p">.</span><span class="n">wxLC_REPORT</span><span class="p">))</span>
+</code></pre>
+</div>
+</p>
+
+<p>也就是通过wx.wxListCtrlTextEdit这个函数做下处理，这个函数返回的是本身的wxListCtrl。当然更好的方式是使用继承之类的方式，开发一种新的控件，但在Lua中，针对usedata类型的扩展貌似只能这样了。</p>
+
+<p>最好吐槽下，这个控件扩展其实很恶心。本来我打算当编辑控件失去焦点后就隐藏它，但是往编辑控件上注册KILL_FOCUS事件始终不起作用；我又打算弄个ESC键盘事件去手动取消，但显然wxTextCtrl是不支持键盘事件的。好吧，凑合用了。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Lua里实现简单的类-对象]]></title>
@@ -381,165 +559,6 @@
 <p>大概就是当传入的页面是post时，就添加页脚信息，我这里主要添加了原始地址和作者信息，并且留了个post-footer作为这个段落的样式定制。附加的信息对于RSS输出同样有效。</p>
 
 <p>这个插件的使用方式很简单，直接放到plugins目录下即可。可以在_config.yml中配置下origional_url_pre，例如配置为“原始地址：“。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ruby中的case...when语法]]></title>
-    <link href="http://codemacro.com/2012/07/26/ruby-case-when/"/>
-    <updated>2012-07-26T10:13:00+08:00</updated>
-    <id>http://codemacro.com/2012/07/26/ruby-case-when</id>
-    <content type="html"><![CDATA[<p>参考<a href="http://stackoverflow.com/questions/948135/how-to-write-a-switch-statement-in-ruby">How to write a switch statement in Ruby?</a></p>
-
-<p>其实用Rails写个业务逻辑不算复杂的app根本用不上ruby的很多高级语法，更别说&lt;meta programming in ruby>中的东西了（凡是打上meta programming标签的都不是什么简单的东西，参考c++/lisp）。ruby中的case...when语句和c/c++中的switch...case其实根本不是一回事。&lt;Programming in Ruby 2nd>：</p>
-
-<blockquote><p>case operates by comparing the target with each of the comparison expression after the when keywords. This test is done using comparison === target.</p></blockquote>
-
-<!-- more -->
-
-
-<p>也就是说case...when用的不是==操作符，不是使用相等逻辑去判断，而是使用===运算符。===运算符从C++的角度简单来说就是判定is-a关系，例如</p>
-
-<p><div class="highlight"><pre><code class="ruby"><span class="no">Fixnum</span> <span class="o">===</span> <span class="mi">1</span>
-<span class="nb">String</span> <span class="o">===</span> <span class="s2">&quot;hello&quot;</span>
-<span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span> <span class="o">===</span> <span class="mi">2</span>
-</code></pre>
-</div>
-</p>
-
-<p>1 is a Fixnum，hello is a String，2 is a (1..3) (in the range of)。比较让人产生误解的，大概就是1===1也为true。所以理解起来，也不纯碎是is-a关系。</p>
-
-<p><div class="highlight"><pre><code class="ruby"><span class="k">case</span> <span class="n">a</span>
-<span class="k">when</span> <span class="no">Fixnum</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-
-<span class="sr">&lt;pre&gt;&lt;code&gt;puts &quot;fixnum&quot;</span>
-<span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-
-<span class="sr">&lt;p&gt;when String&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nb">puts</span> <span class="s2">&quot;string&quot;</span>
-<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">when</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">3</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-
-<span class="sr">&lt;pre&gt;&lt;code&gt;puts &quot;between 1 and 3&quot;</span>
-<span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-
-<span class="sr">&lt;p&gt;else&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nb">puts</span> <span class="s2">&quot;default&quot;</span>
-<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">end</span>
-</code></pre>
-</div>
-</p>
-
-<p>最后，作为一种functional-like language，其语句也算是表达式，意即也有返回值。case..when的返回值就是执行的分支的返回值。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[HTML中table的高亮以及tooltip]]></title>
-    <link href="http://codemacro.com/2012/07/24/html-table-hover/"/>
-    <updated>2012-07-24T16:08:00+08:00</updated>
-    <id>http://codemacro.com/2012/07/24/html-table-hover</id>
-    <content type="html"><![CDATA[<p>在一个需要显示很多数据的表格(table)中，为了更友好地查看一行数据，常常需要在鼠标指针移到某一行时，高亮此行。要实现这个效果有很多方法，这里列举一个方法：</p>
-
-<p><div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">setTableHover</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="nx">t</span> <span class="o">+</span> <span class="s2">&quot; tbody tr&quot;</span><span class="p">)</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-
-<span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>  <span class="p">.</span><span class="nx">mouseover</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);})</span>
-  <span class="p">.</span><span class="nx">mouseout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">&quot;hover&quot;</span><span class="p">);</span> <span class="p">})</span>
-<span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-
-<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>
-</code></pre>
-</div>
-</p>
-
-<p>主要就是在鼠标移到某一行时，为该行添加一个高亮的css class，鼠标离开时移除该class即可。可以为一个特定的table设定：</p>
-
-<!-- more -->
-
-
-<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;/p&gt;</span>
-
-<span class="nt">&lt;table</span> <span class="na">id=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;/table&gt;</span>
-
-
-<span class="nt">&lt;script&gt;</span>
-    <span class="nx">setTableHover</span><span class="p">(</span><span class="s1">&#39;#test&#39;</span><span class="p">)</span>
-<span class="nt">&lt;/script&gt;</span>
-
-
-<span class="nt">&lt;p&gt;</span>
-</code></pre>
-</div>
-</p>
-
-<p>甚至可以为将某个页面的所有table设为高亮：</p>
-
-<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;/p&gt;</span>
-
-<span class="nt">&lt;script&gt;</span>
-    <span class="nx">setTableHover</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span>
-<span class="nt">&lt;/script&gt;</span>
-
-
-<span class="nt">&lt;p&gt;</span>
-</code></pre>
-</div>
-</p>
-
-<p>css里需要编写这个hover：</p>
-
-<p><div class="highlight"><pre><code class="css"><span class="nc">.hover</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="m">#e9cffa</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre>
-</div>
-</p>
-
-<hr/>
-
-
-<p>除了高亮显示某一行外，可能还需要在鼠标移动到某个单元格时，弹出一个tooltip。这里的tooltip可以是<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>，也就是一个div元素。</p>
-
-<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;tr&gt;</span>
-  <span class="nt">&lt;td</span> <span class="na">class=</span><span class="s">&quot;tip&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
-
-<span class="nt">&lt;pre&gt;&lt;code&gt;</span>hello
-<span class="ni">&amp;lt;</span>div class=&#39;popup&#39; style=&#39;display:none;&#39;<span class="ni">&amp;gt;</span>this is the tip<span class="ni">&amp;lt;</span>/div<span class="ni">&amp;gt;</span>
-<span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
-
-<span class="nt">&lt;p&gt;</span>  <span class="nt">&lt;/td&gt;</span>
-<span class="nt">&lt;/tr&gt;</span>
-</code></pre>
-</div>
-</p>
-
-<p>要实现此效果，可以通过修改包含tip class的鼠标事件响应：</p>
-
-<p><div class="highlight"><pre><code class="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-
-<span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.tip&#39;</span><span class="p">).</span><span class="nx">hover</span><span class="p">(</span>
-    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="nx">show_popupex</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">),</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
-    <span class="p">},</span>
-    <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="p">);</span>
-<span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-
-<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
-</code></pre>
-</div>
-</p>
-
-<p>hover的第一个参数表示鼠标进入的响应，第二个参数表示鼠标离开的响应。show_popupex用于将一个元素以绝对位置显示在指定元素（这里是单元格）附近，可以参看<a href="http://codemacro.com/2012/07/19/popup-window-in-html/">弹出窗口</a>那篇文章。</p>
 ]]></content>
   </entry>
   

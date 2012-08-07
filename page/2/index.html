@@ -9,7 +9,7 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="在一个需要显示很多数据的表格(table)中，为了更友好地查看一行数据，常常需要在鼠标指针移到某一行时，高亮此行。要实现这个效果有很多方法，这里列举一个方法： function setTableHover(t) { $(t + &quot; tbody tr&quot;) .mouseover( &hellip;">
+  <meta name="description" content="当你的博客文章被转载时，你肯定希望转载者能添加一个原始地址。或者你的文章被各种RSS抓取器抓取时，你也希望能在明显的位置显示这个原始地址。使用octopress写博客时，可以通过插件来做这件事。最开始，我只是想单纯地添加这个“原始地址“，一番google未能找到现成的插件，所以只好动手。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,94 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/07/26/post-footer-plugin-for-octopress/">为octopress每篇文章添加一个文章信息</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-26T14:27:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>当你的博客文章被转载时，你肯定希望转载者能添加一个原始地址。或者你的文章被各种RSS抓取器抓取时，你也希望能在明显的位置显示这个原始地址。使用octopress写博客时，可以通过插件来做这件事。最开始，我只是想单纯地添加这个“原始地址“，一番google未能找到现成的插件，所以只好动手。</p>
+
+<p>话说编写octopress真不是件容易事，因为我实在没找到编写插件的文档。octopress基于jekyll，jekyll又使用了liquid。最后我把这几个项目的文档都翻了下，也仅仅看到几个代码示例，而且liquid的API页面居然出错。无奈之下只好多翻了些现有插件的代码，摸索着来写。写octopress的插件，主要分为generator/tag/filter几种。tag很好理解，就是在文章中插入一个插件注册的tag，然后生成页面时就会调用到对应的插件。filter大概就是把文章内容过滤一遍转换成其他内容输出。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/07/26/post-footer-plugin-for-octopress/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/07/26/ruby-case-when/">ruby中的case&#8230;when语法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-26T10:13:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/948135/how-to-write-a-switch-statement-in-ruby">How to write a switch statement in Ruby?</a></p>
+
+<p>其实用Rails写个业务逻辑不算复杂的app根本用不上ruby的很多高级语法，更别说&lt;meta programming in ruby>中的东西了（凡是打上meta programming标签的都不是什么简单的东西，参考c++/lisp）。ruby中的case&#8230;when语句和c/c++中的switch&#8230;case其实根本不是一回事。&lt;Programming in Ruby 2nd>：</p>
+
+<blockquote><p>case operates by comparing the target with each of the comparison expression after the when keywords. This test is done using comparison === target.</p></blockquote>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/07/26/ruby-case-when/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -218,98 +306,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/07/18/start-to-write-tips/">开始记录编程方面的技巧</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T17:01:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>回首上篇博客的发表时间，又2个月时间过去了。在我博客生涯的过去两三年里，总会有好几个月的时间没有编写任何文章。我觉得这真是一个不好的习惯。这个情况的产生，有很多原因。例如自己太懒、工作偶尔忙、自己偶尔处于混沌时期、自己偶尔怀疑人生，如是种种。但最大的原因还是，不敢写。</p>
-
-<p>在刚出来工作那会，作为一个懵懂的青年，接触个什么新技术都内心激动骄傲，然后就特别有动力将所学记录下来，注意下言辞还能折腾个像那么回事的教程出来。后来慢慢地，我就觉得，这些东西太肤浅。先别说教人用个什么IDE，配置个什么数据库，就算你是学个新语言，好好研究下TCP，甚至还能折腾个IOCP框架，这些都还是他妈的特肤浅。你说任何一个有那么点经验和学习能力的程序员，谁花点时间整不出来这些？谁他妈要你在这里装逼卖萌，甚至贻笑大方。除此之外，我个人也觉得无聊了。</p>
-
-<p>另一方面我觉得写博客还有个好处就是帮助自己记录技术，以便将来万一又需要曾经学习过的技术了，回头温习一下就好。但是后来慢慢地我又觉得，这也是没必要的事情。因为反正需要这个技术的时候，也花不了多少时间。</p>
-
-<p>基于这些乱七八糟的原因，我虽然经常打开自己的博客，看看有没人评论啊，留言啊，但发表博客的频率始终上不去。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/07/18/start-to-write-tips/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/07/18/add-tag-to-octopress/">为octopress添加tag Cloud</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T16:37:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>同添加category list一样，网络上有很多方法，这里列举一种。首先到<a href="https://github.com/robbyedwards/octopress-tag-pages">https://github.com/robbyedwards/octopress-tag-pages</a>和<a href="https://github.com/robbyedwards/octopress-tag-cloud">https://github.com/robbyedwards/octopress-tag-cloud</a>clone这两个项目的代码。这两个项目分别用于产生tag page和tag cloud。 针对这两个插件，需要手工复制一些文件到你的octopress目录。</p>
-
-<p><strong>octopress-tag-pages</strong></p>
-
-<p>复制tag_generator.rb到/plugins目录；复制tag_index.html到/source/_layouts目录。<strong>需要注意的是，还需要复制tag_feed.xml到/source/_includes/custom/目录。</strong>这个官方文档里没提到，在我机器上rake generate时报错。其他文件就不需要复制了，都是些例子。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/07/18/add-tag-to-octopress/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/3/">&larr; Older</a>
@@ -328,11 +324,11 @@
     <li class='category'><a href='/categories/c-c-/'>c/c++ (2)</a></li>
 <li class='category'><a href='/categories/game-develop/'>game develop (3)</a></li>
 <li class='category'><a href='/categories/lisp/'>lisp (4)</a></li>
-<li class='category'><a href='/categories/lua/'>lua (3)</a></li>
+<li class='category'><a href='/categories/lua/'>lua (4)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
 <li class='category'><a href='/categories/other/'>other (4)</a></li>
-<li class='category'><a href='/categories/ruby/'>ruby (2)</a></li>
-<li class='category'><a href='/categories/tips/'>tips (10)</a></li>
+<li class='category'><a href='/categories/ruby/'>ruby (3)</a></li>
+<li class='category'><a href='/categories/tips/'>tips (12)</a></li>
 <li class='category'><a href='/categories/web/'>web (3)</a></li>
 
   </ul>
@@ -341,6 +337,14 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/08/07/write-standalone-ruby-script/">编写独立的Ruby脚本</a>
+      </li>
+    
+      <li class="post">
+        <a href="/2012/08/07/edit-item-wxlistctrl/">让wxListCtrl支持子item编辑</a>
+      </li>
     
       <li class="post">
         <a href="/2012/08/03/ruby-element-to-java/">『你会把Ruby的哪些特性加入Java』</a>
@@ -352,14 +356,6 @@
     
       <li class="post">
         <a href="/2012/07/30/write-cpp-like-fp/">像写函数式语言代码一样写C++</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/07/26/post-footer-plugin-for-octopress/">为octopress每篇文章添加一个文章信息</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/07/26/ruby-case-when/">ruby中的case&#8230;when语法</a>
       </li>
     
   </ul>
@@ -374,25 +370,26 @@
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-<a style="font-size: 128%" href="/tags/blog/">blog</a>
-<a style="font-size: 128%" href="/tags/c-c-/">c/c++</a>
+<a style="font-size: 125%" href="/tags/blog/">blog</a>
+<a style="font-size: 125%" href="/tags/c-c-/">c/c++</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
-<a style="font-size: 150%" href="/tags/game-develop/">game develop</a>
+<a style="font-size: 145%" href="/tags/game-develop/">game develop</a>
 <a style="font-size: 90%" href="/tags/github/">github</a>
-<a style="font-size: 128%" href="/tags/html/">html</a>
+<a style="font-size: 125%" href="/tags/html/">html</a>
 <a style="font-size: 90%" href="/tags/java/">java</a>
 <a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
-<a style="font-size: 166%" href="/tags/lisp/">lisp</a>
-<a style="font-size: 150%" href="/tags/lua/">lua</a>
+<a style="font-size: 159%" href="/tags/lisp/">lisp</a>
+<a style="font-size: 159%" href="/tags/lua/">lua</a>
 <a style="font-size: 90%" href="/tags/moai/">moai</a>
 <a style="font-size: 90%" href="/tags/module/">module</a>
-<a style="font-size: 150%" href="/tags/octopress/">octopress</a>
+<a style="font-size: 145%" href="/tags/octopress/">octopress</a>
 <a style="font-size: 90%" href="/tags/rails/">rails</a>
 <a style="font-size: 90%" href="/tags/rapanui/">rapanui</a>
-<a style="font-size: 128%" href="/tags/ruby/">ruby</a>
+<a style="font-size: 145%" href="/tags/ruby/">ruby</a>
 <a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
-<a style="font-size: 128%" href="/tags/web/">web</a>
+<a style="font-size: 125%" href="/tags/web/">web</a>
+<a style="font-size: 90%" href="/tags/wxlua/">wxLua</a>
 
   </ul>
 </section>
