@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>loop in codes</title>
+  <title>Ruby应用几则（解析HTML、XMLRPC） - loop in codes</title>
   <meta name="author" content="Kevin Lynx">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://codemacro.com">
+  <link rel="canonical" href="http://codemacro.com/2012/08/09/ruby-usage-example">
   <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -64,15 +64,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/2012/08/09/ruby-usage-example/">Ruby应用几则（解析HTML、XMLRPC）</a></h1>
+      <h1 class="entry-title">Ruby应用几则（解析HTML、XMLRPC）</h1>
     
     
       <p class="meta">
@@ -95,7 +92,7 @@
   </header>
 
 
-  <div class="entry-content"><h3>Ruby解析HTML</h3>
+<div class="entry-content"><h3>Ruby解析HTML</h3>
 
 <p>Ruby解析HTML（或XML）可以使用<a href="http://nokogiri.org/">nokogiri</a>。我的应用里需要查找HTML页面里的某个元素，结果发现实现方式非常简单，就像使用jquery一样。例如我要获取到octopress博客文章里的文章内容、文章标题、文章分类，就像这篇博客：</p>
 
@@ -113,126 +110,95 @@
 
 
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/08/09/ruby-usage-example/">Read on &rarr;</a>
-    </footer>
-  
+<!-- more -->
 
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/08/07/write-standalone-ruby-script/">编写独立的Ruby脚本</a></h1>
-    
-    
-      <p class="meta">
-        
+<p>最关键就是<code>doc.css('div.entry-content')</code>。想起以前用lisp写的那个版本，还手工遍历了整个HTML页面，实在太落后了。上面这个函数的作用就是取得一篇博文的HTML页面，然后返回该博文的内容、标题和分类。</p>
 
+<h3>Ruby调用xml-rpc</h3>
 
+<p>可以使用<code>rails-xmlrpc</code>这个库，直接使用gem安装：<code>gem install rails-xmlrpc</code>。这个库分为客户端和服务器两部分，我的应用是使用metaweblog API：</p>
 
+<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">MetaWeblogClient</span> <span class="o">&lt;</span> <span class="no">XMLRPC</span><span class="o">::</span><span class="no">Client</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="k">super</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="vi">@username</span> <span class="o">=</span> <span class="n">username</span>
+    <span class="vi">@password</span> <span class="o">=</span> <span class="n">password</span>
+  <span class="k">end</span>
 
+  <span class="k">def</span> <span class="nf">newPost</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">publish</span><span class="p">)</span>
+    <span class="n">call</span><span class="p">(</span><span class="s2">&quot;metaWeblog.newPost&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@password</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">publish</span><span class="p">)</span>
+  <span class="k">end</span>
 
+  <span class="c1"># other methods</span>
 
-
-
-  
-
-
-<time datetime="2012-08-07T14:33:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby肯定不仅仅用于编写Rails程序。要使用Ruby编写独立的脚本/程序，就像shell一样，其方式也很简单：</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="c1">#!/usr/bin/env ruby</span>
-<span class="k">if</span> <span class="no">ARGV</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> 
-  <span class="nb">puts</span> <span class="s1">&#39;usage: program arg1 arg2&#39;</span>
-  <span class="nb">exit</span>
 <span class="k">end</span>
-<span class="no">ARGV</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span> <span class="nb">print</span> <span class="n">arg</span> <span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">new_post</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+  <span class="n">title</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">categories</span> <span class="o">=</span> <span class="n">post_info</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">title</span><span class="o">.</span><span class="n">nil?</span> <span class="ow">or</span> <span class="n">content</span><span class="o">.</span><span class="n">nil?</span>
+    <span class="nb">puts</span> <span class="s2">&quot;get post info failed at </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">return</span>
+  <span class="k">end</span>
+  <span class="n">post</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:title</span> <span class="o">=&gt;</span> <span class="n">title</span><span class="p">,</span> <span class="ss">:description</span> <span class="o">=&gt;</span> <span class="n">content</span><span class="p">,</span> <span class="ss">:categories</span> <span class="o">=&gt;</span> <span class="n">categories</span> <span class="p">}</span>
+  <span class="n">api</span><span class="o">.</span><span class="n">newPost</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="kp">true</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">&quot;new post </span><span class="si">#{</span><span class="n">title</span><span class="si">}</span><span class="s2"> in </span><span class="si">#{</span><span class="n">categories</span><span class="si">}</span><span class="s2"> done</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="k">end</span>
+
+<span class="n">api</span> <span class="o">=</span> <span class="no">MetaweblogClient</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+<span class="n">new_post</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="s2">&quot;http://codemacro.com/2012/08/07/write-standalone-ruby-script/&quot;</span><span class="p">)</span>
 </code></pre>
 </div>
 
 
-<p>脚本内容没有什么限制，函数、类、模块的组织方式也随意。ARGV是一个特殊的变量，是一个数组，其内保存了传入脚本的参数，不包含程序名。当然，不要忘记给脚本加上可执行权限。</p>
+<h3>Ruby读取yaml</h3>
+
+<p>就像Rails里那些配置文件一样，都属于yaml配置文件。我的应用里只需使用简单的key-value形式的yaml配置，就像：</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">host</span><span class="p">:</span> <span class="n">www</span><span class="o">.</span><span class="n">cppblog</span><span class="o">.</span><span class="n">com</span>
+<span class="n">url</span><span class="p">:</span><span class="sr"> /kevinlynx/se</span><span class="n">rvices</span><span class="o">/</span><span class="n">metaweblog</span><span class="o">.</span><span class="n">aspx</span>
+<span class="n">username</span><span class="p">:</span> <span class="n">kevinlynx</span>
+<span class="n">password</span><span class="p">:</span> <span class="n">xxxxxx</span>
+</code></pre>
+</div>
+
+
+<p>解析的时候需要使用<code>yaml</code>库：</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="no">YAML</span><span class="o">::</span><span class="nb">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</code></pre>
+</div>
+
+
+<p>针对以上配置，<code>YAML::load</code>得到的结果就是一个hash表：</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="nb">puts</span> <span class="n">cfg</span><span class="o">[</span><span class="s2">&quot;host&quot;</span><span class="o">]</span>
+<span class="nb">puts</span> <span class="n">cfg</span><span class="o">[</span><span class="s2">&quot;url&quot;</span><span class="o">]</span>
+</code></pre>
+</div>
+
+
+<p>以上，我写了一个小工具，可以让我每次在<a href="http://codemacro.com">codemacro.com</a>发表博客后，使用这个工具自动解析生成的文章，然后发表到CPPBLOG上。完整源码可在这个上：<a href="https://gist.github.com/3301662">https://gist.github.com/3301662</a></p>
 
 <p class='post-footer'>
             原文地址：
-            <a href='http://codemacro.com/2012/08/07/write-standalone-ruby-script/'>http://codemacro.com/2012/08/07/write-standalone-ruby-script/</a><br/>
+            <a href='http://codemacro.com/2012/08/09/ruby-usage-example/'>http://codemacro.com/2012/08/09/ruby-usage-example/</a><br/>
             written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/08/07/edit-item-wxlistctrl/">让wxListCtrl支持子item编辑</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Kevin Lynx</span></span>
 
-<time datetime="2012-08-07T13:48:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我使用的wxLua版本信息为<code>wxLua 2.8.7.0 built with wxWidgets 2.8.8</code>，也就是LuaForWindows_v5.1.4-40.exe这个安装包里自带的wxLua。我不知道其他wxWidgets版本里wxListCtrl怎样，但我使用的版本里wxListCtrl是不支持编辑里面的子item的。在我使用的report模式下，子item也就是特定某一行一列的item。</p>
-
-<p>google了一下，发现悲剧地需要自己实现，主要就是自己显示一个wxTextCtrl：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/08/07/edit-item-wxlistctrl/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/08/03/ruby-element-to-java/">『你会把Ruby的哪些特性加入Java』</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -244,90 +210,42 @@
   
 
 
-<time datetime="2012-08-03T14:14:00+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>参考（翻译、摘抄）于<a href="http://java.sys-con.com/node/251986">Can Ruby Live without Rails?</a>。这篇文章发表于2006年，受访者在回答“如果可以你会把Ruby的哪些特性加入Java“这个问题时，提到了Ruby的一些我个人认为比较突出的语法特性。其实并不是针对Java语言，何况6年时间过去，以Java语法特性的加入速度怕早就有Ruby这些特性了。我对Java不熟，仅限于曾经写的几个简单的android应用，买了&lt;Java编程思想>也没翻完。</p>
-
-<p>以下内容半翻译自原文。</p>
-
-<h3>Closure</h3>
-
-<p>闭包支持将代码块作为函数参数传递。这在写很多代码时会比较方便，例如以下代码打印10次字符串：</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="mi">10</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;Hello&quot;</span> <span class="p">}</span>
-</code></pre>
-</div>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/08/03/ruby-element-to-java/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2012-08-09T14:26:00+08:00" pubdate data-updated="true">Aug 9<span>th</span>, 2012</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/08/02/simple-oo-in-lua/">Lua里实现简单的类-对象</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/categories/ruby/'>ruby</a>, <a class='category' href='/categories/tips/'>tips</a>
+  
+</span>
 
 
-<time datetime="2012-08-02T10:18:00+08:00" pubdate data-updated="true">Aug 2<span>nd</span>, 2012</time>
-        
-      </p>
+    </p>
     
-  </header>
+      <div class="sharing">
+  
+  
+  
+</div>
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2012/08/07/write-standalone-ruby-script/" title="Previous Post: 编写独立的Ruby脚本">&laquo; 编写独立的Ruby脚本</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-  <div class="entry-content"><p>要在Lua里实现面向对象有很多方法，为了支持面向对象的一些特性（类、对象、继承、重载等），其实现可能会比较复杂。看看云风的<a href="http://blog.codingnow.com/2006/06/oo_lua.html">这篇</a>，以及后面的评论，有总结的不错的。这真是让人对Lua刮目相看。但是我并不需要这些机制，一般情况下我只需要支持类即可。</p>
-
-<p>类其实就是定义一个对象的函数模板，避免我写出带模块名并且第一个参数是操作对象的函数（像C一样）。以下代码提炼于rapanui（基于<a href="http://getmoai.com/">moai</a>的高层封装），摘抄于几个月前我基于rapanui移植到android上的一个<a href="https://github.com/kevinlynx/crazyeggs_mobile">小游戏</a>：</p>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/08/02/simple-oo-in-lua/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -409,6 +327,7 @@
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -423,7 +342,10 @@
       var disqus_shortname = 'loopincodes';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://codemacro.com/2012/08/09/ruby-usage-example/';
+        var disqus_url = 'http://codemacro.com/2012/08/09/ruby-usage-example/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
