@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: lua | loop in codes]]></title>
   <link href="http://codemacro.com/tags/lua/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-08-13T15:20:41+08:00</updated>
+  <updated>2012-08-13T16:15:02+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,91 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Lua中动态产生函数]]></title>
+    <link href="http://codemacro.com/2012/08/13/dynamic-method-in-lua/"/>
+    <updated>2012-08-13T15:56:00+08:00</updated>
+    <id>http://codemacro.com/2012/08/13/dynamic-method-in-lua</id>
+    <content type="html"><![CDATA[<p>可以结合<a href="http://codemacro.com/2012/08/02/simple-oo-in-lua/">Lua里实现简单的类-对象</a>看。在我的应用中，存在类似以下代码：</p>
+
+<p><div class="highlight"><pre><code class="lua"><span class="k">function</span> <span class="nf">Item</span><span class="p">.</span><span class="n">new</span><span class="p">()</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">local</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">property</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="n">newObject</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">Item</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
+</code></pre>
+</div>
+</p>
+
+<p><code>property</code>是一个key-value的表，里面的内容不是固定的。最开始我为Item类写了get/set函数，用于存取property表里的值。但这样写起来还是有点麻烦。Ruby里可以动态产生类成员函数，其实Lua里也可以。其思路就是通过metatable来做：</p>
+
+<!-- more -->
+
+
+<p><div class="highlight"><pre><code class="lua"><span class="c1">-- 为newObject增加一个可选参数，该参数是一个函数，当在表示类的table里无法找到成员时就调用该可选参数</span>
+<span class="k">function</span> <span class="nf">newObject</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">class</span><span class="p">,</span> <span class="n">after</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">class</span><span class="p">.</span><span class="n">__index</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">return</span> <span class="n">class</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">or</span> <span class="n">after</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">end</span>
+<span class="k">return</span> <span class="nb">setmetatable</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">class</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
+</code></pre>
+</div>
+</p>
+
+<p>然后就是编写这个after函数，我的理想方式是，例如property里有Name和Index的key-value，那么就可以通过这样的方式来存取：</p>
+
+<p><div class="highlight"><pre><code class="lua"><span class="n">item</span> <span class="o">=</span> <span class="n">Item</span><span class="p">.</span><span class="n">new</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">:</span><span class="n">Name</span><span class="p">())</span>
+<span class="n">item</span><span class="p">:</span><span class="n">SetName</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">hello&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">:</span><span class="n">Index</span><span class="p">()</span>
+<span class="n">item</span><span class="p">:</span><span class="n">SetIndex</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+</code></pre>
+</div>
+</p>
+
+<p>after函数的实现：</p>
+
+<p><div class="highlight"><pre><code class="lua"><span class="k">function</span> <span class="nf">Item</span><span class="p">.</span><span class="n">new</span><span class="p">()</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">local</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">property</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">}</span>
+<span class="kd">local</span> <span class="k">function</span> <span class="nf">after</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">name</span> <span class="o">=</span> <span class="nb">string.match</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Set(%a+)&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="k">then</span> 
+        <span class="k">return</span> <span class="k">function</span> <span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">self</span><span class="p">:</span><span class="n">set</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="k">function</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">property</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">and</span> <span class="n">self</span><span class="p">.</span><span class="n">property</span><span class="p">[</span><span class="n">key</span><span class="p">].</span><span class="n">value</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">newObject</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">after</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
+</code></pre>
+</div>
+</p>
+
+<p>执行过程就为：</p>
+
+<ul>
+<li>当item:Name()执行时，首先试图获取Item上的Name成员，没找到就调用传入的after函数，这个函数检查<code>Name</code>这个字符串是否是<code>SetXX</code>的形式，如果不是则返回一个获取函数；这个时候取得Name成员，然后将其作为函数调用，相当于调用了after刚才返回的函数</li>
+<li>item:SetName("hello")过程类似，只不过调用了另一个返回函数。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[让wxListCtrl支持子item编辑]]></title>
