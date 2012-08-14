@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Rails中获取客户端时区 - loop in codes</title>
+  <title>Lisp中定义变量*var*和var有什么不同？ - loop in codes</title>
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="开发网站功能时，有时候需要获取客户端（浏览器）所在的时区，然后根据不同的时区做一些不同的逻辑功能。这里提供一种方法，其思路为客户端通过js获取时区，然后发送给服务器，服务器存储时区到session中。 function submit_timezone(url) { $.get(url, {&#39 &hellip;">
+  <meta name="description" content="参考What&#8217;s difference between var and var when using defvar? 其实，Common Lisp中使用defvar定义变量加不加星号没有区别。这只是一种Lisp程序员的约定。Lisp中并不使用特定的符号来影响语法元素， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://codemacro.com/2012/07/20/get-client-timezone-in-rails">
+  <link rel="canonical" href="http://codemacro.com/2012/08/14/dynamic-scope-in-lisp">
   <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -69,7 +69,7 @@
   
   <header>
     
-      <h1 class="entry-title">Rails中获取客户端时区</h1>
+      <h1 class="entry-title">Lisp中定义变量*var*和var有什么不同？</h1>
     
     
       <p class="meta">
@@ -85,61 +85,79 @@
   
 
 
-<time datetime="2012-07-20T16:42:00+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2012</time>
+<time datetime="2012-08-14T15:53:00+08:00" pubdate data-updated="true">Aug 14<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>开发网站功能时，有时候需要获取客户端（浏览器）所在的时区，然后根据不同的时区做一些不同的逻辑功能。这里提供一种方法，其思路为客户端通过js获取时区，然后发送给服务器，服务器存储时区到session中。</p>
+<div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/11932876/whats-difference-between-var-and-var-when-using-defvar">What&#8217;s difference between <em>var</em> and var when using defvar?</a></p>
 
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">submit_timezone</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;offset_min&#39;</span> <span class="o">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">getTimezoneOffset</span><span class="p">())});</span>
-<span class="p">}</span>
-
-<span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">submit_timezone</span><span class="p">(</span><span class="s1">&#39;&lt;%= sys_timezone_path %&gt;&#39;</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre>
-</div>
-
-
-
+<p>其实，Common Lisp中使用defvar定义变量加不加星号没有区别。这只是一种Lisp程序员的约定。Lisp中并不使用特定的符号来影响语法元素，例如Ruby中通过给变量添加@前缀来标示该变量为类成员变量。这个问题引出了lisp总dynamic scope这个话题。</p>
 
 <!-- more -->
 
 
-<p>sys_timezone_path是一个特地用来处理时区的route。其实主要需要的是offset_min这个请求参数，你可以把这个参数附加到其他请求里。</p>
+<p>Lisp中变量分为两种，分别为<code>lexical</code>和<code>special</code>。这两种不同的变量有不同的作用域(scope)：词法作用域(lexical scope)和动态作用域(dynamic scope)。<code>special variables</code>通过<code>defvar/defparameter/declare</code>来定义。而<code>lexical variables</code>通常在<code>let</code>中定义。</p>
 
-<p>然后根据offset_min获取到时区名：</p>
+<p>这两种作用域有什么不同呢？引用&lt;ANSI Common Lisp>里说的：</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">timezone</span>
-  <span class="n">offset_sec</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:offset_min</span><span class="o">].</span><span class="n">to_i</span> <span class="o">*</span> <span class="mi">60</span>
-  <span class="n">zone</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TimeZone</span><span class="o">[</span><span class="n">offset_sec</span><span class="o">]</span>
-  <span class="n">zone</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TimeZone</span><span class="o">[</span><span class="s2">&quot;UTC&quot;</span><span class="o">]</span> <span class="k">unless</span> <span class="n">zone</span>
-  <span class="n">session</span><span class="o">[</span><span class="ss">:zone_name</span><span class="o">]</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">zone</span>
-  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-    <span class="nb">format</span><span class="o">.</span><span class="n">js</span>
-  <span class="k">end</span>
-<span class="k">end</span>
+<blockquote><p>Under lexical scope, a symbol refers to the variable that has that name in the context where the symbol appears (define)</p>
+
+<p>With dynamic scope, we look for a variable in the environment where the function is called, not in the environment where it was defined.</p></blockquote>
+
+<p>所以：</p>
+
+<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defvar</span> <span class="nv">b</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nb">defun</span> <span class="nv">add-to-b</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">b</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nv">add-to-b</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="nv">=&gt;</span> <span class="mi">4</span>
+
+<span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">b</span> <span class="mi">4</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nv">add-to-b</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">b</span><span class="p">))</span>
+<span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">5</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">a</span> <span class="mi">3</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">defun</span> <span class="nv">add-to-a</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">a</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nv">add-to-a</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="nv">=&gt;</span> <span class="mi">4</span>
+
+<span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">a</span> <span class="mi">4</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nv">add-to-a</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">a</span><span class="p">))</span>
+<span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">4</span> <span class="mi">4</span><span class="p">)</span>
 </code></pre>
 </div>
 
 
-<p>以上，获取到时区名后存储到session[:zone_name]里。在之后处理这个客户端的请求时，就可以通过这个时区名取得对应的时区，例如：</p>
+<p><code>add-to-b</code>这个函数中使用的变量<code>b</code>是<code>special variable</code>，所以在调用<code>add-to-b</code>时，取的就是调用(called)这个函数时环境中的变量，所以：</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">zone_name</span> <span class="o">=</span> <span class="n">session</span><span class="o">[</span><span class="ss">:zone_name</span><span class="o">]</span> 
-<span class="n">zone</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TimeZone</span><span class="o">[</span><span class="n">zone_name</span><span class="o">]</span> <span class="k">if</span> <span class="n">zone_name</span>
+<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">b</span> <span class="mi">4</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nv">add-to-b</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">b</span><span class="p">))</span>
+<span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">5</span> <span class="mi">4</span><span class="p">)</span>
 </code></pre>
 </div>
 
 
-<p>但经过我实际测试，部署在heroku上的应用偶尔会发现session[:zone_name]取出来是nil，尽管我确认了timezone函数是被调用过的。这难道跟session的超时有关？后来我只好将timezone name写到客户端页面中，然后在其他请求中再把这个时区名发回来。</p>
+<p>取的就是let中临时出现的<code>b</code>。而<code>add-to-a</code>这个函数中使用的变量<code>a</code>是<code>lexical variable</code>，所以调用这个函数时，取的就是这个函数定义(defined)时的<code>a</code>，所以无论在哪里调用<code>add-to-a</code>，都是取的：</p>
+
+<div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">a</span> <span class="mi">3</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">defun</span> <span class="nv">add-to-a</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">a</span><span class="p">)))</span>
+</code></pre>
+</div>
+
+
+<p>这里的<code>a</code>，也就是一直是3。</p>
 
 <p class='post-footer'>
             原文地址：
-            <a href='http://codemacro.com/2012/07/20/get-client-timezone-in-rails/'>http://codemacro.com/2012/07/20/get-client-timezone-in-rails/</a><br/>
+            <a href='http://codemacro.com/2012/08/14/dynamic-scope-in-lisp/'>http://codemacro.com/2012/08/14/dynamic-scope-in-lisp/</a><br/>
             written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>
@@ -166,12 +184,12 @@
   
 
 
-<time datetime="2012-07-20T16:42:00+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2012</time>
+<time datetime="2012-08-14T15:53:00+08:00" pubdate data-updated="true">Aug 14<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/categories/tips/'>tips</a>, <a class='category' href='/categories/web/'>web</a>
+    <a class='category' href='/categories/lisp/'>lisp</a>
   
 </span>
 
@@ -187,10 +205,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/2012/07/19/popup-window-in-html/" title="Previous Post: HTML中实现弹出窗口">&laquo; HTML中实现弹出窗口</a>
+        <a class="basic-alignment left" href="/2012/08/13/dynamic-method-in-lua/" title="Previous Post: Lua中动态产生函数">&laquo; Lua中动态产生函数</a>
       
-      
-        <a class="basic-alignment right" href="/2012/07/24/html-table-hover/" title="Next Post: HTML中table的高亮以及tooltip">HTML中table的高亮以及tooltip &raquo;</a>
       
     </p>
   </footer>
@@ -301,8 +317,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://codemacro.com/2012/07/20/get-client-timezone-in-rails/';
-        var disqus_url = 'http://codemacro.com/2012/07/20/get-client-timezone-in-rails/';
+        var disqus_identifier = 'http://codemacro.com/2012/08/14/dynamic-scope-in-lisp/';
+        var disqus_url = 'http://codemacro.com/2012/08/14/dynamic-scope-in-lisp/';
         var disqus_script = 'embed.js';
       
     (function () {

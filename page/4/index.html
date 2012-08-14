@@ -9,7 +9,7 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="我们使用tolua++手工绑定c/c++接口到lua中，在绑定的接口实现里，就需要取出传入的参数。tolua++中提供了一系列tolua_toxxx函数，例如： lua_Number tolua_tonumber(lua_State *L, int narg, lua_Number def) &hellip;">
+  <meta name="description" content="参考http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/。大致步骤为： 增加category_list插件 保存以下代码到plugins/category_list_tag.rb： module Jekyll &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/07/18/add-category-list-to-octopress/">为octopress添加分类(category)列表</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T16:10:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>参考<a href="http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/">http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/</a>。大致步骤为：</p>
+
+<p><strong>增加category_list插件</strong></p>
+
+<p>保存以下代码到plugins/category_list_tag.rb：</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">module</span> <span class="nn">Jekyll</span>
+  <span class="k">class</span> <span class="nc">CategoryListTag</span> <span class="o">&lt;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Tag</span>
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+      <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+      <span class="n">categories</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">registers</span><span class="o">[</span><span class="ss">:site</span><span class="o">].</span><span class="n">categories</span><span class="o">.</span><span class="n">keys</span>
+      <span class="n">categories</span><span class="o">.</span><span class="n">sort</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">category</span><span class="o">|</span>
+        <span class="n">posts_in_category</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">registers</span><span class="o">[</span><span class="ss">:site</span><span class="o">].</span><span class="n">categories</span><span class="o">[</span><span class="n">category</span><span class="o">].</span><span class="n">size</span>
+        <span class="n">category_dir</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">registers</span><span class="o">[</span><span class="ss">:site</span><span class="o">].</span><span class="n">config</span><span class="o">[</span><span class="s1">&#39;category_dir&#39;</span><span class="o">]</span>
+        <span class="n">category_url</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">category_dir</span><span class="p">,</span> <span class="n">category</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/_|\P{Word}/</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/-{2,}/</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">downcase</span><span class="p">)</span>
+        <span class="n">html</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;&lt;li class=&#39;category&#39;&gt;&lt;a href=&#39;/</span><span class="si">#{</span><span class="n">category_url</span><span class="si">}</span><span class="s2">/&#39;&gt;</span><span class="si">#{</span><span class="n">category</span><span class="si">}</span><span class="s2"> (</span><span class="si">#{</span><span class="n">posts_in_category</span><span class="si">}</span><span class="s2">)&lt;/a&gt;&lt;/li&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="k">end</span>
+      <span class="n">html</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="o">.</span><span class="n">register_tag</span><span class="p">(</span><span class="s1">&#39;category_list&#39;</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">CategoryListTag</span><span class="p">)</span>
+</code></pre>
+</div>
+
+
+<p>这个插件会向liquid注册一个名为category_list的tag，该tag就是以li的形式将站点所有的category组织起来。如果要将category加入到侧边导航栏，需要增加一个aside。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/07/18/add-category-list-to-octopress/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -253,53 +321,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/02/04/codertrace/">写了个简单的网站，codertrace.com</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-04T00:00:00+08:00" pubdate data-updated="true">Feb 4<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>简介</h2>
-
-<p>因为写 <a href="https://github.com/kevinlynx/ext-blog">ext-blog</a>
-的原因，慢慢喜欢上github_ 。然后突然有一天产生了一个想法：如果可以把自己的博客_ 和
-<a href="https://github.com/kevinlynx">github主页</a>
-集中到一块展示给别人，会不会是一种很方便的自我简介方式？然后我就动手写了
-<a href="http://codertrace.com">codertrace.com</a> 。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/02/04/codertrace/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/5/">&larr; Older</a>
@@ -317,7 +338,7 @@
   <ul id="categories">
     <li class='category'><a href='/categories/c-c-/'>c/c++ (2)</a></li>
 <li class='category'><a href='/categories/game-develop/'>game develop (3)</a></li>
-<li class='category'><a href='/categories/lisp/'>lisp (4)</a></li>
+<li class='category'><a href='/categories/lisp/'>lisp (5)</a></li>
 <li class='category'><a href='/categories/lua/'>lua (5)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
 <li class='category'><a href='/categories/other/'>other (4)</a></li>
@@ -333,6 +354,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/08/14/dynamic-scope-in-lisp/">Lisp中定义变量*var*和var有什么不同？</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/08/13/dynamic-method-in-lua/">Lua中动态产生函数</a>
       </li>
     
@@ -346,10 +371,6 @@
     
       <li class="post">
         <a href="/2012/08/07/edit-item-wxlistctrl/">让wxListCtrl支持子item编辑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/08/03/ruby-element-to-java/">『你会把Ruby的哪些特性加入Java』</a>
       </li>
     
   </ul>
@@ -372,7 +393,7 @@
 <a style="font-size: 122%" href="/tags/html/">html</a>
 <a style="font-size: 90%" href="/tags/java/">java</a>
 <a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
-<a style="font-size: 155%" href="/tags/lisp/">lisp</a>
+<a style="font-size: 165%" href="/tags/lisp/">lisp</a>
 <a style="font-size: 165%" href="/tags/lua/">lua</a>
 <a style="font-size: 90%" href="/tags/moai/">moai</a>
 <a style="font-size: 90%" href="/tags/module/">module</a>

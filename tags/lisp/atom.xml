@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: lisp | loop in codes]]></title>
   <link href="http://codemacro.com/tags/lisp/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-08-13T16:15:02+08:00</updated>
+  <updated>2012-08-14T16:47:15+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,82 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Lisp中定义变量*var*和var有什么不同？]]></title>
+    <link href="http://codemacro.com/2012/08/14/dynamic-scope-in-lisp/"/>
+    <updated>2012-08-14T15:53:00+08:00</updated>
+    <id>http://codemacro.com/2012/08/14/dynamic-scope-in-lisp</id>
+    <content type="html"><![CDATA[<p>参考<a href="http://stackoverflow.com/questions/11932876/whats-difference-between-var-and-var-when-using-defvar">What's difference between <em>var</em> and var when using defvar?</a></p>
+
+<p>其实，Common Lisp中使用defvar定义变量加不加星号没有区别。这只是一种Lisp程序员的约定。Lisp中并不使用特定的符号来影响语法元素，例如Ruby中通过给变量添加@前缀来标示该变量为类成员变量。这个问题引出了lisp总dynamic scope这个话题。</p>
+
+<!-- more -->
+
+
+<p>Lisp中变量分为两种，分别为<code>lexical</code>和<code>special</code>。这两种不同的变量有不同的作用域(scope)：词法作用域(lexical scope)和动态作用域(dynamic scope)。<code>special variables</code>通过<code>defvar/defparameter/declare</code>来定义。而<code>lexical variables</code>通常在<code>let</code>中定义。</p>
+
+<p>这两种作用域有什么不同呢？引用&lt;ANSI Common Lisp>里说的：</p>
+
+<blockquote><p>Under lexical scope, a symbol refers to the variable that has that name in the context where the symbol appears (define)</p>
+
+<p>With dynamic scope, we look for a variable in the environment where the function is called, not in the environment where it was defined.</p></blockquote>
+
+<p>所以：</p>
+
+<p><div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="nb">defvar</span> <span class="nv">b</span> <span class="mi">3</span><span class="p">)</span><span class="nv">&lt;/p&gt;</span>
+
+<span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nb">defun</span> <span class="nv">add-to-b</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">b</span><span class="p">))</span><span class="nv">&lt;/p&gt;</span>
+
+<span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nv">add-to-b</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="nv">=&gt;</span> <span class="nv">4&lt;/p&gt;</span>
+
+<span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">b</span> <span class="mi">4</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nv">add-to-b</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">b</span><span class="p">))</span>
+<span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">5</span> <span class="mi">4</span><span class="p">)</span><span class="nv">&lt;/p&gt;</span>
+
+<span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">a</span> <span class="mi">3</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">defun</span> <span class="nv">add-to-a</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="nv">&lt;/p&gt;</span>
+
+<span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">a</span><span class="p">)))</span>
+<span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+
+<span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="nv">add-to-a</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="nv">=&gt;</span> <span class="nv">4&lt;/p&gt;</span>
+
+<span class="nv">&lt;p&gt;</span><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">a</span> <span class="mi">4</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nv">add-to-a</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">a</span><span class="p">))</span>
+<span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">4</span> <span class="mi">4</span><span class="p">)</span>
+</code></pre>
+</div>
+</p>
+
+<p><code>add-to-b</code>这个函数中使用的变量<code>b</code>是<code>special variable</code>，所以在调用<code>add-to-b</code>时，取的就是调用(called)这个函数时环境中的变量，所以：</p>
+
+<p><div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">b</span> <span class="mi">4</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nv">add-to-b</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">b</span><span class="p">))</span>
+<span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">5</span> <span class="mi">4</span><span class="p">)</span>
+</code></pre>
+</div>
+</p>
+
+<p>取的就是let中临时出现的<code>b</code>。而<code>add-to-a</code>这个函数中使用的变量<code>a</code>是<code>lexical variable</code>，所以调用这个函数时，取的就是这个函数定义(defined)时的<code>a</code>，所以无论在哪里调用<code>add-to-a</code>，都是取的：</p>
+
+<p><div class="highlight"><pre><code class="cl"><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">a</span> <span class="mi">3</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">defun</span> <span class="nv">add-to-a</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="nv">&lt;/p&gt;</span>
+
+<span class="nv">&lt;pre&gt;&lt;code&gt;</span><span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">a</span><span class="p">)))</span>
+<span class="nv">&lt;/code&gt;&lt;/pre&gt;</span>
+
+<span class="nv">&lt;p&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<p>这里的<code>a</code>，也就是一直是3。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[使用Lisp搭建独立博客]]></title>
