@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>loop in codes</title>
+  <title>使用memcmp比较两个变量结果一定吗？ - loop in codes</title>
   <meta name="author" content="Kevin Lynx">
 
   
@@ -19,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://codemacro.com">
+  <link rel="canonical" href="http://codemacro.com/2012/08/17/memcmp-on-copy-value">
   <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -65,15 +65,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/2012/08/17/memcmp-on-copy-value/">使用memcmp比较两个变量结果一定吗？</a></h1>
+      <h1 class="entry-title">使用memcmp比较两个变量结果一定吗？</h1>
     
     
       <p class="meta">
@@ -96,7 +93,7 @@
   </header>
 
 
-  <div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/11994513/is-using-memcmp-on-array-of-int-strictly-conforming">Is using memcmp on array of int strictly conforming?</a></p>
+<div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/11994513/is-using-memcmp-on-array-of-int-strictly-conforming">Is using memcmp on array of int strictly conforming?</a></p>
 
 <p>以下代码一定会输出ok吗？</p>
 
@@ -120,234 +117,100 @@
 
 
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/08/17/memcmp-on-copy-value/">Read on &rarr;</a>
-    </footer>
-  
+<!-- more -->
 
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/08/14/dynamic-scope-in-lisp/">Lisp中定义变量*var*和var有什么不同？</a></h1>
-    
-    
-      <p class="meta">
-        
+<p>我在vs2005以及gcc4.4.3上做了测试，都输出了ok。但这并不意味这个代码会永远输出ok。问题主要集中于这里使用了赋值语句来复制值，但却使用了memcmp这个基于内存数据比较的函数来比较值。</p>
 
+<p>c语言中的赋值运算符（=）被定义为基于值的复制，而不是基于内存内容的复制。</p>
 
+<blockquote><p><strong>C99 section 6.5.16.1 p2:</strong> In simple assignment (=), the value of the right operand is converted to the type of the assignment expression and replaces the value stored in the object designated by the left operand.</p></blockquote>
 
+<p>这个其实很好理解，尤其在不同类型的数字类型间复制时，例如：</p>
 
-
-
-
-
-  
-
-
-<time datetime="2012-08-14T15:53:00+08:00" pubdate data-updated="true">Aug 14<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/11932876/whats-difference-between-var-and-var-when-using-defvar">What&#8217;s difference between <em>var</em> and var when using defvar?</a></p>
-
-<p>其实，Common Lisp中使用defvar定义变量加不加星号没有区别。这只是一种Lisp程序员的约定。Lisp中并不使用特定的符号来影响语法元素，例如Ruby中通过给变量添加@前缀来标示该变量为类成员变量。这个问题引出了lisp总dynamic scope这个话题。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/08/14/dynamic-scope-in-lisp/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/08/13/dynamic-method-in-lua/">Lua中动态产生函数</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-13T15:56:00+08:00" pubdate data-updated="true">Aug 13<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>可以结合<a href="http://codemacro.com/2012/08/02/simple-oo-in-lua/">Lua里实现简单的类-对象</a>看。在我的应用中，存在类似以下代码：</p>
-
-<div class="highlight"><pre><code class="lua"><span class="k">function</span> <span class="nf">Item</span><span class="p">.</span><span class="n">new</span><span class="p">()</span>
-    <span class="kd">local</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">property</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">newObject</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">Item</span><span class="p">)</span>
-<span class="k">end</span>
+<div class="highlight"><pre><code class="c"><span class="kt">float</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
 </code></pre>
 </div>
 
 
-<p><code>property</code>是一个key-value的表，里面的内容不是固定的。最开始我为Item类写了get/set函数，用于存取property表里的值。但这样写起来还是有点麻烦。Ruby里可以动态产生类成员函数，其实Lua里也可以。其思路就是通过metatable来做：</p>
+<p>因为浮点数和整形数的内存布局不一样，所以肯定是基于值的一种复制。另外，按照语言标准的思路来看，内存布局这种东西一般都属于实现相关的，所以语言标准是不会依赖实现去定义语言的。</p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/08/13/dynamic-method-in-lua/">Read on &rarr;</a>
-    </footer>
-  
+<p>上面的定理同样用于复杂数据类型，例如结构体。我们都知道结构体每个成员之间可能会有字节补齐，而使用赋值运算符来复制时，会不会复制这些补齐字节的内容，是语言标准未规定的。这意味着使用memcmp比较两个通过赋值运算符复制的两个结构体时，其结果是未定的。</p>
 
+<p>但是上面的代码例子中，比较的其实是两个int数组。这也无法确认结果吗？这个问题最终集中于，难道int也会有不确定的补齐字节数据？</p>
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/08/09/ruby-usage-example/">Ruby应用几则（解析HTML、XMLRPC）</a></h1>
-    
-    
-      <p class="meta">
-        
+<blockquote><p><strong>C99 6.2.6.2 integer types</strong> For signed integer types, the bits of the object representation shall be divided into three groups: value bits, padding bits, and the sign bit. [&#8230;] The values of any padding bits are unspecified.</p></blockquote>
 
+<p>这话其实我也不太懂。一个有符号整数int，其内也有补齐二进制位(bits)？</p>
 
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-09T14:26:00+08:00" pubdate data-updated="true">Aug 9<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Ruby解析HTML</h3>
-
-<p>Ruby解析HTML（或XML）可以使用<a href="http://nokogiri.org/">nokogiri</a>。我的应用里需要查找HTML页面里的某个元素，结果发现实现方式非常简单，就像使用jquery一样。例如我要获取到octopress博客文章里的文章内容、文章标题、文章分类，就像这篇博客：</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="c1"># get post title and content for an octopress post</span>
-<span class="k">def</span> <span class="nf">post_info</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-  <span class="n">doc</span> <span class="o">=</span> <span class="no">Nokogiri</span><span class="o">::</span><span class="no">HTML</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-  <span class="n">content</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.entry-content&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
-  <span class="n">title</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;header h1.entry-title&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">inner_html</span>
-  <span class="n">categories</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;a.category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">link</span><span class="o">|</span> <span class="n">link</span><span class="o">.</span><span class="n">content</span> <span class="k">end</span>
-  <span class="k">return</span> <span class="n">title</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">categories</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/08/09/ruby-usage-example/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/08/07/write-standalone-ruby-script/">编写独立的Ruby脚本</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-07T14:33:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby肯定不仅仅用于编写Rails程序。要使用Ruby编写独立的脚本/程序，就像shell一样，其方式也很简单：</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="c1">#!/usr/bin/env ruby</span>
-<span class="k">if</span> <span class="no">ARGV</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> 
-  <span class="nb">puts</span> <span class="s1">&#39;usage: program arg1 arg2&#39;</span>
-  <span class="nb">exit</span>
-<span class="k">end</span>
-<span class="no">ARGV</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span> <span class="nb">print</span> <span class="n">arg</span> <span class="k">end</span>
-</code></pre>
-</div>
-
-
-<p>脚本内容没有什么限制，函数、类、模块的组织方式也随意。ARGV是一个特殊的变量，是一个数组，其内保存了传入脚本的参数，不包含程序名。当然，不要忘记给脚本加上可执行权限。</p>
+<p>但无论如何，这个例子都不算严谨的代码。人们的建议是使用memcpy来复制这种数据，因为memcpy和memcmp都是基于内存内容来工作的。</p>
 
 <p class='post-footer'>
             原文地址：
-            <a href='http://codemacro.com/2012/08/07/write-standalone-ruby-script/'>http://codemacro.com/2012/08/07/write-standalone-ruby-script/</a><br/>
+            <a href='http://codemacro.com/2012/08/17/memcmp-on-copy-value/'>http://codemacro.com/2012/08/17/memcmp-on-copy-value/</a><br/>
             written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>
 
 </div>
+
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Kevin Lynx</span></span>
+
+      
+
+
+
+
+
+
+
+
   
 
 
-    </article>
+<time datetime="2012-08-17T11:37:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2012</time>
+      
+
+<span class="categories">
   
-  <div class="pagination">
+    <a class='category' href='/categories/c-c-/'>c/c++</a>, <a class='category' href='/categories/tips/'>tips</a>
+  
+</span>
+
+
+    </p>
     
-      <a class="prev" href="/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
+      <div class="sharing">
+  
+  
+  
 </div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2012/08/14/dynamic-scope-in-lisp/" title="Previous Post: Lisp中定义变量*var*和var有什么不同？">&laquo; Lisp中定义变量*var*和var有什么不同？</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -429,6 +292,7 @@
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -443,7 +307,10 @@
       var disqus_shortname = 'loopincodes';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://codemacro.com/2012/08/17/memcmp-on-copy-value/';
+        var disqus_url = 'http://codemacro.com/2012/08/17/memcmp-on-copy-value/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

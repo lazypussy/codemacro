@@ -9,7 +9,7 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="参考http://paz.am/blog/blog/2012/06/25/octopress-category-list-plugin/。大致步骤为： 增加category_list插件 保存以下代码到plugins/category_list_tag.rb： module Jekyll &hellip;">
+  <meta name="description" content="同添加category list一样，网络上有很多方法，这里列举一种。首先到https://github.com/robbyedwards/octopress-tag-pages和https://github.com/robbyedwards/octopress-tag- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/07/18/add-tag-to-octopress/">为octopress添加tag Cloud</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-18T16:37:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>同添加category list一样，网络上有很多方法，这里列举一种。首先到<a href="https://github.com/robbyedwards/octopress-tag-pages">https://github.com/robbyedwards/octopress-tag-pages</a>和<a href="https://github.com/robbyedwards/octopress-tag-cloud">https://github.com/robbyedwards/octopress-tag-cloud</a>clone这两个项目的代码。这两个项目分别用于产生tag page和tag cloud。 针对这两个插件，需要手工复制一些文件到你的octopress目录。</p>
+
+<p><strong>octopress-tag-pages</strong></p>
+
+<p>复制tag_generator.rb到/plugins目录；复制tag_index.html到/source/_layouts目录。<strong>需要注意的是，还需要复制tag_feed.xml到/source/_includes/custom/目录。</strong>这个官方文档里没提到，在我机器上rake generate时报错。其他文件就不需要复制了，都是些例子。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/07/18/add-tag-to-octopress/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -278,49 +323,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/04/20/blog-on-github/">使用Github Page来写博客</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-20T00:00:00+08:00" pubdate data-updated="true">Apr 20<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最开始知道<a href="http://pages.github.com/">Github Page</a>，是通过<a href="http://codertrace.com">codertrace</a>上的某些注册用户，他们的BLOG就建立在Github Page上，并且清一色的干净整洁（简陋），这看起来很酷。</p>
-
-<p>Github提供了很多很合coder口味的东西，例如Gist，也包括这里提到的Page。Page并不是特用于建立博客的产品，它仅提供静态页面的显示。它最酷的地方，是通过Git的方式来让你管理这些静态页面。通过建立一个repository，并使用markdown语法来编写文章，然后通过Git来管理这些文章，你就可以自动将其发布出去。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/04/20/blog-on-github/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/5/">&larr; Older</a>
@@ -336,14 +338,14 @@
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/categories/c-c-/'>c/c++ (2)</a></li>
+    <li class='category'><a href='/categories/c-c-/'>c/c++ (3)</a></li>
 <li class='category'><a href='/categories/game-develop/'>game develop (3)</a></li>
 <li class='category'><a href='/categories/lisp/'>lisp (5)</a></li>
 <li class='category'><a href='/categories/lua/'>lua (5)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
 <li class='category'><a href='/categories/other/'>other (4)</a></li>
 <li class='category'><a href='/categories/ruby/'>ruby (4)</a></li>
-<li class='category'><a href='/categories/tips/'>tips (14)</a></li>
+<li class='category'><a href='/categories/tips/'>tips (15)</a></li>
 <li class='category'><a href='/categories/web/'>web (3)</a></li>
 
   </ul>
@@ -352,6 +354,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/08/17/memcmp-on-copy-value/">使用memcmp比较两个变量结果一定吗？</a>
+      </li>
     
       <li class="post">
         <a href="/2012/08/14/dynamic-scope-in-lisp/">Lisp中定义变量*var*和var有什么不同？</a>
@@ -369,10 +375,6 @@
         <a href="/2012/08/07/write-standalone-ruby-script/">编写独立的Ruby脚本</a>
       </li>
     
-      <li class="post">
-        <a href="/2012/08/07/edit-item-wxlistctrl/">让wxListCtrl支持子item编辑</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -386,21 +388,21 @@
   <h1>Tags</h1>
   <ul class="tag-cloud">
 <a style="font-size: 122%" href="/tags/blog/">blog</a>
-<a style="font-size: 122%" href="/tags/c-c-/">c/c++</a>
+<a style="font-size: 140%" href="/tags/c-c-/">c/c++</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
-<a style="font-size: 141%" href="/tags/game-develop/">game develop</a>
+<a style="font-size: 140%" href="/tags/game-develop/">game develop</a>
 <a style="font-size: 90%" href="/tags/github/">github</a>
 <a style="font-size: 122%" href="/tags/html/">html</a>
 <a style="font-size: 90%" href="/tags/java/">java</a>
 <a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
-<a style="font-size: 165%" href="/tags/lisp/">lisp</a>
-<a style="font-size: 165%" href="/tags/lua/">lua</a>
+<a style="font-size: 163%" href="/tags/lisp/">lisp</a>
+<a style="font-size: 163%" href="/tags/lua/">lua</a>
 <a style="font-size: 90%" href="/tags/moai/">moai</a>
 <a style="font-size: 90%" href="/tags/module/">module</a>
-<a style="font-size: 141%" href="/tags/octopress/">octopress</a>
+<a style="font-size: 140%" href="/tags/octopress/">octopress</a>
 <a style="font-size: 90%" href="/tags/rails/">rails</a>
 <a style="font-size: 90%" href="/tags/rapanui/">rapanui</a>
-<a style="font-size: 155%" href="/tags/ruby/">ruby</a>
+<a style="font-size: 153%" href="/tags/ruby/">ruby</a>
 <a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
 <a style="font-size: 122%" href="/tags/web/">web</a>
