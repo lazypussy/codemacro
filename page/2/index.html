@@ -9,7 +9,10 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="我使用的wxLua版本信息为wxLua 2.8.7.0 built with wxWidgets 2.8.8，也就是LuaForWindows_v5.1.4-40.exe这个安装包里自带的wxLua。我不知道其他wxWidgets版本里wxListCtrl怎样， &hellip;">
+  <meta name="description" content="Ruby肯定不仅仅用于编写Rails程序。要使用Ruby编写独立的脚本/程序，就像shell一样，其方式也很简单： #!/usr/bin/env ruby
+if ARGV.size == 0 puts &#39;usage: program arg1 arg2&#39; exit
+end
+ARGV &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +69,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/08/07/write-standalone-ruby-script/">编写独立的Ruby脚本</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-07T14:33:00+08:00" pubdate data-updated="true">Aug 7<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ruby肯定不仅仅用于编写Rails程序。要使用Ruby编写独立的脚本/程序，就像shell一样，其方式也很简单：</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="c1">#!/usr/bin/env ruby</span>
+<span class="k">if</span> <span class="no">ARGV</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> 
+  <span class="nb">puts</span> <span class="s1">&#39;usage: program arg1 arg2&#39;</span>
+  <span class="nb">exit</span>
+<span class="k">end</span>
+<span class="no">ARGV</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span> <span class="nb">print</span> <span class="n">arg</span> <span class="k">end</span>
+</code></pre>
+</div>
+
+
+<p>脚本内容没有什么限制，函数、类、模块的组织方式也随意。ARGV是一个特殊的变量，是一个数组，其内保存了传入脚本的参数，不包含程序名。当然，不要忘记给脚本加上可执行权限。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/08/07/write-standalone-ruby-script/'>http://codemacro.com/2012/08/07/write-standalone-ruby-script/</a><br/>
+            written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -259,49 +318,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/07/26/post-footer-plugin-for-octopress/">为octopress每篇文章添加一个文章信息</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-26T14:27:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>当你的博客文章被转载时，你肯定希望转载者能添加一个原始地址。或者你的文章被各种RSS抓取器抓取时，你也希望能在明显的位置显示这个原始地址。使用octopress写博客时，可以通过插件来做这件事。最开始，我只是想单纯地添加这个“原始地址“，一番google未能找到现成的插件，所以只好动手。</p>
-
-<p>话说编写octopress真不是件容易事，因为我实在没找到编写插件的文档。octopress基于jekyll，jekyll又使用了liquid。最后我把这几个项目的文档都翻了下，也仅仅看到几个代码示例，而且liquid的API页面居然出错。无奈之下只好多翻了些现有插件的代码，摸索着来写。写octopress的插件，主要分为generator/tag/filter几种。tag很好理解，就是在文章中插入一个插件注册的tag，然后生成页面时就会调用到对应的插件。filter大概就是把文章内容过滤一遍转换成其他内容输出。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/07/26/post-footer-plugin-for-octopress/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/3/">&larr; Older</a>
@@ -317,14 +333,14 @@
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/categories/c-c-/'>c/c++ (3)</a></li>
+    <li class='category'><a href='/categories/c-c-/'>c/c++ (4)</a></li>
 <li class='category'><a href='/categories/game-develop/'>game develop (3)</a></li>
 <li class='category'><a href='/categories/lisp/'>lisp (5)</a></li>
 <li class='category'><a href='/categories/lua/'>lua (5)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
 <li class='category'><a href='/categories/other/'>other (4)</a></li>
 <li class='category'><a href='/categories/ruby/'>ruby (4)</a></li>
-<li class='category'><a href='/categories/tips/'>tips (15)</a></li>
+<li class='category'><a href='/categories/tips/'>tips (16)</a></li>
 <li class='category'><a href='/categories/web/'>web (3)</a></li>
 
   </ul>
@@ -333,6 +349,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/08/21/c-plus-plus-11-lambda-overview/">C++11中lambda概览</a>
+      </li>
     
       <li class="post">
         <a href="/2012/08/17/memcmp-on-copy-value/">使用memcmp比较两个变量结果一定吗？</a>
@@ -350,10 +370,6 @@
         <a href="/2012/08/09/ruby-usage-example/">Ruby应用几则（解析HTML、XMLRPC）</a>
       </li>
     
-      <li class="post">
-        <a href="/2012/08/07/write-standalone-ruby-script/">编写独立的Ruby脚本</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -366,25 +382,25 @@
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-<a style="font-size: 122%" href="/tags/blog/">blog</a>
-<a style="font-size: 140%" href="/tags/c-c-/">c/c++</a>
+<a style="font-size: 121%" href="/tags/blog/">blog</a>
+<a style="font-size: 151%" href="/tags/c-c-/">c/c++</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
-<a style="font-size: 140%" href="/tags/game-develop/">game develop</a>
+<a style="font-size: 139%" href="/tags/game-develop/">game develop</a>
 <a style="font-size: 90%" href="/tags/github/">github</a>
-<a style="font-size: 122%" href="/tags/html/">html</a>
+<a style="font-size: 121%" href="/tags/html/">html</a>
 <a style="font-size: 90%" href="/tags/java/">java</a>
 <a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
-<a style="font-size: 163%" href="/tags/lisp/">lisp</a>
-<a style="font-size: 163%" href="/tags/lua/">lua</a>
+<a style="font-size: 161%" href="/tags/lisp/">lisp</a>
+<a style="font-size: 161%" href="/tags/lua/">lua</a>
 <a style="font-size: 90%" href="/tags/moai/">moai</a>
 <a style="font-size: 90%" href="/tags/module/">module</a>
-<a style="font-size: 140%" href="/tags/octopress/">octopress</a>
+<a style="font-size: 139%" href="/tags/octopress/">octopress</a>
 <a style="font-size: 90%" href="/tags/rails/">rails</a>
 <a style="font-size: 90%" href="/tags/rapanui/">rapanui</a>
-<a style="font-size: 153%" href="/tags/ruby/">ruby</a>
+<a style="font-size: 151%" href="/tags/ruby/">ruby</a>
 <a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
-<a style="font-size: 122%" href="/tags/web/">web</a>
+<a style="font-size: 121%" href="/tags/web/">web</a>
 <a style="font-size: 90%" href="/tags/wxlua/">wxLua</a>
 
   </ul>
