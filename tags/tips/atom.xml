@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: tips | loop in codes]]></title>
   <link href="http://codemacro.com/tags/tips/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-08-21T17:28:22+08:00</updated>
+  <updated>2012-08-21T17:29:17+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -22,7 +22,7 @@
 
 <p>但是稍微对C++11的一些特性做了解后，单从理论上来说，还是挺让人有兴趣的。我感觉C++11加入了不少函数式语言的特性和思想，这是我感兴趣的最大理由。今天来看看C++11中的lambda。</p>
 
-<p>C++03中，在使用STL容器时，或者我自己写的类中，常有遍历的需求，本来写个functor传进去就可以，但是这functor偏偏写的很恶心。因为你需要局部定义一个结构体，重载operator()，并且，如果这个operator()依赖这个functor构建时的上下文信息，你得往这个结构体里塞入若干成员，当然还得让构造函数的参数变得越来越长。最后，在包含你这个functor使用以及结构体定义的这个代码块，在其代码格式上就变得非常奇怪。如果你像我一样常这样应用，一定深有感触。</p>
+<p>C++03中，在使用STL容器时，或者我自己写的类中，常有遍历的需求，本来写个functor传进去就可以，但是这functor偏偏写的很恶心。因为你需要局部定义一个结构体，重载operator()，并且，如果这个operator()依赖这个functor构建时的上下文信息，你得往这个结构体里塞入若干成员，当然还得让构造函数的参数变得越来越长。最后，在包含你这个functor使用以及结构体定义的这个代码块中，在其代码格式上就变得非常奇怪。如果你像我一样常这样应用，一定深有感触。</p>
 
 <p>然后，C++11来了，C++11中的lambda，就我个人而言，其语法还是非常现代的。来看看其文法形式（截自<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2550.pdf">N2550</a>）：</p>
 
@@ -62,22 +62,23 @@ lambda-return-type-clause:
 
 <p>capture就是这个lambda实现里可以访问的这个lambda定义时作用域里的变量列表，就像Lua里的upvalue。其实我觉得这个才是lambda最方便程序员的地方，一般的函数式语言其实不需要显示声明这个列表，直接引用这些变量即可。后面的部分都比较好理解，parameter就是这个lambda被调用时的形参列表，return-type就是这个lambda的返回值类型，body自然就是这个lambda的实现。至于spec，主要就是指定异常及body里对capture里的变量的使用权限。一个例子：</p>
 
-<p>{% highlight c++ %}
-vector<int> ints;
-ints.push_back(99);
-ints.push_back(100);
-ints.push_back(101);
-int threhold = 100;
-int sum = 0;
-for_each(ints.begin(), ints.end(),</p>
+<p><div class="highlight"><pre><code class="c"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ints</span><span class="p">;</span>
+<span class="n">ints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">99</span><span class="p">);</span>
+<span class="n">ints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+<span class="n">ints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">101</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">threhold</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">for_each</span><span class="p">(</span><span class="n">ints</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">ints</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>    [threhold, &amp;sum] (int v) { 
-        if (v &gt;= threhold) ++ sum;
-        });
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="p">[</span><span class="n">threhold</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">sum</span><span class="p">]</span> <span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="o">=</span> <span class="n">threhold</span><span class="p">)</span> <span class="o">++</span> <span class="n">sum</span><span class="p">;</span>
+        <span class="p">});</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sum</span><span class="p">);</span>
 </code></pre>
-
-<p>printf("%d\n", sum);
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>capture使用了threhold和sum，但是threhold仅使用其值，而sum则使用了其引用，通过结果可以看出lambda中改变了sum的值。</p>
 
@@ -94,27 +95,29 @@ for_each(ints.begin(), ints.end(),</p>
 
 <p>以下代码一定会输出ok吗？</p>
 
-<p>{% highlight c %}</p>
+<p><div class="highlight"><pre><code class="c"><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<h1>include &lt;stdio.h></h1>
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">stdio</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 
-<h1>include &lt;string.h></h1>
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">string</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 
-<p>struct S { int array[2]; };</p>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">struct</span> <span class="n">S</span> <span class="p">{</span> <span class="kt">int</span> <span class="n">array</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> <span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<p>int main () {</p>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>struct S a = { { 1, 2 } };
-struct S b;
-b = a;
-if (memcmp(b.array, a.array, sizeof(b.array)) == 0) {
-    puts("ok");
-}
-return 0;
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">struct</span> <span class="n">S</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">};</span>
+<span class="k">struct</span> <span class="n">S</span> <span class="n">b</span><span class="p">;</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">memcmp</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">array</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">&quot;ok&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
 </code></pre>
-
-<p>}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <!-- more -->
 
@@ -127,10 +130,11 @@ return 0;
 
 <p>这个其实很好理解，尤其在不同类型的数字类型间复制时，例如：</p>
 
-<p>{% highlight c %}
-float a = 1.1;
-int b = a;
-{% endhighlight %}</p>
+<p><div class="highlight"><pre><code class="c"><span class="kt">float</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</code></pre>
+</div>
+</p>
 
 <p>因为浮点数和整形数的内存布局不一样，所以肯定是基于值的一种复制。另外，按照语言标准的思路来看，内存布局这种东西一般都属于实现相关的，所以语言标准是不会依赖实现去定义语言的。</p>
 
@@ -153,69 +157,73 @@ int b = a;
     <id>http://codemacro.com/2012/08/13/dynamic-method-in-lua</id>
     <content type="html"><![CDATA[<p>可以结合<a href="http://codemacro.com/2012/08/02/simple-oo-in-lua/">Lua里实现简单的类-对象</a>看。在我的应用中，存在类似以下代码：</p>
 
-<p>{% highlight lua %}
-function Item.new()</p>
+<p><div class="highlight"><pre><code class="lua"><span class="k">function</span> <span class="nf">Item</span><span class="p">.</span><span class="n">new</span><span class="p">()</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>local o = {
-    property = {}
-}
-return newObject(o, Item)
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">local</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">property</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="n">newObject</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">Item</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
 </code></pre>
-
-<p>end
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p><code>property</code>是一个key-value的表，里面的内容不是固定的。最开始我为Item类写了get/set函数，用于存取property表里的值。但这样写起来还是有点麻烦。Ruby里可以动态产生类成员函数，其实Lua里也可以。其思路就是通过metatable来做：</p>
 
 <!-- more -->
 
 
-<p>{% highlight lua %}
--- 为newObject增加一个可选参数，该参数是一个函数，当在表示类的table里无法找到成员时就调用该可选参数
-function newObject(o, class, after)</p>
+<p><div class="highlight"><pre><code class="lua"><span class="c1">-- 为newObject增加一个可选参数，该参数是一个函数，当在表示类的table里无法找到成员时就调用该可选参数</span>
+<span class="k">function</span> <span class="nf">newObject</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">class</span><span class="p">,</span> <span class="n">after</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>class.__index = function (self, key) return class[key] or after(self, key) end
-return setmetatable(o, class)
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">class</span><span class="p">.</span><span class="n">__index</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">return</span> <span class="n">class</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">or</span> <span class="n">after</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">end</span>
+<span class="k">return</span> <span class="nb">setmetatable</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">class</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
 </code></pre>
-
-<p>end
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>然后就是编写这个after函数，我的理想方式是，例如property里有Name和Index的key-value，那么就可以通过这样的方式来存取：</p>
 
-<p>{% highlight lua %}
-item = Item.new()
-print(item:Name())
-item:SetName("hello")
-print(item:Index()
-item:SetIndex(101)
-{% endhighlight %}</p>
+<p><div class="highlight"><pre><code class="lua"><span class="n">item</span> <span class="o">=</span> <span class="n">Item</span><span class="p">.</span><span class="n">new</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">:</span><span class="n">Name</span><span class="p">())</span>
+<span class="n">item</span><span class="p">:</span><span class="n">SetName</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">hello&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">:</span><span class="n">Index</span><span class="p">()</span>
+<span class="n">item</span><span class="p">:</span><span class="n">SetIndex</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+</code></pre>
+</div>
+</p>
 
 <p>after函数的实现：</p>
 
-<p>{% highlight lua %}
-function Item.new()</p>
+<p><div class="highlight"><pre><code class="lua"><span class="k">function</span> <span class="nf">Item</span><span class="p">.</span><span class="n">new</span><span class="p">()</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 
-<pre><code>local o = {
-    property = {}
-}
-local function after(self, key)
-    local name = string.match(key, "Set(%a+)")
-    if name then 
-        return function (self, value)
-            self:set(name, value)
-        end
-    else
-        return function (self)
-            return self.property[key] and self.property[key].value
-        end
-    end
-end
-return newObject(o, Item, after)
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">local</span> <span class="n">o</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">property</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">}</span>
+<span class="kd">local</span> <span class="k">function</span> <span class="nf">after</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">name</span> <span class="o">=</span> <span class="nb">string.match</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">Set(%a+)&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="k">then</span> 
+        <span class="k">return</span> <span class="k">function</span> <span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">self</span><span class="p">:</span><span class="n">set</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="k">function</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">property</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">and</span> <span class="n">self</span><span class="p">.</span><span class="n">property</span><span class="p">[</span><span class="n">key</span><span class="p">].</span><span class="n">value</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">newObject</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">after</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
 </code></pre>
-
-<p>end
-{% endhighlight %}</p>
+</div>
+</p>
 
 <p>执行过程就为：</p>
 
@@ -236,20 +244,20 @@ return newObject(o, Item, after)
 
 <p>Ruby解析HTML（或XML）可以使用<a href="http://nokogiri.org/">nokogiri</a>。我的应用里需要查找HTML页面里的某个元素，结果发现实现方式非常简单，就像使用jquery一样。例如我要获取到octopress博客文章里的文章内容、文章标题、文章分类，就像这篇博客：</p>
 
-<p>{% highlight ruby %}
-{% raw %}</p>
+<p><div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 
-<h1>get post title and content for an octopress post</h1>
+<span class="sr">&lt;h1&gt;get post title and content for an octopress post&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 
-<p>def post_info(url)
-  doc = Nokogiri::HTML(open(url))
-  content = doc.css('div.entry-content').to_s
-  title = doc.css('header h1.entry-title').inner_html
-  categories = doc.css('a.category').collect do |link| link.content end
-  return title, content, categories
-end
-{% endraw %}
-{% endhighlight %}</p>
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">post_info</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="n">doc</span> <span class="o">=</span> <span class="no">Nokogiri</span><span class="o">::</span><span class="no">HTML</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;div.entry-content&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
+  <span class="n">title</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;header h1.entry-title&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">inner_html</span>
+  <span class="n">categories</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;a.category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">link</span><span class="o">|</span> <span class="n">link</span><span class="o">.</span><span class="n">content</span> <span class="k">end</span>
+  <span class="k">return</span> <span class="n">title</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">categories</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+</p>
 
 <!-- more -->
 
@@ -260,75 +268,76 @@ end
 
 <p>可以使用<code>rails-xmlrpc</code>这个库，直接使用gem安装：<code>gem install rails-xmlrpc</code>。这个库分为客户端和服务器两部分，我的应用是使用metaweblog API：</p>
 
-<p>{% highlight ruby %}
-{% raw %}
-class MetaWeblogClient &lt; XMLRPC::Client
-  def initialize(username, password, host, url)</p>
+<p><div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">MetaWeblogClient</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">XMLRPC</span><span class="o">::</span><span class="no">Client</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 
-<pre><code>super(host, url)
-@username = username
-@password = password
+<span class="sr">&lt;pre&gt;&lt;code&gt;super(host, url)</span>
+<span class="sr">@username = username</span>
+<span class="sr">@password = password</span>
+<span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+
+<span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">newPost</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">publish</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;pre&gt;&lt;code&gt;call(&quot;metaWeblog.newPost&quot;, &quot;0&quot;, &quot;</span><span class="si">#{</span><span class="vi">@username</span><span class="si">}</span><span class="sr">&quot;, &quot;</span><span class="si">#{</span><span class="vi">@password</span><span class="si">}</span><span class="sr">&quot;, post, publish)</span>
+<span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+
+<span class="sr">&lt;p&gt;  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="c1"># other methods&lt;/p&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;p&gt;def new_post(api, url)</span>
+<span class="sr">  title, content, categories = post_info(url)</span>
+<span class="sr">  if title.nil? or content.nil?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nb">puts</span> <span class="s2">&quot;get post info failed at </span><span class="si">#{</span><span class="n">url</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="k">return</span>
+<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+  <span class="n">post</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:title</span> <span class="o">=&gt;</span> <span class="n">title</span><span class="p">,</span> <span class="ss">:description</span> <span class="o">=&gt;</span> <span class="n">content</span><span class="p">,</span> <span class="ss">:categories</span> <span class="o">=&gt;</span> <span class="n">categories</span> <span class="p">}</span>
+  <span class="n">api</span><span class="o">.</span><span class="n">newPost</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="kp">true</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">&quot;new post </span><span class="si">#{</span><span class="n">title</span><span class="si">}</span><span class="s2"> in </span><span class="si">#{</span><span class="n">categories</span><span class="si">}</span><span class="s2"> done</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;p&gt;api = MetaweblogClient.new(username, password, host, url)</span>
+<span class="sr">new_post(api, &quot;http:/</span><span class="o">/</span><span class="n">codemacro</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="mi">2012</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mo">07</span><span class="o">/</span><span class="n">write</span><span class="o">-</span><span class="n">standalone</span><span class="o">-</span><span class="n">ruby</span><span class="o">-</span><span class="n">script</span><span class="o">/</span><span class="s2">&quot;)&lt;/p&gt;</span>
+
+<span class="s2">&lt;p&gt;</span>
 </code></pre>
-
-<p>  end</p>
-
-<p>  def newPost(post, publish)</p>
-
-<pre><code>call("metaWeblog.newPost", "0", "#{@username}", "#{@password}", post, publish)
-</code></pre>
-
-<p>  end</p>
-
-<p>  # other methods</p>
-
-<p>end</p>
-
-<p>def new_post(api, url)
-  title, content, categories = post_info(url)
-  if title.nil? or content.nil?</p>
-
-<pre><code>puts "get post info failed at #{url}\n"
-return
-</code></pre>
-
-<p>  end
-  post = { :title => title, :description => content, :categories => categories }
-  api.newPost(post, true)
-  puts "new post #{title} in #{categories} done\n"
-end</p>
-
-<p>api = MetaweblogClient.new(username, password, host, url)
-new_post(api, "http://codemacro.com/2012/08/07/write-standalone-ruby-script/")</p>
-
-<p>{% endraw %}
-{% endhighlight %}</p>
+</div>
+</p>
 
 <h3>Ruby读取yaml</h3>
 
 <p>就像Rails里那些配置文件一样，都属于yaml配置文件。我的应用里只需使用简单的key-value形式的yaml配置，就像：</p>
 
-<p>{% highlight ruby %}
-host: www.cppblog.com
-url: /kevinlynx/services/metaweblog.aspx
-username: kevinlynx
-password: xxxxxx
-{% endhighlight %}</p>
+<p><div class="highlight"><pre><code class="ruby"><span class="n">host</span><span class="p">:</span> <span class="n">www</span><span class="o">.</span><span class="n">cppblog</span><span class="o">.</span><span class="n">com</span>
+<span class="n">url</span><span class="p">:</span><span class="sr"> /kevinlynx/se</span><span class="n">rvices</span><span class="o">/</span><span class="n">metaweblog</span><span class="o">.</span><span class="n">aspx</span>
+<span class="n">username</span><span class="p">:</span> <span class="n">kevinlynx</span>
+<span class="n">password</span><span class="p">:</span> <span class="n">xxxxxx</span>
+</code></pre>
+</div>
+</p>
 
 <p>解析的时候需要使用<code>yaml</code>库：</p>
 
-<p>{% highlight ruby %}
-file = File.open(filename)
-cfg = YAML::load(file)
-{% endhighlight %}</p>
+<p><div class="highlight"><pre><code class="ruby"><span class="n">file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="no">YAML</span><span class="o">::</span><span class="nb">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</code></pre>
+</div>
+</p>
 
 <p>针对以上配置，<code>YAML::load</code>得到的结果就是一个hash表：</p>
 
-<p>{% highlight ruby %}
-{% raw %}
-puts cfg["host"]
-puts cfg["url"]
-{% endraw %}
-{% endhighlight %}</p>
+<p><div class="highlight"><pre><code class="ruby"><span class="nb">puts</span> <span class="n">cfg</span><span class="o">[</span><span class="s2">&quot;host&quot;</span><span class="o">]</span>
+<span class="nb">puts</span> <span class="n">cfg</span><span class="o">[</span><span class="s2">&quot;url&quot;</span><span class="o">]</span>
+</code></pre>
+</div>
+</p>
 
 <p>以上，我写了一个小工具，可以让我每次在<a href="http://codemacro.com">codemacro.com</a>发表博客后，使用这个工具自动解析生成的文章，然后发表到CPPBLOG上。完整源码可在这个上：<a href="https://gist.github.com/3301662">https://gist.github.com/3301662</a></p>
 ]]></content>
@@ -341,16 +350,18 @@ puts cfg["url"]
     <id>http://codemacro.com/2012/08/07/write-standalone-ruby-script</id>
     <content type="html"><![CDATA[<p>Ruby肯定不仅仅用于编写Rails程序。要使用Ruby编写独立的脚本/程序，就像shell一样，其方式也很简单：</p>
 
-<p>{% highlight ruby %}</p>
+<p><div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="sr">/p&gt;</span>
 
-<h1>!/usr/bin/env ruby</h1>
+<span class="sr">&lt;h1&gt;!/us</span><span class="n">r</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span> <span class="n">ruby</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
 
-<p>if ARGV.size == 0
-  puts 'usage: program arg1 arg2'
-  exit
-end
-ARGV.each do |arg| print arg end
-{% endhighlight %}</p>
+<span class="sr">&lt;p&gt;if ARGV.size == 0</span>
+<span class="sr">  puts &#39;usage: program arg1 arg2&#39;</span>
+<span class="sr">  exit</span>
+<span class="sr">end</span>
+<span class="sr">ARGV.each do |arg| print arg end</span>
+</code></pre>
+</div>
+</p>
 
 <p>脚本内容没有什么限制，函数、类、模块的组织方式也随意。ARGV是一个特殊的变量，是一个数组，其内保存了传入脚本的参数，不包含程序名。当然，不要忘记给脚本加上可执行权限。</p>
 ]]></content>
