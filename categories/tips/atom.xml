@@ -4,7 +4,7 @@
   <title><![CDATA[Category: tips | loop in codes]]></title>
   <link href="http://codemacro.com/categories/tips/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-08-29T10:39:19+08:00</updated>
+  <updated>2012-08-29T16:26:36+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,51 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Null Object模式]]></title>
+    <link href="http://codemacro.com/2012/08/29/null-object-pattern/"/>
+    <updated>2012-08-29T15:57:00+08:00</updated>
+    <id>http://codemacro.com/2012/08/29/null-object-pattern</id>
+    <content type="html"><![CDATA[<p>Null Object模式用于代替空指针（C++中），以避免上层模块对返回值做空值判定。Null Object模式返回的不是一个空指针，而是一个空对象，上层模块对返回值做操作时，不需要做空判定，而是按正常逻辑调用这个对象的某个接口，只不过对于空对象而言，这个接口什么事也没做，例如：</p>
+
+<p><div class="highlight"><pre><code class="c"><span class="n">class</span> <span class="n">animal</span> <span class="p">{</span>
+<span class="nl">public:</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">make_sound</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">class</span> <span class="n">dog</span> <span class="o">:</span> <span class="n">public</span> <span class="n">animal</span> <span class="p">{</span>
+  <span class="kt">void</span> <span class="n">make_sound</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;woof!&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">class</span> <span class="n">null_animal</span> <span class="o">:</span> <span class="n">public</span> <span class="n">animal</span> <span class="p">{</span>
+  <span class="kt">void</span> <span class="n">make_sound</span><span class="p">()</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<p>在我看来这个模式在C++中其实挺扯淡的，因为去判断一个指针是否为NULL，远比创建一个空类，并且添加若干个空函数代价小更多。更何况，我们还不知道<code>null_animal</code>的生命周期如何管理。</p>
+
+<p>但是在我以往写的代码中，我也写过一些避免空指针判定的代码，例如我会使用引用。注意，引用肯定不能保证所对应的对象是合法的，这就像无法确定一个指针是不是野指针一样：</p>
+
+<p><div class="highlight"><pre><code class="c"><span class="k">const</span> <span class="n">Item</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">Container</span><span class="o">::</span><span class="n">FindItem</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">static</span> <span class="n">Item</span> <span class="n">null_item</span><span class="p">;</span>
+<span class="n">Table</span><span class="o">::</span><span class="n">const_iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_items</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="k">return</span> <span class="n">it</span> <span class="o">==</span> <span class="n">m_items</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="o">?</span> <span class="n">null_item</span> <span class="o">:</span> <span class="n">it</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">second</span><span class="p">;</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+</code></pre>
+</div>
+</p>
+
+<p>参考<a href="http://en.wikipedia.org/wiki/Null_Object_pattern">http://en.wikipedia.org/wiki/Null_Object_pattern</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[C++11中lambda概览]]></title>
@@ -343,30 +388,6 @@ lambda-return-type-clause:
 </p>
 
 <p>以上，我写了一个小工具，可以让我每次在<a href="http://codemacro.com">codemacro.com</a>发表博客后，使用这个工具自动解析生成的文章，然后发表到CPPBLOG上。完整源码可在这个上：<a href="https://gist.github.com/3301662">https://gist.github.com/3301662</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[编写独立的Ruby脚本]]></title>
-    <link href="http://codemacro.com/2012/08/07/write-standalone-ruby-script/"/>
-    <updated>2012-08-07T14:33:00+08:00</updated>
-    <id>http://codemacro.com/2012/08/07/write-standalone-ruby-script</id>
-    <content type="html"><![CDATA[<p>Ruby肯定不仅仅用于编写Rails程序。要使用Ruby编写独立的脚本/程序，就像shell一样，其方式也很简单：</p>
-
-<p><div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-
-<span class="sr">&lt;h1&gt;!/us</span><span class="n">r</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span> <span class="n">ruby</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-
-<span class="sr">&lt;p&gt;if ARGV.size == 0</span>
-<span class="sr">  puts &#39;usage: program arg1 arg2&#39;</span>
-<span class="sr">  exit</span>
-<span class="sr">end</span>
-<span class="sr">ARGV.each do |arg| print arg end</span>
-</code></pre>
-</div>
-</p>
-
-<p>脚本内容没有什么限制，函数、类、模块的组织方式也随意。ARGV是一个特殊的变量，是一个数组，其内保存了传入脚本的参数，不包含程序名。当然，不要忘记给脚本加上可执行权限。</p>
 ]]></content>
   </entry>
   
