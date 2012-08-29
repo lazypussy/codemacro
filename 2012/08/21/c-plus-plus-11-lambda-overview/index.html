@@ -96,6 +96,9 @@
 
 <p>但是稍微对C++11的一些特性做了解后，单从理论上来说，还是挺让人有兴趣的。我感觉C++11加入了不少函数式语言的特性和思想，这是我感兴趣的最大理由。今天来看看C++11中的lambda。</p>
 
+<!-- more -->
+
+
 <p>C++03中，在使用STL容器时，或者我自己写的类中，常有遍历的需求，本来写个functor传进去就可以，但是这functor偏偏写的很恶心。因为你需要局部定义一个结构体，重载operator()，并且，如果这个operator()依赖这个functor构建时的上下文信息，你得往这个结构体里塞入若干成员，当然还得让构造函数的参数变得越来越长。最后，在包含你这个functor使用以及结构体定义的这个代码块中，在其代码格式上就变得非常奇怪。如果你像我一样常这样应用，一定深有感触。</p>
 
 <p>然后，C++11来了，C++11中的lambda，就我个人而言，其语法还是非常现代的。来看看其文法形式（截自<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2550.pdf">N2550</a>）：</p>
@@ -208,6 +211,8 @@ lambda-return-type-clause:
         <a class="basic-alignment left" href="/2012/08/17/memcmp-on-copy-value/" title="Previous Post: 使用memcmp比较两个变量结果一定吗？">&laquo; 使用memcmp比较两个变量结果一定吗？</a>
       
       
+        <a class="basic-alignment right" href="/2012/08/29/mmo-chat-server/" title="Next Post: MMO聊天服务器设计">MMO聊天服务器设计 &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -226,7 +231,7 @@ lambda-return-type-clause:
   <h1>Categories</h1>
   <ul id="categories">
     <li class='category'><a href='/categories/c-c-/'>c/c++ (4)</a></li>
-<li class='category'><a href='/categories/game-develop/'>game develop (3)</a></li>
+<li class='category'><a href='/categories/game-develop/'>game develop (4)</a></li>
 <li class='category'><a href='/categories/lisp/'>lisp (5)</a></li>
 <li class='category'><a href='/categories/lua/'>lua (5)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
@@ -241,6 +246,10 @@ lambda-return-type-clause:
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/08/29/mmo-chat-server/">MMO聊天服务器设计</a>
+      </li>
     
       <li class="post">
         <a href="/2012/08/21/c-plus-plus-11-lambda-overview/">C++11中lambda概览</a>
@@ -258,10 +267,6 @@ lambda-return-type-clause:
         <a href="/2012/08/13/dynamic-method-in-lua/">Lua中动态产生函数</a>
       </li>
     
-      <li class="post">
-        <a href="/2012/08/09/ruby-usage-example/">Ruby应用几则（解析HTML、XMLRPC）</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -276,6 +281,7 @@ lambda-return-type-clause:
   <ul class="tag-cloud">
 <a style="font-size: 121%" href="/tags/blog/">blog</a>
 <a style="font-size: 151%" href="/tags/c-c-/">c/c++</a>
+<a style="font-size: 90%" href="/tags/chat-server/">chat server</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
 <a style="font-size: 139%" href="/tags/game-develop/">game develop</a>
 <a style="font-size: 90%" href="/tags/github/">github</a>
@@ -284,7 +290,7 @@ lambda-return-type-clause:
 <a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
 <a style="font-size: 161%" href="/tags/lisp/">lisp</a>
 <a style="font-size: 161%" href="/tags/lua/">lua</a>
-<a style="font-size: 90%" href="/tags/moai/">moai</a>
+<a style="font-size: 90%" href="/tags/mmo/">mmo</a>
 <a style="font-size: 90%" href="/tags/module/">module</a>
 <a style="font-size: 139%" href="/tags/octopress/">octopress</a>
 <a style="font-size: 90%" href="/tags/rails/">rails</a>
@@ -293,7 +299,6 @@ lambda-return-type-clause:
 <a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
 <a style="font-size: 121%" href="/tags/web/">web</a>
-<a style="font-size: 90%" href="/tags/wxlua/">wxLua</a>
 
   </ul>
 </section>
