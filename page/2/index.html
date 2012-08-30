@@ -9,8 +9,7 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="可以结合Lua里实现简单的类-对象看。在我的应用中，存在类似以下代码： function Item.new() local o = { property = {} } return newObject(o, Item)
-end property是一个key-value的表，里面的内容不是固定的。 &hellip;">
+  <meta name="description" content="参考What&#8217;s difference between var and var when using defvar? 其实，Common Lisp中使用defvar定义变量加不加星号没有区别。这只是一种Lisp程序员的约定。Lisp中并不使用特定的符号来影响语法元素， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +66,49 @@ end property是一个key-value的表，里面的内容不是固定的。 &hellip
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/08/14/dynamic-scope-in-lisp/">Lisp中定义变量*var*和var有什么不同？</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-14T15:53:00+08:00" pubdate data-updated="true">Aug 14<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/11932876/whats-difference-between-var-and-var-when-using-defvar">What&#8217;s difference between <em>var</em> and var when using defvar?</a></p>
+
+<p>其实，Common Lisp中使用defvar定义变量加不加星号没有区别。这只是一种Lisp程序员的约定。Lisp中并不使用特定的符号来影响语法元素，例如Ruby中通过给变量添加@前缀来标示该变量为类成员变量。这个问题引出了lisp总dynamic scope这个话题。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/08/14/dynamic-scope-in-lisp/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -277,60 +319,6 @@ end property是一个key-value的表，里面的内容不是固定的。 &hellip
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/08/03/ruby-element-to-java/">『你会把Ruby的哪些特性加入Java』</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-03T14:14:00+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>参考（翻译、摘抄）于<a href="http://java.sys-con.com/node/251986">Can Ruby Live without Rails?</a>。这篇文章发表于2006年，受访者在回答“如果可以你会把Ruby的哪些特性加入Java“这个问题时，提到了Ruby的一些我个人认为比较突出的语法特性。其实并不是针对Java语言，何况6年时间过去，以Java语法特性的加入速度怕早就有Ruby这些特性了。我对Java不熟，仅限于曾经写的几个简单的android应用，买了&lt;Java编程思想>也没翻完。</p>
-
-<p>以下内容半翻译自原文。</p>
-
-<h3>Closure</h3>
-
-<p>闭包支持将代码块作为函数参数传递。这在写很多代码时会比较方便，例如以下代码打印10次字符串：</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="mi">10</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;Hello&quot;</span> <span class="p">}</span>
-</code></pre>
-</div>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/08/03/ruby-element-to-java/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/3/">&larr; Older</a>
@@ -346,12 +334,12 @@ end property是一个key-value的表，里面的内容不是固定的。 &hellip
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/categories/c-c-/'>c/c++ (5)</a></li>
+    <li class='category'><a href='/categories/c-c-/'>c/c++ (6)</a></li>
 <li class='category'><a href='/categories/game-develop/'>game develop (4)</a></li>
 <li class='category'><a href='/categories/lisp/'>lisp (5)</a></li>
 <li class='category'><a href='/categories/lua/'>lua (5)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
-<li class='category'><a href='/categories/other/'>other (4)</a></li>
+<li class='category'><a href='/categories/other/'>other (5)</a></li>
 <li class='category'><a href='/categories/ruby/'>ruby (4)</a></li>
 <li class='category'><a href='/categories/tips/'>tips (17)</a></li>
 <li class='category'><a href='/categories/web/'>web (3)</a></li>
@@ -362,6 +350,10 @@ end property是一个key-value的表，里面的内容不是固定的。 &hellip
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/08/29/branch-predictor/">为什么处理排序的数组要比非排序的快？</a>
+      </li>
     
       <li class="post">
         <a href="/2012/08/29/null-object-pattern/">Null Object模式</a>
@@ -379,10 +371,6 @@ end property是一个key-value的表，里面的内容不是固定的。 &hellip
         <a href="/2012/08/17/memcmp-on-copy-value/">使用memcmp比较两个变量结果一定吗？</a>
       </li>
     
-      <li class="post">
-        <a href="/2012/08/14/dynamic-scope-in-lisp/">Lisp中定义变量*var*和var有什么不同？</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -396,7 +384,8 @@ end property是一个key-value的表，里面的内容不是固定的。 &hellip
   <h1>Tags</h1>
   <ul class="tag-cloud">
 <a style="font-size: 120%" href="/tags/blog/">blog</a>
-<a style="font-size: 160%" href="/tags/c-c-/">c/c++</a>
+<a style="font-size: 90%" href="/tags/branck-predictor/">branck predictor</a>
+<a style="font-size: 168%" href="/tags/c-c-/">c/c++</a>
 <a style="font-size: 90%" href="/tags/chat-server/">chat server</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
 <a style="font-size: 138%" href="/tags/game-develop/">game develop</a>
@@ -410,7 +399,6 @@ end property是一个key-value的表，里面的内容不是固定的。 &hellip
 <a style="font-size: 90%" href="/tags/module/">module</a>
 <a style="font-size: 138%" href="/tags/octopress/">octopress</a>
 <a style="font-size: 90%" href="/tags/rails/">rails</a>
-<a style="font-size: 90%" href="/tags/rapanui/">rapanui</a>
 <a style="font-size: 150%" href="/tags/ruby/">ruby</a>
 <a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
