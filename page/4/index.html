@@ -9,7 +9,7 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="在一个需要显示很多数据的表格(table)中，为了更友好地查看一行数据，常常需要在鼠标指针移到某一行时，高亮此行。要实现这个效果有很多方法，这里列举一个方法： function setTableHover(t) { $(t + &quot; tbody tr&quot;) .mouseover( &hellip;">
+  <meta name="description" content="参考How to write a switch statement in Ruby? 其实用Rails写个业务逻辑不算复杂的app根本用不上ruby的很多高级语法，更别说&lt;meta programming in ruby>中的东西了（凡是打上meta &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/07/26/ruby-case-when/">ruby中的case&#8230;when语法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-26T10:13:00+08:00" pubdate data-updated="true">Jul 26<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/948135/how-to-write-a-switch-statement-in-ruby">How to write a switch statement in Ruby?</a></p>
+
+<p>其实用Rails写个业务逻辑不算复杂的app根本用不上ruby的很多高级语法，更别说&lt;meta programming in ruby>中的东西了（凡是打上meta programming标签的都不是什么简单的东西，参考c++/lisp）。ruby中的case&#8230;when语句和c/c++中的switch&#8230;case其实根本不是一回事。&lt;Programming in Ruby 2nd>：</p>
+
+<blockquote><p>case operates by comparing the target with each of the comparison expression after the when keywords. This test is done using comparison === target.</p></blockquote>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/07/26/ruby-case-when/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -265,51 +310,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/07/18/add-tag-to-octopress/">为octopress添加tag Cloud</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-18T16:37:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>同添加category list一样，网络上有很多方法，这里列举一种。首先到<a href="https://github.com/robbyedwards/octopress-tag-pages">https://github.com/robbyedwards/octopress-tag-pages</a>和<a href="https://github.com/robbyedwards/octopress-tag-cloud">https://github.com/robbyedwards/octopress-tag-cloud</a>clone这两个项目的代码。这两个项目分别用于产生tag page和tag cloud。 针对这两个插件，需要手工复制一些文件到你的octopress目录。</p>
-
-<p><strong>octopress-tag-pages</strong></p>
-
-<p>复制tag_generator.rb到/plugins目录；复制tag_index.html到/source/_layouts目录。<strong>需要注意的是，还需要复制tag_feed.xml到/source/_includes/custom/目录。</strong>这个官方文档里没提到，在我机器上rake generate时报错。其他文件就不需要复制了，都是些例子。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/07/18/add-tag-to-octopress/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/5/">&larr; Older</a>
@@ -325,14 +325,14 @@
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/categories/c-c-/'>c/c++ (6)</a></li>
+    <li class='category'><a href='/categories/c-c-/'>c/c++ (7)</a></li>
 <li class='category'><a href='/categories/game-develop/'>game develop (4)</a></li>
 <li class='category'><a href='/categories/lisp/'>lisp (5)</a></li>
 <li class='category'><a href='/categories/lua/'>lua (5)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
 <li class='category'><a href='/categories/other/'>other (5)</a></li>
 <li class='category'><a href='/categories/ruby/'>ruby (4)</a></li>
-<li class='category'><a href='/categories/tips/'>tips (17)</a></li>
+<li class='category'><a href='/categories/tips/'>tips (18)</a></li>
 <li class='category'><a href='/categories/web/'>web (3)</a></li>
 
   </ul>
@@ -341,6 +341,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/09/03/goes-to-operator/">c/c++中的&#8211;>运算符</a>
+      </li>
     
       <li class="post">
         <a href="/2012/08/29/branch-predictor/">为什么处理排序的数组要比非排序的快？</a>
@@ -358,10 +362,6 @@
         <a href="/2012/08/21/c-plus-plus-11-lambda-overview/">C++11中lambda概览</a>
       </li>
     
-      <li class="post">
-        <a href="/2012/08/17/memcmp-on-copy-value/">使用memcmp比较两个变量结果一定吗？</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -374,26 +374,26 @@
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-<a style="font-size: 120%" href="/tags/blog/">blog</a>
+<a style="font-size: 119%" href="/tags/blog/">blog</a>
 <a style="font-size: 90%" href="/tags/branck-predictor/">branck predictor</a>
-<a style="font-size: 168%" href="/tags/c-c-/">c/c++</a>
+<a style="font-size: 166%" href="/tags/c-c-/">c/c++</a>
 <a style="font-size: 90%" href="/tags/chat-server/">chat server</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
-<a style="font-size: 138%" href="/tags/game-develop/">game develop</a>
+<a style="font-size: 137%" href="/tags/game-develop/">game develop</a>
 <a style="font-size: 90%" href="/tags/github/">github</a>
-<a style="font-size: 120%" href="/tags/html/">html</a>
+<a style="font-size: 119%" href="/tags/html/">html</a>
 <a style="font-size: 90%" href="/tags/java/">java</a>
 <a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
-<a style="font-size: 160%" href="/tags/lisp/">lisp</a>
-<a style="font-size: 160%" href="/tags/lua/">lua</a>
+<a style="font-size: 158%" href="/tags/lisp/">lisp</a>
+<a style="font-size: 158%" href="/tags/lua/">lua</a>
 <a style="font-size: 90%" href="/tags/mmo/">mmo</a>
 <a style="font-size: 90%" href="/tags/module/">module</a>
-<a style="font-size: 138%" href="/tags/octopress/">octopress</a>
+<a style="font-size: 137%" href="/tags/octopress/">octopress</a>
 <a style="font-size: 90%" href="/tags/rails/">rails</a>
-<a style="font-size: 150%" href="/tags/ruby/">ruby</a>
+<a style="font-size: 149%" href="/tags/ruby/">ruby</a>
 <a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
-<a style="font-size: 120%" href="/tags/web/">web</a>
+<a style="font-size: 119%" href="/tags/web/">web</a>
 
   </ul>
 </section>

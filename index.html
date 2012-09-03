@@ -9,9 +9,9 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="参考Why is processing a sorted array faster than an unsorted array? 问题 看以下代码： #include &lt;algorithm&gt;
-#include &lt;ctime&gt;
-#include &lt;iostream& &hellip;">
+  <meta name="description" content="参考What is the name of this operator: &#8220;&#8211;>&#8221;? c/c++中以下代码是合法的： #include &lt;stdio.h&gt;
+int main()
+{ int x = 10; while( x --&gt; 0 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,89 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/09/03/goes-to-operator/">C/c++中的&#8211;>运算符</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-03T15:14:00+08:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/1642028/what-is-the-name-of-this-operator">What is the name of this operator: &#8220;&#8211;>&#8221;?</a></p>
+
+<p>c/c++中以下代码是合法的：</p>
+
+<div class="highlight"><pre><code class="c"><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+     <span class="k">while</span><span class="p">(</span> <span class="n">x</span> <span class="o">--&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="c1">// x goes to 0</span>
+     <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+<p><code>--&gt;</code>是一个合法的操作符，我打赌自认c/c++熟手的你们都不知道这个操作符。有人称它为<code>goes to</code>操作符，<code>x--&gt;0</code>表示x向0趋近。</p>
+
+<p><strong>其实我在忽悠你们。</strong> 并且我相信有很多人对此把戏相当熟悉。没错，<code>--&gt;</code>只是两个操作符恰好遇在了一起，他们是自减运算符<code>--</code>和大于比较运算符<code>&gt;</code>：</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">while</span> <span class="p">(</span><span class="n">x</span><span class="o">--</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">...</span>
+</code></pre>
+</div>
+
+
+<p>类似的把戏还有：</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">while</span> <span class="p">(</span><span class="n">x</span> <span class="o">--</span> \
+             \
+              \
+               \
+                <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+</code></pre>
+</div>
+
+
+
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/09/03/goes-to-operator/'>http://codemacro.com/2012/09/03/goes-to-operator/</a><br/>
+            written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -322,69 +405,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2012/08/17/memcmp-on-copy-value/">使用memcmp比较两个变量结果一定吗？</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-17T11:37:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/11994513/is-using-memcmp-on-array-of-int-strictly-conforming">Is using memcmp on array of int strictly conforming?</a></p>
-
-<p>以下代码一定会输出ok吗？</p>
-
-<div class="highlight"><pre><code class="c"><span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-
-<span class="k">struct</span> <span class="n">S</span> <span class="p">{</span> <span class="kt">int</span> <span class="n">array</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> <span class="p">};</span>
-
-<span class="kt">int</span> <span class="nf">main</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="k">struct</span> <span class="n">S</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">};</span>
-    <span class="k">struct</span> <span class="n">S</span> <span class="n">b</span><span class="p">;</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">memcmp</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">array</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">puts</span><span class="p">(</span><span class="s">&quot;ok&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre>
-</div>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2012/08/17/memcmp-on-copy-value/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/2/">&larr; Older</a>
@@ -398,14 +418,14 @@
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/categories/c-c-/'>c/c++ (6)</a></li>
+    <li class='category'><a href='/categories/c-c-/'>c/c++ (7)</a></li>
 <li class='category'><a href='/categories/game-develop/'>game develop (4)</a></li>
 <li class='category'><a href='/categories/lisp/'>lisp (5)</a></li>
 <li class='category'><a href='/categories/lua/'>lua (5)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
 <li class='category'><a href='/categories/other/'>other (5)</a></li>
 <li class='category'><a href='/categories/ruby/'>ruby (4)</a></li>
-<li class='category'><a href='/categories/tips/'>tips (17)</a></li>
+<li class='category'><a href='/categories/tips/'>tips (18)</a></li>
 <li class='category'><a href='/categories/web/'>web (3)</a></li>
 
   </ul>
@@ -414,6 +434,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/09/03/goes-to-operator/">c/c++中的&#8211;>运算符</a>
+      </li>
     
       <li class="post">
         <a href="/2012/08/29/branch-predictor/">为什么处理排序的数组要比非排序的快？</a>
@@ -431,10 +455,6 @@
         <a href="/2012/08/21/c-plus-plus-11-lambda-overview/">C++11中lambda概览</a>
       </li>
     
-      <li class="post">
-        <a href="/2012/08/17/memcmp-on-copy-value/">使用memcmp比较两个变量结果一定吗？</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -447,26 +467,26 @@
 <section>
   <h1>Tags</h1>
   <ul class="tag-cloud">
-<a style="font-size: 120%" href="/tags/blog/">blog</a>
+<a style="font-size: 119%" href="/tags/blog/">blog</a>
 <a style="font-size: 90%" href="/tags/branck-predictor/">branck predictor</a>
-<a style="font-size: 168%" href="/tags/c-c-/">c/c++</a>
+<a style="font-size: 166%" href="/tags/c-c-/">c/c++</a>
 <a style="font-size: 90%" href="/tags/chat-server/">chat server</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
-<a style="font-size: 138%" href="/tags/game-develop/">game develop</a>
+<a style="font-size: 137%" href="/tags/game-develop/">game develop</a>
 <a style="font-size: 90%" href="/tags/github/">github</a>
-<a style="font-size: 120%" href="/tags/html/">html</a>
+<a style="font-size: 119%" href="/tags/html/">html</a>
 <a style="font-size: 90%" href="/tags/java/">java</a>
 <a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
-<a style="font-size: 160%" href="/tags/lisp/">lisp</a>
-<a style="font-size: 160%" href="/tags/lua/">lua</a>
+<a style="font-size: 158%" href="/tags/lisp/">lisp</a>
+<a style="font-size: 158%" href="/tags/lua/">lua</a>
 <a style="font-size: 90%" href="/tags/mmo/">mmo</a>
 <a style="font-size: 90%" href="/tags/module/">module</a>
-<a style="font-size: 138%" href="/tags/octopress/">octopress</a>
+<a style="font-size: 137%" href="/tags/octopress/">octopress</a>
 <a style="font-size: 90%" href="/tags/rails/">rails</a>
-<a style="font-size: 150%" href="/tags/ruby/">ruby</a>
+<a style="font-size: 149%" href="/tags/ruby/">ruby</a>
 <a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
-<a style="font-size: 120%" href="/tags/web/">web</a>
+<a style="font-size: 119%" href="/tags/web/">web</a>
 
   </ul>
 </section>

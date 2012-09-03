@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: c/c++ | loop in codes]]></title>
   <link href="http://codemacro.com/tags/c-c-/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-08-30T17:35:39+08:00</updated>
+  <updated>2012-09-03T15:25:32+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -24,55 +24,52 @@
 
 <p>看以下代码：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight c++ %}</p>
 
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">algorithm</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<h1>include <algorithm></h1>
 
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">ctime</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<h1>include <ctime></h1>
 
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">iostream</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<h1>include <iostream></h1>
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
-<span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>int main()
+{</p>
 
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1">// generate data</span>
-<span class="k">const</span> <span class="kt">unsigned</span> <span class="n">arraySize</span> <span class="o">=</span> <span class="mi">32768</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">data</span><span class="p">[</span><span class="n">arraySize</span><span class="p">];</span>
+<pre><code>// generate data
+const unsigned arraySize = 32768;
+int data[arraySize];
 
-<span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">c</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">arraySize</span><span class="p">;</span> <span class="o">++</span><span class="n">c</span><span class="p">)</span>
-    <span class="n">data</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="mi">256</span><span class="p">;</span>
-
-
-<span class="c1">// !!! with this, the next loop runs faster</span>
-<span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span> <span class="o">+</span> <span class="n">arraySize</span><span class="p">);</span>
+for (unsigned c = 0; c &lt; arraySize; ++c)
+    data[c] = std::rand() % 256;
 
 
-<span class="c1">// test</span>
-<span class="kt">clock_t</span> <span class="n">start</span> <span class="o">=</span> <span class="n">clock</span><span class="p">();</span>
-<span class="kt">long</span> <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+// !!! with this, the next loop runs faster
+std::sort(data, data + arraySize);
 
-<span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="mi">100000</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="c1">// primary loop</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">c</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">arraySize</span><span class="p">;</span> <span class="o">++</span><span class="n">c</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="o">=</span> <span class="mi">128</span><span class="p">)</span>
-            <span class="n">sum</span> <span class="o">+=</span> <span class="n">data</span><span class="p">[</span><span class="n">c</span><span class="p">];</span>
-    <span class="p">}</span>
-<span class="p">}</span>
 
-<span class="kt">double</span> <span class="n">elapsedTime</span> <span class="o">=</span> <span class="n">static_cast</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="kt">double</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;(</span><span class="n">clock</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">/</span> <span class="n">CLOCKS_PER_SEC</span><span class="p">;</span>
+// test
+clock_t start = clock();
+long long sum = 0;
 
-<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">elapsedTime</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;sum = &quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">sum</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+for (unsigned i = 0; i &lt; 100000; ++i)
+{
+    // primary loop
+    for (unsigned c = 0; c &lt; arraySize; ++c)
+    {
+        if (data[c] &gt;= 128)
+            sum += data[c];
+    }
+}
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+double elapsedTime = static_cast&lt;double&gt;(clock() - start) / CLOCKS_PER_SEC;
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+std::cout &lt;&lt; elapsedTime &lt;&lt; std::endl;
+std::cout &lt;&lt; "sum = " &lt;&lt; sum &lt;&lt; std::endl;
 </code></pre>
-</div>
-</p>
+
+<p>}</p>
+
+<p>{% endhighlight %}</p>
 
 <p>问题就在于，去掉<code>std::sort</code>那一行，以上代码将运行更长的时间。在我的机器上未去掉<code>std::sort</code>耗时8.99s，去掉后耗时24.78s。编译器使用的是gcc4.4.3。事实上，以上代码跟编译器没有关系，甚至跟语言没有关系。那这是为什么呢？</p>
 
@@ -81,7 +78,9 @@
 
 <p>这跟处理这个数组的逻辑有非常大的关系。如以上代码所示，这个循环里有个条件判断。条件判断被编译成二进制代码后，就是一个跳转指令，类似：</p>
 
-<p></p>
+<p>{% highlight asm %}
+jl SHORT $LN3@main
+{% endhighlight %}</p>
 
 <p>具体为什么会不同，这涉及到计算机CPU执行指令时的行为。</p>
 
@@ -127,39 +126,36 @@
     <id>http://codemacro.com/2012/08/29/null-object-pattern</id>
     <content type="html"><![CDATA[<p>Null Object模式用于代替空指针（C++中），以避免上层模块对返回值做空值判定。Null Object模式返回的不是一个空指针，而是一个空对象，上层模块对返回值做操作时，不需要做空判定，而是按正常逻辑调用这个对象的某个接口，只不过对于空对象而言，这个接口什么事也没做，例如：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="n">class</span> <span class="n">animal</span> <span class="p">{</span>
-<span class="nl">public:</span>
-  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">make_sound</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight c++ %}
+class animal {
+public:
+  virtual void make_sound() = 0;
+};</p>
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">class</span> <span class="n">dog</span> <span class="o">:</span> <span class="n">public</span> <span class="n">animal</span> <span class="p">{</span>
-  <span class="kt">void</span> <span class="n">make_sound</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="s">&quot;woof!&quot;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">endl</span><span class="p">;</span> <span class="p">}</span>
-<span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>class dog : public animal {
+  void make_sound() { cout &lt;&lt; "woof!" &lt;&lt; endl; }
+};</p>
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">class</span> <span class="n">null_animal</span> <span class="o">:</span> <span class="n">public</span> <span class="n">animal</span> <span class="p">{</span>
-  <span class="kt">void</span> <span class="n">make_sound</span><span class="p">()</span> <span class="p">{</span> <span class="p">}</span>
-<span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>class null_animal : public animal {
+  void make_sound() { }
+};</p>
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
-</code></pre>
-</div>
-</p>
+<p>{% endhighlight %}</p>
 
 <p>在我看来这个模式在C++中其实挺扯淡的，因为去判断一个指针是否为NULL，远比创建一个空类，并且添加若干个空函数代价小更多。更何况，我们还不知道<code>null_animal</code>的生命周期如何管理。</p>
 
 <p>但是在我以往写的代码中，我也写过一些避免空指针判定的代码，例如我会使用引用。注意，引用肯定不能保证所对应的对象是合法的，这就像无法确定一个指针是不是野指针一样：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="k">const</span> <span class="n">Item</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">Container</span><span class="o">::</span><span class="n">FindItem</span><span class="p">(</span><span class="kt">int</span> <span class="n">id</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight c++ %}
+const Item &amp;Container::FindItem(int id) const {</p>
 
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">static</span> <span class="n">Item</span> <span class="n">null_item</span><span class="p">;</span>
-<span class="n">Table</span><span class="o">::</span><span class="n">const_iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_items</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
-<span class="k">return</span> <span class="n">it</span> <span class="o">==</span> <span class="n">m_items</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="o">?</span> <span class="n">null_item</span> <span class="o">:</span> <span class="n">it</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">second</span><span class="p">;</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+<pre><code>static Item null_item;
+Table::const_iterator it = m_items.find(id);
+return it == m_items.end() ? null_item : it-&gt;second;
 </code></pre>
-</div>
-</p>
+
+<p>}
+{% endhighlight %}</p>
 
 <p>参考<a href="http://en.wikipedia.org/wiki/Null_Object_pattern">http://en.wikipedia.org/wiki/Null_Object_pattern</a></p>
 ]]></content>
@@ -217,23 +213,22 @@ lambda-return-type-clause:
 
 <p>capture就是这个lambda实现里可以访问的这个lambda定义时作用域里的变量列表，就像Lua里的upvalue。其实我觉得这个才是lambda最方便程序员的地方，一般的函数式语言其实不需要显示声明这个列表，直接引用这些变量即可。后面的部分都比较好理解，parameter就是这个lambda被调用时的形参列表，return-type就是这个lambda的返回值类型，body自然就是这个lambda的实现。至于spec，主要就是指定异常及body里对capture里的变量的使用权限。一个例子：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ints</span><span class="p">;</span>
-<span class="n">ints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">99</span><span class="p">);</span>
-<span class="n">ints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
-<span class="n">ints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">101</span><span class="p">);</span>
-<span class="kt">int</span> <span class="n">threhold</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="n">for_each</span><span class="p">(</span><span class="n">ints</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">ints</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight c++ %}
+vector<int> ints;
+ints.push_back(99);
+ints.push_back(100);
+ints.push_back(101);
+int threhold = 100;
+int sum = 0;
+for_each(ints.begin(), ints.end(),</p>
 
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="p">[</span><span class="n">threhold</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">sum</span><span class="p">]</span> <span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> 
-        <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="o">=</span> <span class="n">threhold</span><span class="p">)</span> <span class="o">++</span> <span class="n">sum</span><span class="p">;</span>
-        <span class="p">});</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sum</span><span class="p">);</span>
+<pre><code>    [threhold, &amp;sum] (int v) { 
+        if (v &gt;= threhold) ++ sum;
+        });
 </code></pre>
-</div>
-</p>
+
+<p>printf("%d\n", sum);
+{% endhighlight %}</p>
 
 <p>capture使用了threhold和sum，但是threhold仅使用其值，而sum则使用了其引用，通过结果可以看出lambda中改变了sum的值。</p>
 
@@ -250,29 +245,27 @@ lambda-return-type-clause:
 
 <p>以下代码一定会输出ok吗？</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight c %}</p>
 
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">stdio</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<h1>include &lt;stdio.h></h1>
 
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">string</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<h1>include &lt;string.h></h1>
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">struct</span> <span class="n">S</span> <span class="p">{</span> <span class="kt">int</span> <span class="n">array</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> <span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>struct S { int array[2]; };</p>
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>int main () {</p>
 
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">struct</span> <span class="n">S</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">};</span>
-<span class="k">struct</span> <span class="n">S</span> <span class="n">b</span><span class="p">;</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">memcmp</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">array</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">puts</span><span class="p">(</span><span class="s">&quot;ok&quot;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+<pre><code>struct S a = { { 1, 2 } };
+struct S b;
+b = a;
+if (memcmp(b.array, a.array, sizeof(b.array)) == 0) {
+    puts("ok");
+}
+return 0;
 </code></pre>
-</div>
-</p>
+
+<p>}
+{% endhighlight %}</p>
 
 <!-- more -->
 
@@ -285,11 +278,10 @@ lambda-return-type-clause:
 
 <p>这个其实很好理解，尤其在不同类型的数字类型间复制时，例如：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="kt">float</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
-</code></pre>
-</div>
-</p>
+<p>{% highlight c %}
+float a = 1.1;
+int b = a;
+{% endhighlight %}</p>
 
 <p>因为浮点数和整形数的内存布局不一样，所以肯定是基于值的一种复制。另外，按照语言标准的思路来看，内存布局这种东西一般都属于实现相关的，所以语言标准是不会依赖实现去定义语言的。</p>
 
@@ -314,203 +306,197 @@ lambda-return-type-clause:
 
 <p>我是个C++程序员，我不知道我平时写的都是些什么代码。最让人印象深刻就是我会经常写遍历STL容器的代码，是经常，这样的遍历你可能也不陌生：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="k">for</span> <span class="p">(</span><span class="n">ListType</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">con</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">con</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight c++ %}
+{% raw %}
+for (ListType::iterator it = con.begin(); it != con.end(); ++it) {</p>
 
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">something</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+<pre><code>something
 </code></pre>
-</div>
-</p>
+
+<p>}
+{% endraw %}
+{% endhighlight %}</p>
 
 <!-- more -->
 
 
 <p>或者针对std::map/set等的查找：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="n">Table</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">table</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">==</span> <span class="n">table</span><span class="p">.</span><span class="n">end</span><span class="p">())</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight c++ %}
+{% raw %}
+Table::iterator it = table.find(key);
+if (it == table.end())</p>
 
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">do</span><span class="o">-</span><span class="n">something</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">do</span><span class="o">-</span><span class="n">something</span>
+<pre><code>do-something
 </code></pre>
-</div>
-</p>
+
+<p>do-something
+{% endraw %}
+{% endhighlight %}</p>
 
 <p>多亏STL接口的一致性，这让我们写出了很多“一致性“代码。慢慢地我觉得恶心，不禁想起函数式编程语言中，对于这种需求一般都会提供类似的接口：</p>
 
-<p><div class="highlight"><pre><code class="lua"><span class="n">con</span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">some</span><span class="o">-</span><span class="n">filed</span> <span class="o">==</span> <span class="n">some</span><span class="o">-</span><span class="n">value</span><span class="p">)</span> <span class="k">return</span> <span class="n">something</span> <span class="k">end</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight lua %}
+con.map(function (it) if (it->some-filed == some-value) return something end)</p>
 
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="err">或者</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<h1>或者</h1>
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">con</span><span class="p">.</span><span class="n">each</span> <span class="k">do</span> <span class="err">|</span><span class="n">it</span><span class="err">|</span> <span class="k">if</span> <span class="n">it</span><span class="p">.</span><span class="n">some</span><span class="o">-</span><span class="n">filed</span> <span class="o">==</span> <span class="n">some</span><span class="o">-</span><span class="n">value</span> <span class="k">then</span> <span class="k">return</span> <span class="n">something</span> <span class="k">end</span> <span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>con.each do |it| if it.some-filed == some-value then return something end end</p>
 
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="err">或者</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<h1>或者</h1>
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">(</span><span class="n">con</span><span class="p">.</span><span class="n">map</span> <span class="p">(</span><span class="n">lambda</span> <span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">(</span><span class="k">if</span> <span class="p">((</span><span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">some</span><span class="o">-</span><span class="n">filed</span> <span class="n">some</span><span class="o">-</span><span class="n">value</span><span class="p">))</span> <span class="p">(</span><span class="k">return</span> <span class="n">something</span><span class="p">))))</span>
-</code></pre>
-</div>
-</p>
+<p>(con.map (lambda (it) (if ((= it.some-filed some-value)) (return something))))
+{% endhighlight %}</p>
 
 <p>（好吧，lisp我又忘了）总之，这种针对容器的遍历操作，都会成为一种内置接口，并且通过lambda来让用户直接编写处理代码，少去写循环的冗余。然后，我写了类似下面的一组宏（随手敲的不保证能运行）：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight c++ %}
+{% raw %}</p>
 
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">IT_N</span> <span class="n">__it</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<h1>define IT_N __it</h1>
 
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">TRAVERSE_MAP</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">map</span><span class="p">,</span> <span class="n">exps</span><span class="p">)</span> <span class="err">\</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<h1>define TRAVERSE_MAP(type, map, exps) \</h1>
 
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">for</span> <span class="p">(</span><span class="n">type</span><span class="o">::</span><span class="n">iterator</span> <span class="n">IT_N</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">IT_N</span> <span class="o">!=</span> <span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">IT_N</span><span class="p">)</span> <span class="p">{</span> \
-    <span class="n">exps</span><span class="p">;</span> \
-<span class="p">}</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">I_KEY</span> <span class="p">(</span><span class="n">IT_N</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">I_VALUE</span> <span class="p">(</span><span class="n">IT_N</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">TRAVERSE_LIST</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">list</span><span class="p">,</span> <span class="n">exps</span><span class="p">)</span> <span class="err">\</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">for</span> <span class="p">(</span><span class="n">type</span><span class="o">::</span><span class="n">iterator</span> <span class="n">IT_N</span> <span class="o">=</span> <span class="n">list</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">IT_N</span> <span class="o">!=</span> <span class="n">list</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">IT_N</span><span class="p">)</span> <span class="p">{</span> \
-    <span class="n">exps</span><span class="p">;</span> \
-<span class="p">}</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">L_VALUE</span> <span class="p">(</span><span class="o">*</span><span class="n">IT_N</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">FIND_MAP_ITEM</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">map</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">fexps</span><span class="p">,</span> <span class="n">texps</span><span class="p">)</span> <span class="err">\</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">do</span> <span class="p">{</span> \
-    <span class="n">type</span><span class="o">::</span><span class="n">iterator</span> <span class="n">IT_N</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">key</span><span class="p">);</span> \
-    <span class="k">if</span> <span class="p">(</span><span class="n">IT_N</span> <span class="o">==</span> <span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span> \
-        <span class="n">fexps</span><span class="p">;</span> \
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> \
-        <span class="n">texps</span><span class="p">;</span> \
-    <span class="p">}</span> \
-<span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">VAL_N</span> <span class="n">__val</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">FIND_LIST_ITEM_IF</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">list</span><span class="p">,</span> <span class="n">cmp</span><span class="p">,</span> <span class="n">fexps</span><span class="p">,</span> <span class="n">texps</span><span class="p">)</span> <span class="err">\</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">do</span> <span class="p">{</span> \
-    <span class="k">struct</span> <span class="n">Comp</span> <span class="p">{</span> \
-        <span class="n">bool</span> <span class="n">operator</span><span class="p">()</span> <span class="p">(</span><span class="k">const</span> <span class="n">type</span><span class="o">::</span><span class="n">value_type</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">VAL_N</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span> \
-            <span class="k">return</span> <span class="n">cmp</span><span class="p">;</span> \
-        <span class="p">}</span> \
-    <span class="p">};</span> \
-    <span class="n">type</span><span class="o">::</span><span class="n">iterator</span> <span class="n">IT_N</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">find_if</span><span class="p">(</span><span class="n">list</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">list</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">Comp</span><span class="p">());</span> \
-    <span class="k">if</span> <span class="p">(</span><span class="n">IT_N</span> <span class="o">!=</span> <span class="n">list</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span> \
-        <span class="n">texps</span><span class="p">;</span> \
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> \
-        <span class="n">fexps</span><span class="p">;</span> \
-    <span class="p">}</span> \
-<span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NULL_EXP</span> <span class="p">;</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+<pre><code>for (type::iterator IT_N = map.begin(); IT_N != map.end(); ++IT_N) { \
+    exps; \
+}
 </code></pre>
-</div>
-</p>
+
+<h1>define I_KEY (IT_N->first)</h1>
+
+<h1>define I_VALUE (IT_N->second)</h1>
+
+<h1>define TRAVERSE_LIST(type, list, exps) \</h1>
+
+<pre><code>for (type::iterator IT_N = list.begin(); IT_N != list.end(); ++IT_N) { \
+    exps; \
+}
+</code></pre>
+
+<h1>define L_VALUE (*IT_N)</h1>
+
+<h1>define FIND_MAP_ITEM(type, map, key, fexps, texps) \</h1>
+
+<pre><code>do { \
+    type::iterator IT_N = map.find(key); \
+    if (IT_N == map.end()) { \
+        fexps; \
+    } else { \
+        texps; \
+    } \
+} while(0)
+</code></pre>
+
+<h1>define VAL_N __val</h1>
+
+<h1>define FIND_LIST_ITEM_IF(type, list, cmp, fexps, texps) \</h1>
+
+<pre><code>do { \
+    struct Comp { \
+        bool operator() (const type::value_type &amp;VAL_N) const { \
+            return cmp; \
+        } \
+    }; \
+    type::iterator IT_N = std::find_if(list.begin(), list.end(), Comp()); \
+    if (IT_N != list.end()) { \
+        texps; \
+    } else { \
+        fexps; \
+    } \
+} while(0)
+</code></pre>
+
+<h1>define NULL_EXP ;</h1>
+
+<p>{% endraw %}
+{% endhighlight %}</p>
 
 <p>当然，以上接口都还包含一些const版本，用于const容器的使用。使用的时候（截取的项目中的使用例子）：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="n">TRAVERSE_MAP</span><span class="p">(</span><span class="n">TimerTable</span><span class="p">,</span> <span class="n">m_timers</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight c++ %}
+TRAVERSE_MAP(TimerTable, m_timers,</p>
 
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">I_VALUE</span><span class="p">.</span><span class="n">obj</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">OnTimerCancel</span><span class="p">(</span><span class="n">I_KEY</span><span class="p">,</span> <span class="n">I_VALUE</span><span class="p">.</span><span class="n">arg</span><span class="p">);</span>
-    <span class="n">TIMER_CANCEL</span><span class="p">(</span><span class="n">I_VALUE</span><span class="p">.</span><span class="n">id</span><span class="p">));</span> 
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">TRAVERSE_LIST</span><span class="p">(</span><span class="n">AreaList</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">ids</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">L_VALUE</span><span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">ID</span><span class="p">()));</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">FIND_MAP_ITEM</span><span class="p">(</span><span class="n">PropertyTable</span><span class="p">,</span> <span class="n">m_properties</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">LogWarn</span><span class="p">(</span><span class="s">&quot;set a non-existed property %s&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span> <span class="k">return</span> <span class="n">NIL_VALUE</span><span class="p">,</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">val</span><span class="p">.</span><span class="n">Type</span><span class="p">()</span> <span class="o">!=</span> <span class="n">I_VALUE</span><span class="p">.</span><span class="n">type</span><span class="p">())</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">NIL_VALUE</span><span class="p">;</span> 
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="n">GValue</span> <span class="n">old</span> <span class="o">=</span> <span class="n">I_VALUE</span><span class="p">;</span>
-        <span class="n">I_VALUE</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span> 
-        <span class="k">return</span> <span class="n">old</span><span class="p">;</span>
-    <span class="p">});</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+<pre><code>    I_VALUE.obj-&gt;OnTimerCancel(I_KEY, I_VALUE.arg);
+    TIMER_CANCEL(I_VALUE.id)); 
 </code></pre>
-</div>
-</p>
+
+<p>TRAVERSE_LIST(AreaList, areas,</p>
+
+<pre><code>    ids.push_back(L_VALUE-&gt;ID()));
+</code></pre>
+
+<p>FIND_MAP_ITEM(PropertyTable, m_properties, name,</p>
+
+<pre><code>    LogWarn("set a non-existed property %s", name.c_str()); return NIL_VALUE,
+    if (val.Type() != I_VALUE.type()) {
+        return NIL_VALUE; 
+    } else {
+        GValue old = I_VALUE;
+        I_VALUE = val; 
+        return old;
+    });
+</code></pre>
+
+<p>{% endhighlight %}</p>
 
 <p>多亏了C/C++宏对一切内容的可容纳性，可以让我往宏参数里塞进像if这种复合语句，甚至多条语句（例如最后一个例子）。这些宏我使用了一段时间，开始觉得挺爽，很多函数的实现里，我再也不用写那些重复的代码了。但是后来我发觉这些代码越来越恶心了。最大的弊端在于不可调试，我只能将断点下到更深的代码层；然后就是看起来特不直观，连作者自己都看得觉得不直观了，可想而知那些连函数式编程语言都不知道是什么的C++程序员看到这些代码会是什么心情（可以想象哥已经被诅咒了多少次）。</p>
 
 <p>函数式语言让人写出更短的代码，这一点也对我有影响，例如我最近又写下了一些邪恶代码：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="c1">// split a string into several sub strings by a split character i.e:</span>
-<span class="c1">// &quot;a;b;c;&quot; =&gt; &quot;a&quot;, &quot;b&quot;, &quot;c&quot;</span>
-<span class="c1">// &quot;a;b;c&quot; =&gt; &quot;a&quot;, &quot;b&quot;, &quot;c&quot;</span>
-<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">SplitString</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">str</span><span class="p">,</span> <span class="kt">char</span> <span class="n">split</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>{% highlight c++ %}
+// split a string into several sub strings by a split character i.e:
+// "a;b;c;" => "a", "b", "c"
+// "a;b;c" => "a", "b", "c"
+std::vector&lt;std::string> SplitString(const std::string &amp;str, char split) {</p>
 
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">ret</span><span class="p">;</span>
-<span class="kt">size_t</span> <span class="n">last</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">str</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">split</span><span class="p">);</span> <span class="n">pos</span> <span class="o">!=</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">;</span> <span class="n">last</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">str</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">split</span><span class="p">,</span> <span class="n">last</span><span class="p">))</span> <span class="p">{</span>
-    <span class="n">ret</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">last</span><span class="p">));</span>
-<span class="p">}</span>
-<span class="k">return</span> <span class="n">last</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">?</span> <span class="n">ret</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">last</span><span class="p">))</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ret</span><span class="p">;</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+<pre><code>std::vector&lt;std::string&gt; ret;
+size_t last = 0;
+for (size_t pos = str.find(split); pos != std::string::npos; last = pos + 1, pos = str.find(split, last)) {
+    ret.push_back(str.substr(last, pos - last));
+}
+return last &lt; str.length() ? ret.push_back(str.substr(last)) : 0, ret;
 </code></pre>
-</div>
-</p>
+
+<p>}
+{% endhighlight %}</p>
 
 <p>恶心的就是最后那条return语句，因为我需要处理"a;b;c"这种c后面没加分隔符的情况，但我并不愿意为了这个需求再写一个会占超过一行的if语句。因为，我太喜欢ruby里的if了：</p>
 
-<p><div class="highlight"><pre><code class="ruby"><span class="k">do</span><span class="o">-</span><span class="n">something</span> <span class="k">if</span> <span class="n">exp</span>
-</code></pre>
-</div>
-</p>
+<p>{% highlight ruby %}
+do-something if exp
+{% endhighlight %}</p>
 
 <p>也就是ruby里允许这种只有一行if的代码将if放在其后并作为一条语句。我的不愿意其实是有理由的，在c/c++中有太多只有一行条件体的if语句，对这些语句参合进编程风格/可读性进来后，就不得不让你写出不安的代码，例如：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span> <span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 某些编程风格里不允许这样做，因为它不方便调试&lt;/p&gt;</span>
+<p>{% highlight c++ %}
+if (something) return something; // 某些编程风格里不允许这样做，因为它不方便调试</p>
 
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<p>if (something)</p>
 
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 某些风格里又有大括号的统一要求</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 就算符合风格了，但这一条语句就得多个大括号</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="n">something</span><span class="p">)</span>
-<span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="n">something</span><span class="p">;</span> <span class="c1">// 某些风格里这大括号就更奢侈了</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
+<pre><code>return something; // 某些风格里又有大括号的统一要求
 </code></pre>
-</div>
-</p>
+
+<p>if (something) {</p>
+
+<pre><code>return something; // 就算符合风格了，但这一条语句就得多个大括号
+</code></pre>
+
+<p>}</p>
+
+<p>if (something)
+{</p>
+
+<pre><code>return something; // 某些风格里这大括号就更奢侈了
+</code></pre>
+
+<p>}
+{% endhighlight %}</p>
 
 <p>这个return除了乍看上去有点纠结外，其实也不算什么大问题，但是那个问号表达式返回的0实在没有任何意义，而正是没有意义才会让它误导人。本来我是可以写成：</p>
 
-<p><div class="highlight"><pre><code class="c"><span class="k">return</span> <span class="n">last</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">str</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="n">ret</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">last</span><span class="p">)),</span> <span class="n">ret</span><span class="p">;</span>
-</code></pre>
-</div>
-</p>
+<p>{% highlight c++ %}
+return last &lt; str.length() &amp;&amp; ret.push_back(str.substr(last)), ret;
+{% endhighlight %}</p>
 
 <p>这样利用条件表达式的短路运算，代码也清晰多了。但是，std::vector::push_back是一个没有返回值的函数，所以。</p>
 

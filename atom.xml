@@ -4,7 +4,7 @@
   <title><![CDATA[loop in codes]]></title>
   <link href="http://codemacro.com/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-08-30T17:35:39+08:00</updated>
+  <updated>2012-09-03T15:24:37+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[c/c++中的-->运算符]]></title>
+    <link href="http://codemacro.com/2012/09/03/goes-to-operator/"/>
+    <updated>2012-09-03T15:14:00+08:00</updated>
+    <id>http://codemacro.com/2012/09/03/goes-to-operator</id>
+    <content type="html"><![CDATA[<p>参考<a href="http://stackoverflow.com/questions/1642028/what-is-the-name-of-this-operator">What is the name of this operator: &#8220;&#8211;>&#8221;?</a></p>
+
+<p>c/c++中以下代码是合法的：</p>
+
+<div class="highlight"><pre><code class="c"><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+     <span class="k">while</span><span class="p">(</span> <span class="n">x</span> <span class="o">--&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="c1">// x goes to 0</span>
+     <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+<p><code>--&gt;</code>是一个合法的操作符，我打赌自认c/c++熟手的你们都不知道这个操作符。有人称它为<code>goes to</code>操作符，<code>x--&gt;0</code>表示x向0趋近。</p>
+
+<p><strong>其实我在忽悠你们。</strong> 并且我相信有很多人对此把戏相当熟悉。没错，<code>--&gt;</code>只是两个操作符恰好遇在了一起，他们是自减运算符<code>--</code>和大于比较运算符<code>&gt;</code>：</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">while</span> <span class="p">(</span><span class="n">x</span><span class="o">--</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">...</span>
+</code></pre>
+</div>
+
+
+<p>类似的把戏还有：</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">while</span> <span class="p">(</span><span class="n">x</span> <span class="o">--</span> \
+             \
+              \
+               \
+                <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+</code></pre>
+</div>
+
+
+
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/09/03/goes-to-operator/'>http://codemacro.com/2012/09/03/goes-to-operator/</a><br/>
+            written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[为什么处理排序的数组要比非排序的快？]]></title>
@@ -1668,57 +1724,6 @@ lambda-return-type-clause:
 <p class='post-footer'>
             原文地址：
             <a href='http://codemacro.com/2012/07/18/start-to-write-tips/'>http://codemacro.com/2012/07/18/start-to-write-tips/</a><br/>
-            written by <a href='http://codemacro.com'>Kevin Lynx</a>
-            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
-            </p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[为octopress添加tag cloud]]></title>
-    <link href="http://codemacro.com/2012/07/18/add-tag-to-octopress/"/>
-    <updated>2012-07-18T16:37:00+08:00</updated>
-    <id>http://codemacro.com/2012/07/18/add-tag-to-octopress</id>
-    <content type="html"><![CDATA[<p>同添加category list一样，网络上有很多方法，这里列举一种。首先到<a href="https://github.com/robbyedwards/octopress-tag-pages">https://github.com/robbyedwards/octopress-tag-pages</a>和<a href="https://github.com/robbyedwards/octopress-tag-cloud">https://github.com/robbyedwards/octopress-tag-cloud</a>clone这两个项目的代码。这两个项目分别用于产生tag page和tag cloud。 针对这两个插件，需要手工复制一些文件到你的octopress目录。</p>
-
-<p><strong>octopress-tag-pages</strong></p>
-
-<p>复制tag_generator.rb到/plugins目录；复制tag_index.html到/source/_layouts目录。<strong>需要注意的是，还需要复制tag_feed.xml到/source/_includes/custom/目录。</strong>这个官方文档里没提到，在我机器上rake generate时报错。其他文件就不需要复制了，都是些例子。</p>
-
-<!-- more -->
-
-
-<p><strong>octopress-tag-cloud</strong></p>
-
-<p>仅复制tag_cloud.rb到/plugins目录即可。但这仅仅只是为liquid添加了一个tag（非本文所提tag）。如果要在侧边导航里添加一个tag cloud，我们还需要手动添加aside。</p>
-
-<p>复制以下代码到/source/_includes/custom/asides/tags.html。</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="n">section</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Tags</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
-<span class="sr">  &lt;ul class=&quot;tag-cloud&quot;&gt;</span>
-<span class="sr">    {% tag_cloud font-size: 90-210%, limit: 10, style: para %}</span>
-<span class="sr">  &lt;/u</span><span class="n">l</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="sr">/section&gt;</span>
-</code></pre>
-</div>
-
-
-<p>tag_cloud的参数中，style :para指定不使用li来分割，limit限定10个tag，font-size指定tag的大小范围，具体参数参看官方文档。</p>
-
-<p>最后，当然是在_config.xml的default_asides 中添加这个tag cloud到导航栏，例如：</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="n">default_asides</span><span class="p">:</span> <span class="o">[</span><span class="n">asides</span><span class="o">/</span><span class="n">category_list</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="n">asides</span><span class="o">/</span><span class="n">recent_posts</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="n">custom</span><span class="o">/</span><span class="n">asides</span><span class="o">/</span><span class="n">tags</span><span class="o">.</span><span class="n">html</span><span class="o">]</span>
-</code></pre>
-</div>
-
-
-
-
-<p class='post-footer'>
-            原文地址：
-            <a href='http://codemacro.com/2012/07/18/add-tag-to-octopress/'>http://codemacro.com/2012/07/18/add-tag-to-octopress/</a><br/>
             written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>

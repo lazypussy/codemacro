@@ -5,11 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>开始记录编程方面的技巧 - loop in codes</title>
+  <title>c/c++中的-->运算符 - loop in codes</title>
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="回首上篇博客的发表时间，又2个月时间过去了。在我博客生涯的过去两三年里，总会有好几个月的时间没有编写任何文章。我觉得这真是一个不好的习惯。这个情况的产生，有很多原因。例如自己太懒、工作偶尔忙、自己偶尔处于混沌时期、自己偶尔怀疑人生，如是种种。但最大的原因还是，不敢写。 在刚出来工作那会， &hellip;">
+  <meta name="description" content="参考What is the name of this operator: &#8220;&#8211;>&#8221;? c/c++中以下代码是合法的： #include &lt;stdio.h&gt;
+int main()
+{ int x = 10; while( x --&gt; 0 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://codemacro.com/2012/07/18/start-to-write-tips">
+  <link rel="canonical" href="http://codemacro.com/2012/09/03/goes-to-operator">
   <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -69,7 +71,7 @@
   
   <header>
     
-      <h1 class="entry-title">开始记录编程方面的技巧</h1>
+      <h1 class="entry-title">C/c++中的-->运算符</h1>
     
     
       <p class="meta">
@@ -85,35 +87,57 @@
   
 
 
-<time datetime="2012-07-18T17:01:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+<time datetime="2012-09-03T15:14:00+08:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>回首上篇博客的发表时间，又2个月时间过去了。在我博客生涯的过去两三年里，总会有好几个月的时间没有编写任何文章。我觉得这真是一个不好的习惯。这个情况的产生，有很多原因。例如自己太懒、工作偶尔忙、自己偶尔处于混沌时期、自己偶尔怀疑人生，如是种种。但最大的原因还是，不敢写。</p>
+<div class="entry-content"><p>参考<a href="http://stackoverflow.com/questions/1642028/what-is-the-name-of-this-operator">What is the name of this operator: &#8220;&#8211;>&#8221;?</a></p>
 
-<p>在刚出来工作那会，作为一个懵懂的青年，接触个什么新技术都内心激动骄傲，然后就特别有动力将所学记录下来，注意下言辞还能折腾个像那么回事的教程出来。后来慢慢地，我就觉得，这些东西太肤浅。先别说教人用个什么IDE，配置个什么数据库，就算你是学个新语言，好好研究下TCP，甚至还能折腾个IOCP框架，这些都还是他妈的特肤浅。你说任何一个有那么点经验和学习能力的程序员，谁花点时间整不出来这些？谁他妈要你在这里装逼卖萌，甚至贻笑大方。除此之外，我个人也觉得无聊了。</p>
+<p>c/c++中以下代码是合法的：</p>
 
-<p>另一方面我觉得写博客还有个好处就是帮助自己记录技术，以便将来万一又需要曾经学习过的技术了，回头温习一下就好。但是后来慢慢地我又觉得，这也是没必要的事情。因为反正需要这个技术的时候，也花不了多少时间。</p>
+<div class="highlight"><pre><code class="c"><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+     <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+     <span class="k">while</span><span class="p">(</span> <span class="n">x</span> <span class="o">--&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="c1">// x goes to 0</span>
+     <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
 
-<p>基于这些乱七八糟的原因，我虽然经常打开自己的博客，看看有没人评论啊，留言啊，但发表博客的频率始终上不去。</p>
 
-<!-- more -->
+<p><code>--&gt;</code>是一个合法的操作符，我打赌自认c/c++熟手的你们都不知道这个操作符。有人称它为<code>goes to</code>操作符，<code>x--&gt;0</code>表示x向0趋近。</p>
+
+<p><strong>其实我在忽悠你们。</strong> 并且我相信有很多人对此把戏相当熟悉。没错，<code>--&gt;</code>只是两个操作符恰好遇在了一起，他们是自减运算符<code>--</code>和大于比较运算符<code>&gt;</code>：</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">while</span> <span class="p">(</span><span class="n">x</span><span class="o">--</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">...</span>
+</code></pre>
+</div>
 
 
-<p>后来呢，在google reader上断断续续也看了些别的程序员的故事。例如有傻逼坚持1年每天一篇博客，后来竟然写了本书；例如有傻逼坚持每天翻译一篇英文文章。我琢磨着这些人该有多么大的毅力啊，就算是翻译文章，这从找文章筛选文章到最好发表出来这尼玛又该睡觉了啊亲。心生佩服之余，我觉得自己应该向这些傻逼们学习。作为一个已经没有那么多青年时光的青年，试想以后每天下班回家带娃的日子，而曾经竟碌碌无为地磨过每一个工作日耍过每一个工作日晚上，这是件比带娃更悲剧的事情。</p>
+<p>类似的把戏还有：</p>
 
-<p>所以，我也决定坚持干一件虽一日不用一次但也望每周那么几次的事情。我决定在博客上记录一些编程方面的技巧(tips)，集中于某个小问题的解决、某个小功能的实现。这些技巧相比前文说的，就更肤浅了，肤浅到你一google出来的结果你都吓一跳的程度。但是我依然觉得这是有用的，就像我用rails做网站，每一个小功能我都得google一遍，然后积累于心，然后一段时间后忘掉。为了不忘掉，为了查阅起来简单，我决定记录下来。但是仅靠我自己的经验，是肯定无法做到频繁地更新的，所以，我决定上stackoverflow上随机找些问题/答案翻译出来。stackoverflow非常适合满足这种需求，我发现我google某个rails技巧时，基本是从stackoverflow上获取下来的。</p>
+<div class="highlight"><pre><code class="c"><span class="k">while</span> <span class="p">(</span><span class="n">x</span> <span class="o">--</span> \
+             \
+              \
+               \
+                <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d &quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+</code></pre>
+</div>
 
-<p>这样，我的博客<a href="http://codemacro.com">http://codemacro.com</a>的rss输出可能会繁杂点，这对于某些人而言估计会起到恶心的效果。而我自己的博客可能也会变得不那么像个人博客。我也想过单独做个网站出来，但仔细想想还是制止自己少瞎折腾了。如有建议欢迎批评。</p>
 
-<p>好，就这样，没了。</p>
+
 
 <p class='post-footer'>
             原文地址：
-            <a href='http://codemacro.com/2012/07/18/start-to-write-tips/'>http://codemacro.com/2012/07/18/start-to-write-tips/</a><br/>
+            <a href='http://codemacro.com/2012/09/03/goes-to-operator/'>http://codemacro.com/2012/09/03/goes-to-operator/</a><br/>
             written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>
@@ -140,12 +164,12 @@
   
 
 
-<time datetime="2012-07-18T17:01:00+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2012</time>
+<time datetime="2012-09-03T15:14:00+08:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/categories/other/'>other</a>, <a class='category' href='/categories/tips/'>tips</a>
+    <a class='category' href='/categories/c-c-/'>c/c++</a>, <a class='category' href='/categories/tips/'>tips</a>
   
 </span>
 
@@ -161,10 +185,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/2012/07/18/add-tag-to-octopress/" title="Previous Post: 为octopress添加tag cloud">&laquo; 为octopress添加tag cloud</a>
+        <a class="basic-alignment left" href="/2012/08/29/branch-predictor/" title="Previous Post: 为什么处理排序的数组要比非排序的快？">&laquo; 为什么处理排序的数组要比非排序的快？</a>
       
-      
-        <a class="basic-alignment right" href="/2012/07/19/popup-window-in-html/" title="Next Post: HTML中实现弹出窗口">HTML中实现弹出窗口 &raquo;</a>
       
     </p>
   </footer>
@@ -275,8 +297,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://codemacro.com/2012/07/18/start-to-write-tips/';
-        var disqus_url = 'http://codemacro.com/2012/07/18/start-to-write-tips/';
+        var disqus_identifier = 'http://codemacro.com/2012/09/03/goes-to-operator/';
+        var disqus_url = 'http://codemacro.com/2012/09/03/goes-to-operator/';
         var disqus_script = 'embed.js';
       
     (function () {
