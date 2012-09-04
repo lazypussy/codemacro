@@ -4,7 +4,7 @@
   <title><![CDATA[loop in codes]]></title>
   <link href="http://codemacro.com/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-09-03T15:24:37+08:00</updated>
+  <updated>2012-09-04T20:17:44+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[c/c++中几种操作位的方法]]></title>
+    <link href="http://codemacro.com/2012/09/04/bit-operation-in-c-slash-c-plus-plus/"/>
+    <updated>2012-09-04T19:49:00+08:00</updated>
+    <id>http://codemacro.com/2012/09/04/bit-operation-in-c-slash-c-plus-plus</id>
+    <content type="html"><![CDATA[<p>参考<a href="http://stackoverflow.com/questions/47981/how-do-you-set-clear-and-toggle-a-single-bit-in-c">How do you set, clear and toggle a single bit in C?</a></p>
+
+<p>c/c++中对二进制位的操作包括设置某位为1、清除某位（置为0）、开关某位(toggling a bit)、检查某位是否为1等。这些操作较为常见并且可以作为其他位运算的基础接口，以下罗列几种方法：</p>
+
+<h2>传统方法</h2>
+
+<ul>
+<li>设置某位为1</li>
+</ul>
+
+
+<div class="highlight"><pre><code class="c"><span class="n">number</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// 设置第x位为1</span>
+</code></pre>
+</div>
+
+
+
+
+<!-- more -->
+
+
+<ul>
+<li>清除某位</li>
+</ul>
+
+
+<div class="highlight"><pre><code class="c"><span class="n">number</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">x</span><span class="p">);</span> <span class="c1">// 置第x位为0</span>
+</code></pre>
+</div>
+
+
+<ul>
+<li>开关某位</li>
+</ul>
+
+
+<div class="highlight"><pre><code class="c"><span class="n">number</span> <span class="o">^=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">x</span><span class="p">;</span>
+</code></pre>
+</div>
+
+
+<ul>
+<li>检查某位</li>
+</ul>
+
+
+<div class="highlight"><pre><code class="c"><span class="k">if</span> <span class="p">(</span><span class="n">number</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">x</span><span class="p">))</span>
+</code></pre>
+</div>
+
+
+<p>相应地我们可以将其封装起来，简便的方法是使用宏来封装：</p>
+
+<div class="highlight"><pre><code class="c"><span class="cp">#define BIT_SET(a,b) ((a) |= (1&lt;&lt;(b)))</span>
+<span class="cp">#define BIT_CLEAR(a,b) ((a) &amp;= ~(1&lt;&lt;(b)))</span>
+<span class="cp">#define BIT_FLIP(a,b) ((a) ^= (1&lt;&lt;(b)))</span>
+<span class="cp">#define BIT_CHECK(a,b) ((a) &amp; (1&lt;&lt;(b)))</span>
+</code></pre>
+</div>
+
+
+<h2>使用位结构操作</h2>
+
+<p>这个使用起来简单很多：</p>
+
+<div class="highlight"><pre><code class="c"><span class="k">struct</span> <span class="n">bits</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">a</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">b</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">c</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">bits</span> <span class="n">mybits</span><span class="p">;</span>
+
+<span class="c1">// set/clear a bit</span>
+<span class="n">mybits</span><span class="p">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">mybits</span><span class="p">.</span><span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// toggle a bit</span>
+<span class="n">mybits</span><span class="p">.</span><span class="n">a</span> <span class="o">=</span> <span class="o">!</span><span class="n">mybits</span><span class="p">.</span><span class="n">a</span><span class="p">;</span>
+<span class="n">mybits</span><span class="p">.</span><span class="n">b</span> <span class="o">=</span> <span class="o">~</span><span class="n">mybits</span><span class="p">.</span><span class="n">b</span><span class="p">;</span>
+<span class="n">mybits</span><span class="p">.</span><span class="n">c</span> <span class="o">^=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="c1">// check a bit</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">mybits</span><span class="p">.</span><span class="n">c</span><span class="p">)</span>
+</code></pre>
+</div>
+
+
+<h2>使用STL的std::bitset<N></h2>
+
+<p>这个方法其实类似于使用位结构，只不过STL包装了这个结构定义，当然还提供了很多便捷的接口：</p>
+
+<div class="highlight"><pre><code class="c"><span class="n">std</span><span class="o">::</span><span class="n">bitset</span><span class="o">&lt;</span><span class="mi">5</span><span class="o">&gt;</span> <span class="n">bits</span><span class="p">;</span>
+<span class="n">bits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="n">bits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="n">bits</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">bits</span><span class="p">.</span><span class="n">flip</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">bits</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</code></pre>
+</div>
+
+
+
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/09/04/bit-operation-in-c-slash-c-plus-plus/'>http://codemacro.com/2012/09/04/bit-operation-in-c-slash-c-plus-plus/</a><br/>
+            written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[c/c++中的-->运算符]]></title>
@@ -33,6 +152,11 @@
 <span class="p">}</span>
 </code></pre>
 </div>
+
+
+
+
+<!-- more -->
 
 
 <p><code>--&gt;</code>是一个合法的操作符，我打赌自认c/c++熟手的你们都不知道这个操作符。有人称它为<code>goes to</code>操作符，<code>x--&gt;0</code>表示x向0趋近。</p>
@@ -1690,40 +1814,6 @@ lambda-return-type-clause:
 <p class='post-footer'>
             原文地址：
             <a href='http://codemacro.com/2012/07/19/popup-window-in-html/'>http://codemacro.com/2012/07/19/popup-window-in-html/</a><br/>
-            written by <a href='http://codemacro.com'>Kevin Lynx</a>
-            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
-            </p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[开始记录编程方面的技巧]]></title>
-    <link href="http://codemacro.com/2012/07/18/start-to-write-tips/"/>
-    <updated>2012-07-18T17:01:00+08:00</updated>
-    <id>http://codemacro.com/2012/07/18/start-to-write-tips</id>
-    <content type="html"><![CDATA[<p>回首上篇博客的发表时间，又2个月时间过去了。在我博客生涯的过去两三年里，总会有好几个月的时间没有编写任何文章。我觉得这真是一个不好的习惯。这个情况的产生，有很多原因。例如自己太懒、工作偶尔忙、自己偶尔处于混沌时期、自己偶尔怀疑人生，如是种种。但最大的原因还是，不敢写。</p>
-
-<p>在刚出来工作那会，作为一个懵懂的青年，接触个什么新技术都内心激动骄傲，然后就特别有动力将所学记录下来，注意下言辞还能折腾个像那么回事的教程出来。后来慢慢地，我就觉得，这些东西太肤浅。先别说教人用个什么IDE，配置个什么数据库，就算你是学个新语言，好好研究下TCP，甚至还能折腾个IOCP框架，这些都还是他妈的特肤浅。你说任何一个有那么点经验和学习能力的程序员，谁花点时间整不出来这些？谁他妈要你在这里装逼卖萌，甚至贻笑大方。除此之外，我个人也觉得无聊了。</p>
-
-<p>另一方面我觉得写博客还有个好处就是帮助自己记录技术，以便将来万一又需要曾经学习过的技术了，回头温习一下就好。但是后来慢慢地我又觉得，这也是没必要的事情。因为反正需要这个技术的时候，也花不了多少时间。</p>
-
-<p>基于这些乱七八糟的原因，我虽然经常打开自己的博客，看看有没人评论啊，留言啊，但发表博客的频率始终上不去。</p>
-
-<!-- more -->
-
-
-<p>后来呢，在google reader上断断续续也看了些别的程序员的故事。例如有傻逼坚持1年每天一篇博客，后来竟然写了本书；例如有傻逼坚持每天翻译一篇英文文章。我琢磨着这些人该有多么大的毅力啊，就算是翻译文章，这从找文章筛选文章到最好发表出来这尼玛又该睡觉了啊亲。心生佩服之余，我觉得自己应该向这些傻逼们学习。作为一个已经没有那么多青年时光的青年，试想以后每天下班回家带娃的日子，而曾经竟碌碌无为地磨过每一个工作日耍过每一个工作日晚上，这是件比带娃更悲剧的事情。</p>
-
-<p>所以，我也决定坚持干一件虽一日不用一次但也望每周那么几次的事情。我决定在博客上记录一些编程方面的技巧(tips)，集中于某个小问题的解决、某个小功能的实现。这些技巧相比前文说的，就更肤浅了，肤浅到你一google出来的结果你都吓一跳的程度。但是我依然觉得这是有用的，就像我用rails做网站，每一个小功能我都得google一遍，然后积累于心，然后一段时间后忘掉。为了不忘掉，为了查阅起来简单，我决定记录下来。但是仅靠我自己的经验，是肯定无法做到频繁地更新的，所以，我决定上stackoverflow上随机找些问题/答案翻译出来。stackoverflow非常适合满足这种需求，我发现我google某个rails技巧时，基本是从stackoverflow上获取下来的。</p>
-
-<p>这样，我的博客<a href="http://codemacro.com">http://codemacro.com</a>的rss输出可能会繁杂点，这对于某些人而言估计会起到恶心的效果。而我自己的博客可能也会变得不那么像个人博客。我也想过单独做个网站出来，但仔细想想还是制止自己少瞎折腾了。如有建议欢迎批评。</p>
-
-<p>好，就这样，没了。</p>
-
-<p class='post-footer'>
-            原文地址：
-            <a href='http://codemacro.com/2012/07/18/start-to-write-tips/'>http://codemacro.com/2012/07/18/start-to-write-tips/</a><br/>
             written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>

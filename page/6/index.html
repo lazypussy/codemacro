@@ -9,7 +9,7 @@
   <meta name="author" content="Kevin Lynx">
 
   
-  <meta name="description" content="最开始知道Github Page，是通过codertrace上的某些注册用户，他们的BLOG就建立在Github Page上，并且清一色的干净整洁（简陋），这看起来很酷。 Github提供了很多很合coder口味的东西，例如Gist，也包括这里提到的Page。Page并不是特用于建立博客的产品， &hellip;">
+  <meta name="description" content="我们的逻辑服务器(Game Server，以下简称GS)主要逻辑大概是从去年夏天开始写的。因为很多基础模块，包括整体结构沿用了上个项目的代码，所以算不上从头开始做。转眼又快一年，我觉得回头总结下对于经验的积累太有必要。 整体架构 GS的架构很大程度取决于游戏的功能需求， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2012/04/23/game-server-info-1/">谈谈我们的游戏逻辑服务器实现（一）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-23T00:00:00+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我们的逻辑服务器(Game Server，以下简称GS)主要逻辑大概是从去年夏天开始写的。因为很多基础模块，包括整体结构沿用了上个项目的代码，所以算不上从头开始做。转眼又快一年，我觉得回头总结下对于经验的积累太有必要。</p>
+
+<h2>整体架构</h2>
+
+<p>GS的架构很大程度取决于游戏的功能需求，当然更受限于上个项目的基础架构。基础架构包括场景、对象的关系管理，消息广播等。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/2012/04/23/game-server-info-1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -261,47 +306,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2011/05/02/entity-property/">MMO游戏对象属性设计</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-05-02T00:00:00+08:00" pubdate data-updated="true">May 2<span>nd</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>一般的MMORPG中，游戏对象主要包括怪物和玩家。这两类对象在经过游戏性方面的不断“进化”后，其属性数量及与之相关的逻辑往往会变得很巨大。如何将这一块做得既不损失效率，又能保证结构的灵活、清晰、可维护？本文将提供一种简单的结构。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/2011/05/02/entity-property/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/page/7/">&larr; Older</a>
@@ -317,14 +321,14 @@
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/categories/c-c-/'>c/c++ (7)</a></li>
+    <li class='category'><a href='/categories/c-c-/'>c/c++ (8)</a></li>
 <li class='category'><a href='/categories/game-develop/'>game develop (4)</a></li>
 <li class='category'><a href='/categories/lisp/'>lisp (5)</a></li>
 <li class='category'><a href='/categories/lua/'>lua (5)</a></li>
 <li class='category'><a href='/categories/module/'>module (1)</a></li>
 <li class='category'><a href='/categories/other/'>other (5)</a></li>
 <li class='category'><a href='/categories/ruby/'>ruby (4)</a></li>
-<li class='category'><a href='/categories/tips/'>tips (18)</a></li>
+<li class='category'><a href='/categories/tips/'>tips (19)</a></li>
 <li class='category'><a href='/categories/web/'>web (3)</a></li>
 
   </ul>
@@ -333,6 +337,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/2012/09/04/bit-operation-in-c-slash-c-plus-plus/">c/c++中几种操作位的方法</a>
+      </li>
     
       <li class="post">
         <a href="/2012/09/03/goes-to-operator/">c/c++中的&#8211;>运算符</a>
@@ -350,10 +358,6 @@
         <a href="/2012/08/29/mmo-chat-server/">MMO聊天服务器设计</a>
       </li>
     
-      <li class="post">
-        <a href="/2012/08/21/c-plus-plus-11-lambda-overview/">C++11中lambda概览</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -368,21 +372,21 @@
   <ul class="tag-cloud">
 <a style="font-size: 119%" href="/tags/blog/">blog</a>
 <a style="font-size: 90%" href="/tags/branck-predictor/">branck predictor</a>
-<a style="font-size: 166%" href="/tags/c-c-/">c/c++</a>
+<a style="font-size: 171%" href="/tags/c-c-/">c/c++</a>
 <a style="font-size: 90%" href="/tags/chat-server/">chat server</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
-<a style="font-size: 137%" href="/tags/game-develop/">game develop</a>
+<a style="font-size: 136%" href="/tags/game-develop/">game develop</a>
 <a style="font-size: 90%" href="/tags/github/">github</a>
 <a style="font-size: 119%" href="/tags/html/">html</a>
 <a style="font-size: 90%" href="/tags/java/">java</a>
 <a style="font-size: 90%" href="/tags/jekyll/">jekyll</a>
-<a style="font-size: 158%" href="/tags/lisp/">lisp</a>
-<a style="font-size: 158%" href="/tags/lua/">lua</a>
+<a style="font-size: 157%" href="/tags/lisp/">lisp</a>
+<a style="font-size: 157%" href="/tags/lua/">lua</a>
 <a style="font-size: 90%" href="/tags/mmo/">mmo</a>
 <a style="font-size: 90%" href="/tags/module/">module</a>
-<a style="font-size: 137%" href="/tags/octopress/">octopress</a>
+<a style="font-size: 136%" href="/tags/octopress/">octopress</a>
 <a style="font-size: 90%" href="/tags/rails/">rails</a>
-<a style="font-size: 149%" href="/tags/ruby/">ruby</a>
+<a style="font-size: 148%" href="/tags/ruby/">ruby</a>
 <a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
 <a style="font-size: 119%" href="/tags/web/">web</a>
