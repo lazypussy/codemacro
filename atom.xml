@@ -4,7 +4,7 @@
   <title><![CDATA[loop in codes]]></title>
   <link href="http://codemacro.com/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-09-04T20:22:00+08:00</updated>
+  <updated>2012-09-06T19:37:31+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,77 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress中的SEO]]></title>
+    <link href="http://codemacro.com/2012/09/06/octopress-seo/"/>
+    <updated>2012-09-06T19:02:00+08:00</updated>
+    <id>http://codemacro.com/2012/09/06/octopress-seo</id>
+    <content type="html"><![CDATA[<p>来自<a href="http://www.yatishmehta.in/seo-for-octopress">SEO for Octopress</a></p>
+
+<p>Octopress默认为每个页面添加<code>meta description</code>，其内容为当前文章的前150个字符，如果是首页就会是第一篇文章的前150个字符。这里主要通过增加<code>meta keywords</code>来提高SEO。</p>
+
+<!-- more -->
+
+
+<h2>为每篇文章增加keywors和description</h2>
+
+<p>就像我的这篇博客，这下文章头得填很多数据了，有点麻烦：</p>
+
+<div class="highlight"><pre><code class="yaml"><span class="nn">---</span>
+<span class="l-Scalar-Plain">layout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">post</span>
+<span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="s">&quot;Octopress中的SEO&quot;</span>
+<span class="l-Scalar-Plain">date</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">2012-09-06 19:02</span>
+<span class="l-Scalar-Plain">comments</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">categories</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">tips</span>
+<span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">tips</span><span class="p-Indicator">,</span> <span class="nv">octopress</span><span class="p-Indicator">]</span>
+<span class="l-Scalar-Plain">keywords</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">seo, octopress</span>
+<span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Octopress默认为每个页面添加`meta description`，其内容为当前文章的前150个字符，如果是首页就会是第一篇文章的前150个字符。这里主要通过增加`meta keywords`来提高SEO。</span>
+<span class="nn">---</span>
+</code></pre>
+</div>
+
+
+<p>这样，每篇文章页面头就会自动增加<code>meta keywords</code>项，<code>description</code>也会使用这里填的，而不是自动为文章前若干个字符。这个功能的实现在<code>_includes/head.html</code>中。</p>
+
+<div class="highlight"><pre><code class="html"><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;author&quot;</span> <span class="na">content=</span><span class="s">&quot;Kevin Lynx&quot;</span><span class="nt">&gt;</span> 
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot; Octopress默认为每个页面添加`meta description`，其内容为当前文章的前150个字符，如果是首页就会是第一篇文章的前150个字符。这里主要通过增加`meta keywords`来提高SEO。 &quot;</span><span class="nt">&gt;</span> 
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;keywords&quot;</span> <span class="na">content=</span><span class="s">&quot;seo, octopress&quot;</span><span class="nt">&gt;</span> 
+</code></pre>
+</div>
+
+
+<h2>为页面(Page)增加keywords</h2>
+
+<p>上面只是修正了每篇博客页面的<code>meta</code>信息，octopress中还有几个页面需要修正，例如首页，这个可以通过修改<code>_includes/head.html</code>来完成。替换相关内容为以下：</p>
+
+<div class="highlight"><pre><code class="html"><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;author&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ site.author }}&quot;</span><span class="nt">&gt;</span>
+{% capture description %}{% if page.description %}{{ page.description }}{% elsif site.description %}{{ site.description }}{%else%}{{ content | raw_content }}{% endif %}{% endcapture %}
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ description | strip_html | condense_spaces | truncate:150 }}&quot;</span><span class="nt">&gt;</span>
+{% if page.keywords %}<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;keywords&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ page.keywords }}&quot;</span><span class="nt">&gt;</span>{%else%}<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;keywords&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ site.keywords }}&quot;</span><span class="nt">&gt;</span>{% endif %}
+</code></pre>
+</div>
+
+
+<p>如果页面没有提供<code>keywords</code>或者<code>description</code>的话，就使用<code>site</code>里的设置，也就需要修改<code>_config.yml</code>：</p>
+
+<div class="highlight"><pre><code class="yaml"><span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">loop in codes, Kevin Lynx blog</span>
+<span class="l-Scalar-Plain">keywords</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">c/c++, mmo, game develop, lisp, ruby, lua, web development</span>
+</code></pre>
+</div>
+
+
+
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/09/06/octopress-seo/'>http://codemacro.com/2012/09/06/octopress-seo/</a><br/>
+            written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[c/c++中几种操作位的方法]]></title>
@@ -1732,88 +1803,6 @@ lambda-return-type-clause:
 <p class='post-footer'>
             原文地址：
             <a href='http://codemacro.com/2012/07/20/get-client-timezone-in-rails/'>http://codemacro.com/2012/07/20/get-client-timezone-in-rails/</a><br/>
-            written by <a href='http://codemacro.com'>Kevin Lynx</a>
-            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
-            </p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[HTML中实现弹出窗口]]></title>
-    <link href="http://codemacro.com/2012/07/19/popup-window-in-html/"/>
-    <updated>2012-07-19T14:56:00+08:00</updated>
-    <id>http://codemacro.com/2012/07/19/popup-window-in-html</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://codemacro.com/assets/res/popup-window-tip.png"></p>
-
-<p>做网页时弹出一个窗口显示一些内容是一种很常见的交互方式，如图中用户点击“个人资料“时并不是转到一个新页面，而是在当前页面弹出修改密码的窗口。弹出窗口的实现方式有很多，这里罗列一种。</p>
-
-<p>弹出窗口的内容是作为一个单独的div存在的，这个div可以在页面刚开始载入时不填入内容，而在以后通过json或者直接返回js来填入。其次，弹出窗口的显示位置一般是绝对位置，一方面是不影响页面布局，另一方面也希望其作为一个顶层窗口来呈现，所以需要指定其position css。</p>
-
-<!-- more -->
-
-
-
-
-<div class="highlight"><pre><code class="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&#39;userprofile&#39;</span> <span class="na">class=</span><span class="s">&#39;popup&#39;</span> <span class="na">style=</span><span class="s">&quot;display:none;&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-</code></pre>
-</div>
-
-
-
-
-<div class="highlight"><pre><code class="css"><span class="nc">.popup</span> <span class="p">{</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">z-index</span><span class="o">:</span> <span class="m">200</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">0px</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">0px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#666</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">8px</span> <span class="m">5px</span> <span class="m">5px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="m">5px</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre>
-</div>
-
-
-<p>我这里div里的内容是后面填入的，预先填入也可以。当要显示时，就通过js将这个div显示即可。为此我封装了几个js函数。</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">show_popupex</span><span class="p">(</span><span class="nx">pannel</span><span class="p">,</span> <span class="nx">target</span><span class="p">,</span> <span class="nx">manual</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">pos</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">position</span><span class="p">();</span>
-    <span class="kd">var</span> <span class="nx">height</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">outerHeight</span><span class="p">();</span>
-    <span class="nx">pannel</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="nx">pos</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
-    <span class="nx">pannel</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="nx">pos</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">height</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
-    <span class="nx">pannel</span><span class="p">.</span><span class="nx">show</span><span class="p">();</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">manual</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">pannel</span><span class="p">.</span><span class="nx">mouseleave</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">pannel</span><span class="p">.</span><span class="nx">hide</span><span class="p">();</span> <span class="p">});</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">show_popup</span><span class="p">(</span><span class="nx">pannel_id</span><span class="p">,</span> <span class="nx">target_id</span><span class="p">,</span> <span class="nx">manual</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">target_id</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">pannel</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">pannel_id</span><span class="p">);</span>
-    <span class="nx">show_popupex</span><span class="p">(</span><span class="nx">pannel</span><span class="p">,</span> <span class="nx">target</span><span class="p">,</span> <span class="nx">manual</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">hide_popup</span><span class="p">(</span><span class="nx">pannel_id</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">$</span><span class="p">(</span><span class="nx">pannel_id</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
-<span class="p">}</span>
-</code></pre>
-</div>
-
-
-<p>show_popup函数主要就是将目标元素的位置做调整，然后显示。通常情况下我只需传入元素的id，manual属性指定弹出窗口是否手动关闭。对于tooltip的实现，则需要让其自动关闭。针对以上例子，使用方式为：</p>
-
-<div class="highlight"><pre><code class="js"><span class="nx">show_popup</span><span class="p">(</span><span class="s1">&#39;#userprofile&#39;</span><span class="p">,</span> <span class="s1">&#39;#profile-link&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-</code></pre>
-</div>
-
-
-<p>其中profile-link就是那个“个人资料“链接。</p>
-
-<p class='post-footer'>
-            原文地址：
-            <a href='http://codemacro.com/2012/07/19/popup-window-in-html/'>http://codemacro.com/2012/07/19/popup-window-in-html/</a><br/>
             written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>

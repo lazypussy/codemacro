@@ -110,7 +110,7 @@
     </url>
     <url>
         <loc>http://codemacro.com/2012/08/13/dynamic-method-in-lua/</loc>
-        <lastmod>2012-08-13T16:14:24+08:00</lastmod>
+        <lastmod>2012-09-06T19:36:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://codemacro.com/2012/08/14/dynamic-scope-in-lisp/</loc>
@@ -118,11 +118,11 @@
     </url>
     <url>
         <loc>http://codemacro.com/2012/08/17/memcmp-on-copy-value/</loc>
-        <lastmod>2012-08-17T13:54:35+08:00</lastmod>
+        <lastmod>2012-09-06T19:36:49+08:00</lastmod>
     </url>
     <url>
         <loc>http://codemacro.com/2012/08/21/c-plus-plus-11-lambda-overview/</loc>
-        <lastmod>2012-08-29T10:38:45+08:00</lastmod>
+        <lastmod>2012-09-06T19:36:45+08:00</lastmod>
     </url>
     <url>
         <loc>http://codemacro.com/2012/08/29/mmo-chat-server/</loc>
@@ -130,7 +130,7 @@
     </url>
     <url>
         <loc>http://codemacro.com/2012/08/29/null-object-pattern/</loc>
-        <lastmod>2012-08-29T16:26:06+08:00</lastmod>
+        <lastmod>2012-09-06T19:34:04+08:00</lastmod>
     </url>
     <url>
         <loc>http://codemacro.com/2012/08/29/branch-predictor/</loc>
@@ -138,11 +138,15 @@
     </url>
     <url>
         <loc>http://codemacro.com/2012/09/03/goes-to-operator/</loc>
-        <lastmod>2012-09-03T15:25:19+08:00</lastmod>
+        <lastmod>2012-09-06T19:36:26+08:00</lastmod>
     </url>
     <url>
         <loc>http://codemacro.com/2012/09/04/bit-operation-in-c-slash-c-plus-plus/</loc>
-        <lastmod>2012-09-04T20:17:38+08:00</lastmod>
+        <lastmod>2012-09-06T19:01:12+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://codemacro.com/2012/09/06/octopress-seo/</loc>
+        <lastmod>2012-09-06T19:26:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://codemacro.com/about.html</loc>
@@ -150,11 +154,11 @@
     </url>
     <url>
         <loc>http://codemacro.com/blog/archives/</loc>
-        <lastmod>2012-09-04T20:17:38+08:00</lastmod>
+        <lastmod>2012-09-06T19:36:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://codemacro.com/</loc>
-        <lastmod>2012-09-04T20:17:38+08:00</lastmod>
+        <lastmod>2012-09-06T19:36:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://codemacro.com/tips/</loc>

@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: octopress | loop in codes]]></title>
   <link href="http://codemacro.com/tags/octopress/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-09-04T20:22:00+08:00</updated>
+  <updated>2012-09-06T19:37:31+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,72 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress中的SEO]]></title>
+    <link href="http://codemacro.com/2012/09/06/octopress-seo/"/>
+    <updated>2012-09-06T19:02:00+08:00</updated>
+    <id>http://codemacro.com/2012/09/06/octopress-seo</id>
+    <content type="html"><![CDATA[<p>来自<a href="http://www.yatishmehta.in/seo-for-octopress">SEO for Octopress</a></p>
+
+<p>Octopress默认为每个页面添加<code>meta description</code>，其内容为当前文章的前150个字符，如果是首页就会是第一篇文章的前150个字符。这里主要通过增加<code>meta keywords</code>来提高SEO。</p>
+
+<!-- more -->
+
+
+<h2>为每篇文章增加keywors和description</h2>
+
+<p>就像我的这篇博客，这下文章头得填很多数据了，有点麻烦：</p>
+
+<p><div class="highlight"><pre><code class="yaml"><span class="l-Scalar-Plain">&lt;/p&gt;</span>
+
+<span class="l-Scalar-Plain">&lt;h2&gt;&lt;/h2&gt;</span>
+
+<span class="l-Scalar-Plain">&lt;p&gt;layout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">post</span>
+<span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="s">&quot;Octopress中的SEO&quot;</span>
+<span class="l-Scalar-Plain">date</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">2012-09-06 19:02</span>
+<span class="l-Scalar-Plain">comments</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">categories</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">tips</span>
+<span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">tips</span><span class="p-Indicator">,</span> <span class="nv">octopress</span><span class="p-Indicator">]</span>
+<span class="l-Scalar-Plain">keywords</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">seo, octopress&lt;/p&gt;</span>
+
+<span class="l-Scalar-Plain">&lt;h2&gt;description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Octopress默认为每个页面添加&lt;code&gt;meta description&lt;/code&gt;，其内容为当前文章的前150个字符，如果是首页就会是第一篇文章的前150个字符。这里主要通过增加&lt;code&gt;meta keywords&lt;/code&gt;来提高SEO。&lt;/h2&gt;</span>
+
+<span class="l-Scalar-Plain">&lt;p&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<p>这样，每篇文章页面头就会自动增加<code>meta keywords</code>项，<code>description</code>也会使用这里填的，而不是自动为文章前若干个字符。这个功能的实现在<code>_includes/head.html</code>中。</p>
+
+<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;author&quot;</span> <span class="na">content=</span><span class="s">&quot;Kevin Lynx&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot; Octopress默认为每个页面添加`meta description`，其内容为当前文章的前150个字符，如果是首页就会是第一篇文章的前150个字符。这里主要通过增加`meta keywords`来提高SEO。 &quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;keywords&quot;</span> <span class="na">content=</span><span class="s">&quot;seo, octopress&quot;</span><span class="nt">&gt;</span>
+</code></pre>
+</div>
+</p>
+
+<h2>为页面(Page)增加keywords</h2>
+
+<p>上面只是修正了每篇博客页面的<code>meta</code>信息，octopress中还有几个页面需要修正，例如首页，这个可以通过修改<code>_includes/head.html</code>来完成。替换相关内容为以下：</p>
+
+<p><div class="highlight"><pre><code class="html"><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;author&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ site.author }}&quot;</span><span class="nt">&gt;</span>
+{% capture description %}{% if page.description %}{{ page.description }}{% elsif site.description %}{{ site.description }}{%else%}{{ content | raw_content }}{% endif %}{% endcapture %}
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ description | strip_html | condense_spaces | truncate:150 }}&quot;</span><span class="nt">&gt;</span>
+{% if page.keywords %}<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;keywords&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ page.keywords }}&quot;</span><span class="nt">&gt;</span>{%else%}<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;keywords&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ site.keywords }}&quot;</span><span class="nt">&gt;</span>{% endif %}
+</code></pre>
+</div>
+</p>
+
+<p>如果页面没有提供<code>keywords</code>或者<code>description</code>的话，就使用<code>site</code>里的设置，也就需要修改<code>_config.yml</code>：</p>
+
+<p><div class="highlight"><pre><code class="yaml"><span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">loop in codes, Kevin Lynx blog</span>
+<span class="l-Scalar-Plain">keywords</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">c/c++, mmo, game develop, lisp, ruby, lua, web development</span>
+</code></pre>
+</div>
+</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[为octopress每篇文章添加一个文章信息]]></title>
