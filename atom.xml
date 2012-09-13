@@ -4,7 +4,7 @@
   <title><![CDATA[loop in codes]]></title>
   <link href="http://codemacro.com/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-09-06T19:37:31+08:00</updated>
+  <updated>2012-09-13T17:20:26+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[C++陷阱：virtual析构函数]]></title>
+    <link href="http://codemacro.com/2012/09/13/c-plus-plus-virtual-destructor/"/>
+    <updated>2012-09-13T17:03:00+08:00</updated>
+    <id>http://codemacro.com/2012/09/13/c-plus-plus-virtual-destructor</id>
+    <content type="html"><![CDATA[<p>有一天有个同事在通过vld调试一个内存泄漏问题，折腾了很久然后找到我。我瞥了一眼他的代码，发现问题和我曾经遇到的一模一样：</p>
+
+<div class="highlight"><pre><code class="c"><span class="n">class</span> <span class="n">Base</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="o">~</span><span class="n">Base</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="n">class</span> <span class="n">Derived</span> <span class="o">:</span> <span class="n">public</span> <span class="n">Base</span> <span class="p">{</span>
+<span class="nl">privated:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>    
+<span class="p">};</span>
+
+<span class="n">Base</span> <span class="o">*</span><span class="n">obj</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Derived</span><span class="p">();</span>
+<span class="n">delete</span> <span class="n">obj</span><span class="p">;</span>
+</code></pre>
+</div>
+
+
+<p>当然，实际代码比这个复杂得多(这也是导致从发现问题到找到问题耗费大量时间的原因)。vld在报内存泄漏时，当然报的位置是<code>new</code>的地方。这个同事检查了这个对象的整个生命周期，确定他正确地释放了这个对象。</p>
+
+<p>问题的关键就在于：<strong><code>Base</code>类的析构函数不是<code>virtual</code>的</strong>。因为不是<code>virtual</code>，所以在对一个<code>Base</code>类型的指针进行<code>delete</code>时，就不会调用到派生类<code>Derived</code>的析构函数。而派生类里的析构函数会用于析构其内部的子对象，也就是这里的<code>m_data</code>。这样，就造成了内存泄漏。</p>
+
+<p>这其实是一个很低级的失误。但毫不客气地说C++中有很多这种少个关键字或者代码位置不对就会造成另一个结果的例子。事实上，针对这些悲剧也有很多书提出一些准则来让大家去无脑遵守。例如针对这个例子，我就记得曾有书说，只要你觉得你的类会被继承，那么最好给析构函数加上virtual。</p>
+
+<p class='post-footer'>
+            原文地址：
+            <a href='http://codemacro.com/2012/09/13/c-plus-plus-virtual-destructor/'>http://codemacro.com/2012/09/13/c-plus-plus-virtual-destructor/</a><br/>
+            written by <a href='http://codemacro.com'>Kevin Lynx</a>
+            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
+            </p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Octopress中的SEO]]></title>
@@ -1743,66 +1782,6 @@ lambda-return-type-clause:
 <p class='post-footer'>
             原文地址：
             <a href='http://codemacro.com/2012/07/24/html-table-hover/'>http://codemacro.com/2012/07/24/html-table-hover/</a><br/>
-            written by <a href='http://codemacro.com'>Kevin Lynx</a>
-            &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
-            </p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails中获取客户端时区]]></title>
-    <link href="http://codemacro.com/2012/07/20/get-client-timezone-in-rails/"/>
-    <updated>2012-07-20T16:42:00+08:00</updated>
-    <id>http://codemacro.com/2012/07/20/get-client-timezone-in-rails</id>
-    <content type="html"><![CDATA[<p>开发网站功能时，有时候需要获取客户端（浏览器）所在的时区，然后根据不同的时区做一些不同的逻辑功能。这里提供一种方法，其思路为客户端通过js获取时区，然后发送给服务器，服务器存储时区到session中。</p>
-
-<div class="highlight"><pre><code class="javascript"><span class="kd">function</span> <span class="nx">submit_timezone</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;offset_min&#39;</span> <span class="o">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">getTimezoneOffset</span><span class="p">())});</span>
-<span class="p">}</span>
-
-<span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">submit_timezone</span><span class="p">(</span><span class="s1">&#39;&lt;%= sys_timezone_path %&gt;&#39;</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre>
-</div>
-
-
-
-
-<!-- more -->
-
-
-<p>sys_timezone_path是一个特地用来处理时区的route。其实主要需要的是offset_min这个请求参数，你可以把这个参数附加到其他请求里。</p>
-
-<p>然后根据offset_min获取到时区名：</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">timezone</span>
-  <span class="n">offset_sec</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:offset_min</span><span class="o">].</span><span class="n">to_i</span> <span class="o">*</span> <span class="mi">60</span>
-  <span class="n">zone</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TimeZone</span><span class="o">[</span><span class="n">offset_sec</span><span class="o">]</span>
-  <span class="n">zone</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TimeZone</span><span class="o">[</span><span class="s2">&quot;UTC&quot;</span><span class="o">]</span> <span class="k">unless</span> <span class="n">zone</span>
-  <span class="n">session</span><span class="o">[</span><span class="ss">:zone_name</span><span class="o">]</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">zone</span>
-  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-    <span class="nb">format</span><span class="o">.</span><span class="n">js</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-
-<p>以上，获取到时区名后存储到session[:zone_name]里。在之后处理这个客户端的请求时，就可以通过这个时区名取得对应的时区，例如：</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="n">zone_name</span> <span class="o">=</span> <span class="n">session</span><span class="o">[</span><span class="ss">:zone_name</span><span class="o">]</span> 
-<span class="n">zone</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TimeZone</span><span class="o">[</span><span class="n">zone_name</span><span class="o">]</span> <span class="k">if</span> <span class="n">zone_name</span>
-</code></pre>
-</div>
-
-
-<p>但经过我实际测试，部署在heroku上的应用偶尔会发现session[:zone_name]取出来是nil，尽管我确认了timezone函数是被调用过的。这难道跟session的超时有关？后来我只好将timezone name写到客户端页面中，然后在其他请求中再把这个时区名发回来。</p>
-
-<p class='post-footer'>
-            原文地址：
-            <a href='http://codemacro.com/2012/07/20/get-client-timezone-in-rails/'>http://codemacro.com/2012/07/20/get-client-timezone-in-rails/</a><br/>
             written by <a href='http://codemacro.com'>Kevin Lynx</a>
             &nbsp;posted at <a href='http://codemacro.com'>http://codemacro.com</a>
             </p>

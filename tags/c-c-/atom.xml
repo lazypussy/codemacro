@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: c/c++ | loop in codes]]></title>
   <link href="http://codemacro.com/tags/c-c-/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-09-06T19:37:31+08:00</updated>
+  <updated>2012-09-13T17:20:26+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[C++陷阱：virtual析构函数]]></title>
+    <link href="http://codemacro.com/2012/09/13/c-plus-plus-virtual-destructor/"/>
+    <updated>2012-09-13T17:03:00+08:00</updated>
+    <id>http://codemacro.com/2012/09/13/c-plus-plus-virtual-destructor</id>
+    <content type="html"><![CDATA[<p>有一天有个同事在通过vld调试一个内存泄漏问题，折腾了很久然后找到我。我瞥了一眼他的代码，发现问题和我曾经遇到的一模一样：</p>
+
+<p><div class="highlight"><pre><code class="c"><span class="n">class</span> <span class="n">Base</span> <span class="p">{</span>
+<span class="nl">public:</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;~</span><span class="n">Base</span><span class="p">();</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">class</span> <span class="n">Derived</span> <span class="o">:</span> <span class="n">public</span> <span class="n">Base</span> <span class="p">{</span>
+<span class="nl">privated:</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="kt">int</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">m_data</span><span class="p">;</span>    
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">Base</span> <span class="o">*</span><span class="n">obj</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Derived</span><span class="p">();</span>
+<span class="n">delete</span> <span class="n">obj</span><span class="p">;</span>
+</code></pre>
+</div>
+</p>
+
+<p>当然，实际代码比这个复杂得多(这也是导致从发现问题到找到问题耗费大量时间的原因)。vld在报内存泄漏时，当然报的位置是<code>new</code>的地方。这个同事检查了这个对象的整个生命周期，确定他正确地释放了这个对象。</p>
+
+<p>问题的关键就在于：<strong><code>Base</code>类的析构函数不是<code>virtual</code>的</strong>。因为不是<code>virtual</code>，所以在对一个<code>Base</code>类型的指针进行<code>delete</code>时，就不会调用到派生类<code>Derived</code>的析构函数。而派生类里的析构函数会用于析构其内部的子对象，也就是这里的<code>m_data</code>。这样，就造成了内存泄漏。</p>
+
+<p>这其实是一个很低级的失误。但毫不客气地说C++中有很多这种少个关键字或者代码位置不对就会造成另一个结果的例子。事实上，针对这些悲剧也有很多书提出一些准则来让大家去无脑遵守。例如针对这个例子，我就记得曾有书说，只要你觉得你的类会被继承，那么最好给析构函数加上virtual。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[c/c++中几种操作位的方法]]></title>
@@ -355,70 +392,6 @@ lambda-return-type-clause:
 <p>capture使用了threhold和sum，但是threhold仅使用其值，而sum则使用了其引用，通过结果可以看出lambda中改变了sum的值。</p>
 
 <p>C++11正在被越来越多的编译器支持，也慢慢地支持得更好。这里有个<a href="http://wiki.apache.org/stdcxx/C++0xCompilerSupport">表</a>，罗列了C++11的各个特性在各个编译器上的支持情况，仅供查阅（以上示例代码测试于vs2010，即MSVC10.0）。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[使用memcmp比较两个变量结果一定吗？]]></title>
-    <link href="http://codemacro.com/2012/08/17/memcmp-on-copy-value/"/>
-    <updated>2012-08-17T11:37:00+08:00</updated>
-    <id>http://codemacro.com/2012/08/17/memcmp-on-copy-value</id>
-    <content type="html"><![CDATA[<p>参考<a href="http://stackoverflow.com/questions/11994513/is-using-memcmp-on-array-of-int-strictly-conforming">Is using memcmp on array of int strictly conforming?</a></p>
-
-<p>以下代码一定会输出ok吗？</p>
-
-<p><div class="highlight"><pre><code class="c"><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">stdio</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">include</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">string</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">struct</span> <span class="n">S</span> <span class="p">{</span> <span class="kt">int</span> <span class="n">array</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> <span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">main</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">struct</span> <span class="n">S</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">};</span>
-<span class="k">struct</span> <span class="n">S</span> <span class="n">b</span><span class="p">;</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">memcmp</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">array</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">puts</span><span class="p">(</span><span class="s">&quot;ok&quot;</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-
-<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</code></pre>
-</div>
-</p>
-
-<!-- more -->
-
-
-<p>我在vs2005以及gcc4.4.3上做了测试，都输出了ok。但这并不意味这个代码会永远输出ok。问题主要集中于这里使用了赋值语句来复制值，但却使用了memcmp这个基于内存数据比较的函数来比较值。</p>
-
-<p>c语言中的赋值运算符（=）被定义为基于值的复制，而不是基于内存内容的复制。</p>
-
-<blockquote><p><strong>C99 section 6.5.16.1 p2:</strong> In simple assignment (=), the value of the right operand is converted to the type of the assignment expression and replaces the value stored in the object designated by the left operand.</p></blockquote>
-
-<p>这个其实很好理解，尤其在不同类型的数字类型间复制时，例如：</p>
-
-<p><div class="highlight"><pre><code class="c"><span class="kt">float</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
-</code></pre>
-</div>
-</p>
-
-<p>因为浮点数和整形数的内存布局不一样，所以肯定是基于值的一种复制。另外，按照语言标准的思路来看，内存布局这种东西一般都属于实现相关的，所以语言标准是不会依赖实现去定义语言的。</p>
-
-<p>上面的定理同样用于复杂数据类型，例如结构体。我们都知道结构体每个成员之间可能会有字节补齐，而使用赋值运算符来复制时，会不会复制这些补齐字节的内容，是语言标准未规定的。这意味着使用memcmp比较两个通过赋值运算符复制的两个结构体时，其结果是未定的。</p>
-
-<p>但是上面的代码例子中，比较的其实是两个int数组。这也无法确认结果吗？这个问题最终集中于，难道int也会有不确定的补齐字节数据？</p>
-
-<blockquote><p><strong>C99 6.2.6.2 integer types</strong> For signed integer types, the bits of the object representation shall be divided into three groups: value bits, padding bits, and the sign bit. [...] The values of any padding bits are unspecified.</p></blockquote>
-
-<p>这话其实我也不太懂。一个有符号整数int，其内也有补齐二进制位(bits)？</p>
-
-<p>但无论如何，这个例子都不算严谨的代码。人们的建议是使用memcpy来复制这种数据，因为memcpy和memcmp都是基于内存内容来工作的。</p>
 ]]></content>
   </entry>
   
