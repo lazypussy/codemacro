@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: destructor | loop in codes]]></title>
   <link href="http://codemacro.com/tags/destructor/atom.xml" rel="self"/>
   <link href="http://codemacro.com/"/>
-  <updated>2012-09-13T17:26:18+08:00</updated>
+  <updated>2012-09-17T16:20:48+08:00</updated>
   <id>http://codemacro.com/</id>
   <author>
     <name><![CDATA[Kevin Lynx]]></name>
@@ -41,6 +41,9 @@
 </code></pre>
 </div>
 </p>
+
+<!-- more -->
+
 
 <p>当然，实际代码比这个复杂得多(这也是导致从发现问题到找到问题耗费大量时间的原因)。vld在报内存泄漏时，当然报的位置是<code>new</code>的地方。这个同事检查了这个对象的整个生命周期，确定他正确地释放了这个对象。</p>
 

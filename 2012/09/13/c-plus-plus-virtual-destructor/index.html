@@ -112,6 +112,11 @@
 </div>
 
 
+
+
+<!-- more -->
+
+
 <p>当然，实际代码比这个复杂得多(这也是导致从发现问题到找到问题耗费大量时间的原因)。vld在报内存泄漏时，当然报的位置是<code>new</code>的地方。这个同事检查了这个对象的整个生命周期，确定他正确地释放了这个对象。</p>
 
 <p>问题的关键就在于：<strong><code>Base</code>类的析构函数不是<code>virtual</code>的</strong>。因为不是<code>virtual</code>，所以在对一个<code>Base</code>类型的指针进行<code>delete</code>时，就不会调用到派生类<code>Derived</code>的析构函数。而派生类里的析构函数会用于析构其内部的子对象，也就是这里的<code>m_data</code>。这样，就造成了内存泄漏。</p>
@@ -171,6 +176,8 @@
         <a class="basic-alignment left" href="/2012/09/06/octopress-seo/" title="Previous Post: Octopress中的SEO">&laquo; Octopress中的SEO</a>
       
       
+        <a class="basic-alignment right" href="/2012/09/17/c-plus-plus-ctor-virtual/" title="Next Post: C++陷阱：构造函数中的多态">C++陷阱：构造函数中的多态 &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -188,7 +195,7 @@
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/categories/c-c-/'>c/c++ (9)</a></li>
+    <li class='category'><a href='/categories/c-c-/'>c/c++ (10)</a></li>
 <li class='category'><a href='/categories/game-develop/'>game develop (4)</a></li>
 <li class='category'><a href='/categories/lisp/'>lisp (5)</a></li>
 <li class='category'><a href='/categories/lua/'>lua (5)</a></li>
@@ -206,6 +213,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2012/09/17/c-plus-plus-ctor-virtual/">C++陷阱：构造函数中的多态</a>
+      </li>
+    
+      <li class="post">
         <a href="/2012/09/13/c-plus-plus-virtual-destructor/">C++陷阱：virtual析构函数</a>
       </li>
     
@@ -219,10 +230,6 @@
     
       <li class="post">
         <a href="/2012/09/03/goes-to-operator/">c/c++中的-->运算符</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2012/08/29/branch-predictor/">为什么处理排序的数组要比非排序的快？</a>
       </li>
     
   </ul>
@@ -239,7 +246,7 @@
   <ul class="tag-cloud">
 <a style="font-size: 118%" href="/tags/blog/">blog</a>
 <a style="font-size: 90%" href="/tags/branck-predictor/">branck predictor</a>
-<a style="font-size: 175%" href="/tags/c-c-/">c/c++</a>
+<a style="font-size: 180%" href="/tags/c-c-/">c/c++</a>
 <a style="font-size: 90%" href="/tags/chat-server/">chat server</a>
 <a style="font-size: 90%" href="/tags/codertrace/">codertrace</a>
 <a style="font-size: 90%" href="/tags/destructor/">destructor</a>
@@ -255,7 +262,7 @@
 <a style="font-size: 146%" href="/tags/ruby/">ruby</a>
 <a style="font-size: 210%" href="/tags/tips/">tips</a>
 <a style="font-size: 90%" href="/tags/tolua/">tolua</a>
-<a style="font-size: 90%" href="/tags/virtual/">virtual</a>
+<a style="font-size: 118%" href="/tags/virtual/">virtual</a>
 <a style="font-size: 118%" href="/tags/web/">web</a>
 
   </ul>
